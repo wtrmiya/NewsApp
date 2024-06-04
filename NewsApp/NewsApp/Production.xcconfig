@@ -1,0 +1,10 @@
+//
+//  Production.xcconfig
+//  NewsApp
+//
+//  Created by Wataru Miyakoshi on 2024/06/05.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+APP_NAME = NewsApp
