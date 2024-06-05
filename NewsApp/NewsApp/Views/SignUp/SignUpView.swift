@@ -34,17 +34,17 @@ struct SignUpView: View {
                     }
                     VStack(alignment: .leading) {
                         Text("Email")
-                        TextField("Input email", text: $displayName)
+                        TextField("Input email", text: $email)
                             .textFieldStyle(.roundedBorder)
                     }
                     VStack(alignment: .leading) {
                         Text("Password")
-                        TextField("Input password", text: $displayName)
+                        TextField("Input password", text: $password)
                             .textFieldStyle(.roundedBorder)
                     }
                     VStack(alignment: .leading) {
                         Text("Confirm Password")
-                        TextField("Confirm password", text: $displayName)
+                        TextField("Confirm password", text: $confirmingPassword)
                             .textFieldStyle(.roundedBorder)
                     }
                 }
