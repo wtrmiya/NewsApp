@@ -9,6 +9,5 @@ import XCTest
 
 final class NewsAppTests: XCTestCase {
     func testExample() throws {
-        XCTFail("test fastlane")
     }
 }
