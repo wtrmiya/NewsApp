@@ -1,0 +1,31 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+default_platform(:ios)
+
+platform :ios do
+  before_all do |lane|
+    ensure_xcode_version(version: "15.3")
+  end
+
+  lane :unittest do |options|
+    run_tests(
+      project: "NewsApp.xcodeproj",
+      scheme: "Development",
+      configuration: "Deployment_Debug",
+      devices: ["iPhone 15 Pro"],
+      output_directory: "fastlane/test_output"
+    )
+  end
+end
