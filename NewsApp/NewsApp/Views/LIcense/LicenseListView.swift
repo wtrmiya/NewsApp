@@ -1,5 +1,5 @@
 //
-//  LicenseDetailView.swift
+//  LicenseView.swift
 //  NewsApp
 //
 //  Created by Wataru Miyakoshi on 2024/06/05.
@@ -7,9 +7,20 @@
 
 import SwiftUI
 
-struct LicenseDetailView: View {
+struct LicenseListView: View {
+    let dummyLicenses = [
+        "xxxLibrary",
+        "yyyLibrary"
+    ]
     var body: some View {
-        Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit")
+        NavigationStack {
+            List {
+                ForEach(dummyLicenses, id: \.self) { license in
+                    Text(license)
+                }
+            }
+            .navigationTitle("License")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
@@ -19,9 +30,10 @@ struct LicenseDetailView: View {
                     })
                 }
             }
+        }
     }
 }
 
 #Preview {
-    LicenseDetailView()
+    LicenseListView()
 }
