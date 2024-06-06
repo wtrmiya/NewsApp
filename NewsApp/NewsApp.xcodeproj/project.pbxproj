@@ -286,6 +286,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 86119B072C0FD80A0067DC64 /* Build configuration list for PBXNativeTarget "NewsApp" */;
 			buildPhases = (
+				865407ED2C1145CE0034055A /* Run Copy Firebase Info Files */,
 				86119AF52C0FD8090067DC64 /* Sources */,
 				86119AF62C0FD8090067DC64 /* Frameworks */,
 				86119AF72C0FD8090067DC64 /* Resources */,
@@ -395,6 +396,27 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		865407ED2C1145CE0034055A /* Run Copy Firebase Info Files */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(PROJECT_DIR)/GoogleService-Info-dev.plist",
+				"$(PROJECT_DIR)/GoogleService-Info-prod.plist",
+			);
+			name = "Run Copy Firebase Info Files";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/GoogleService-Info.plist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" == \"Development_Debug\" ] || [ \"${CONFIGURATION}\" == \"Development_Release\" ]; then\ncp -r \"${PROJECT_DIR}/GoogleService-Info-dev.plist\" \"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/GoogleService-Info.plist\"\nelif [ \"${CONFIGURATION}\" == \"Production_Debug\" ] || [ \"${CONFIGURATION}\" == \"Production_Release\" ]; then\ncp -r \"${PROJECT_DIR}/GoogleService-Info-prod.plist\" \"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/GoogleService-Info.plist\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

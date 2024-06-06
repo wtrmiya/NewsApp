@@ -91,3 +91,7 @@ iOSInjectionProject/
 
 # OS-generated File
 .DS_Store
+
+# Firebase
+GoogleService-info-dev.plist
+GoogleService-info-prod.plist
