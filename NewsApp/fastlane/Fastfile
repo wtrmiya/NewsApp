@@ -23,7 +23,7 @@ platform :ios do
     run_tests(
       project: "NewsApp.xcodeproj",
       scheme: "Development",
-      configuration: "Deployment_Debug",
+      configuration: "Development_Debug",
       devices: ["iPhone 15 Pro"],
       output_directory: "fastlane/test_output"
     )

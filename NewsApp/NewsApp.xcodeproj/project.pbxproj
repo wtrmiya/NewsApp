@@ -13,6 +13,9 @@
 		86119B042C0FD80A0067DC64 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86119B032C0FD80A0067DC64 /* Preview Assets.xcassets */; };
 		86119B0C2C0FD8F90067DC64 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86119B0B2C0FD8F90067DC64 /* AppDelegate.swift */; };
 		86119B202C0FF36F0067DC64 /* NewsAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86119B1F2C0FF36F0067DC64 /* NewsAppTests.swift */; };
+		865407F02C1152540034055A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 865407EF2C1152540034055A /* FirebaseAuth */; };
+		865407F22C1152540034055A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F12C1152540034055A /* FirebaseFirestore */; };
+		865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F32C1152540034055A /* FirebaseFirestoreSwift */; };
 		86748B322C1060A0004312AB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B312C1060A0004312AB /* HomeView.swift */; };
 		86748B352C1060DB004312AB /* BookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B342C1060DB004312AB /* BookmarkView.swift */; };
 		86748B382C106107004312AB /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B372C106107004312AB /* DrawerView.swift */; };
@@ -74,6 +77,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				865407F02C1152540034055A /* FirebaseAuth in Frameworks */,
+				865407F22C1152540034055A /* FirebaseFirestore in Frameworks */,
+				865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +292,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 86119B072C0FD80A0067DC64 /* Build configuration list for PBXNativeTarget "NewsApp" */;
 			buildPhases = (
+				865407ED2C1145CE0034055A /* Run Copy Firebase Info Files */,
 				86119AF52C0FD8090067DC64 /* Sources */,
 				86119AF62C0FD8090067DC64 /* Frameworks */,
 				86119AF72C0FD8090067DC64 /* Resources */,
@@ -296,6 +303,11 @@
 			dependencies = (
 			);
 			name = NewsApp;
+			packageProductDependencies = (
+				865407EF2C1152540034055A /* FirebaseAuth */,
+				865407F12C1152540034055A /* FirebaseFirestore */,
+				865407F32C1152540034055A /* FirebaseFirestoreSwift */,
+			);
 			productName = NewsApp;
 			productReference = 86119AF92C0FD8090067DC64 /* NewsApp.app */;
 			productType = "com.apple.product-type.application";
@@ -346,6 +358,9 @@
 				Base,
 			);
 			mainGroup = 86119AF02C0FD8090067DC64;
+			packageReferences = (
+				865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 86119AFA2C0FD8090067DC64 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -395,6 +410,27 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		865407ED2C1145CE0034055A /* Run Copy Firebase Info Files */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(PROJECT_DIR)/GoogleService-Info-dev.plist",
+				"$(PROJECT_DIR)/GoogleService-Info-prod.plist",
+			);
+			name = "Run Copy Firebase Info Files";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/GoogleService-Info.plist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" == \"Development_Debug\" ] || [ \"${CONFIGURATION}\" == \"Development_Release\" ]; then\ncp -r \"${PROJECT_DIR}/GoogleService-Info-dev.plist\" \"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/GoogleService-Info.plist\"\nelif [ \"${CONFIGURATION}\" == \"Production_Debug\" ] || [ \"${CONFIGURATION}\" == \"Production_Release\" ]; then\ncp -r \"${PROJECT_DIR}/GoogleService-Info-prod.plist\" \"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/GoogleService-Info.plist\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1132,6 +1168,35 @@
 			defaultConfigurationName = Development_Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.27.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		865407EF2C1152540034055A /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		865407F12C1152540034055A /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		865407F32C1152540034055A /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 86119AF12C0FD8090067DC64 /* Project object */;
 }
