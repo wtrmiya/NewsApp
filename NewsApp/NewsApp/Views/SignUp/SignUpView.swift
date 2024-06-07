@@ -8,10 +8,7 @@
 import SwiftUI
 
 struct SignUpView: View {
-    @State private var displayName: String = ""
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var confirmingPassword: String = ""
+    @StateObject private var signUpViewModel = SignUpViewModel()
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -29,22 +26,22 @@ struct SignUpView: View {
                 VStack {
                     VStack(alignment: .leading) {
                         Text("Display Name")
-                        TextField("Input display name", text: $displayName)
+                        TextField("Input display name", text: $signUpViewModel.displayName)
                             .textFieldStyle(.roundedBorder)
                     }
                     VStack(alignment: .leading) {
                         Text("Email")
-                        TextField("Input email", text: $email)
+                        TextField("Input email", text: $signUpViewModel.email)
                             .textFieldStyle(.roundedBorder)
                     }
                     VStack(alignment: .leading) {
                         Text("Password")
-                        TextField("Input password", text: $password)
+                        TextField("Input password", text: $signUpViewModel.password)
                             .textFieldStyle(.roundedBorder)
                     }
                     VStack(alignment: .leading) {
                         Text("Confirm Password")
-                        TextField("Confirm password", text: $confirmingPassword)
+                        TextField("Confirm password", text: $signUpViewModel.passwordRepeated)
                             .textFieldStyle(.roundedBorder)
                     }
                 }
@@ -54,7 +51,9 @@ struct SignUpView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                        Task {
+                            await signUp()
+                        }
                     }, label: {
                         Text("Create User")
                     })
@@ -65,6 +64,10 @@ struct SignUpView: View {
             }
         }
         .padding()
+    }
+    
+    private func signUp() async {
+        await signUpViewModel.signUp()
     }
 }
 

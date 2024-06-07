@@ -17,6 +17,7 @@
 		865407F22C1152540034055A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F12C1152540034055A /* FirebaseFirestore */; };
 		865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F32C1152540034055A /* FirebaseFirestoreSwift */; };
 		865408302C1195FF0034055A /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8654082F2C1195FF0034055A /* AccountManager.swift */; };
+		865408322C11C9280034055A /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408312C11C9280034055A /* SignUpViewModel.swift */; };
 		86748B322C1060A0004312AB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B312C1060A0004312AB /* HomeView.swift */; };
 		86748B352C1060DB004312AB /* BookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B342C1060DB004312AB /* BookmarkView.swift */; };
 		86748B382C106107004312AB /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B372C106107004312AB /* DrawerView.swift */; };
@@ -57,6 +58,7 @@
 		86119B1D2C0FF36F0067DC64 /* NewsAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NewsAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		86119B1F2C0FF36F0067DC64 /* NewsAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsAppTests.swift; sourceTree = "<group>"; };
 		8654082F2C1195FF0034055A /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
+		865408312C11C9280034055A /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		86748B312C1060A0004312AB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		86748B342C1060DB004312AB /* BookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkView.swift; sourceTree = "<group>"; };
 		86748B372C106107004312AB /* DrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				86748B452C1061BF004312AB /* SignUpView.swift */,
+				865408312C11C9280034055A /* SignUpViewModel.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -452,6 +455,7 @@
 			files = (
 				86119B0C2C0FD8F90067DC64 /* AppDelegate.swift in Sources */,
 				86748B352C1060DB004312AB /* BookmarkView.swift in Sources */,
+				865408322C11C9280034055A /* SignUpViewModel.swift in Sources */,
 				86748B522C106266004312AB /* LetterSizeSettingsView.swift in Sources */,
 				86748B322C1060A0004312AB /* HomeView.swift in Sources */,
 				86748B3B2C10612C004312AB /* SearchView.swift in Sources */,
