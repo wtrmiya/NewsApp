@@ -7,20 +7,6 @@
 
 import Foundation
 
-enum CreateUserError: String, Error {
-    case authErrorCodeInvalidEmail
-    case authErrorCodeEmailAlreadyInUse
-    case authErrorCodeOperationNotAllowed
-    case authErrorCodeWeakPassword
-}
-
-enum SignInError: String, Error {
-    case authErrorCodeOperationNotAllowed
-    case authErrorCodeUserDisabled
-    case authErrorCodeWrongPassword
-    case authErrorCodeInvalidEmail
-}
-
 final class MockAccountManager: AccountProtocol {
     var users: [String: [String]] = [:]
     
@@ -29,16 +15,16 @@ final class MockAccountManager: AccountProtocol {
     func signUp(email: String, password: String, displayName: String) async throws {
         guard email.isValidEmail()
         else {
-            throw CreateUserError.authErrorCodeInvalidEmail
+            throw AuthError.authError(errorMessage: "invalidEmail")
         }
         
         guard password.isStrongPassword()
         else {
-            throw CreateUserError.authErrorCodeWeakPassword
+            throw AuthError.authError(errorMessage: "weakPassword")
         }
         
         if users.keys.contains(email) {
-            throw CreateUserError.authErrorCodeEmailAlreadyInUse
+            throw AuthError.authError(errorMessage: "emailAlreadyInUse")
         }
         
         users[email] = [password, displayName]
@@ -48,16 +34,16 @@ final class MockAccountManager: AccountProtocol {
     func signIn(email: String, password: String) async throws {
         guard email.isValidEmail()
         else {
-            throw SignInError.authErrorCodeInvalidEmail
+            throw AuthError.authError(errorMessage: "invalidEmail")
         }
         
         guard let challengeUser = users[email]
         else {
-            throw SignInError.authErrorCodeInvalidEmail
+            throw AuthError.authError(errorMessage: "invalidEmail")
         }
         
         if password != challengeUser[0] {
-            throw SignInError.authErrorCodeWrongPassword
+            throw AuthError.authError(errorMessage: "wrongPassword")
         }
         
         let displayName = users[email]![1]
