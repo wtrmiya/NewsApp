@@ -17,7 +17,7 @@ final class SignUpViewModel: ObservableObject {
 
     func signUp() async {
         do {
-            try await AccountManager.shared.signUp(email: email, password: password)
+            try await AccountManager.shared.signUp(email: email, password: password, displayName: displayName)
         } catch {
             self.errorMessage = error.localizedDescription
         }

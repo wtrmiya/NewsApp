@@ -14,8 +14,9 @@ final class AccountManager {
     
     var user: User?
     
-    func signUp(email: String, password: String) async throws {
+    func signUp(email: String, password: String, displayName: String) async throws {
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
+        try await updateDisplayName(user: result.user, displayName: displayName)
         self.user = result.user
     }
     
@@ -27,5 +28,11 @@ final class AccountManager {
     func signOut() throws {
         try Auth.auth().signOut()
         self.user = nil
+    }
+    
+    private func updateDisplayName(user: User, displayName: String) async throws {
+        let request = user.createProfileChangeRequest()
+        request.displayName = displayName
+        try await request.commitChanges()
     }
 }
