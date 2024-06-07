@@ -13,7 +13,9 @@ final class AccountManager {
     private init() {}
     
     var user: User?
-    
+}
+
+extension AccountManager: AccountProtocol {
     func signUp(email: String, password: String, displayName: String) async throws {
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
         try await updateDisplayName(user: result.user, displayName: displayName)

@@ -15,10 +15,16 @@ final class SignUpViewModel: ObservableObject {
     @Published var passwordRepeated: String = ""
     
     @Published var errorMessage: String?
+    
+    private let accountManager: AccountProtocol
+    
+    init(accountManager: AccountProtocol = AccountManager.shared) {
+        self.accountManager = accountManager
+    }
 
     func signUp() async {
         do {
-            try await AccountManager.shared.signUp(email: email, password: password, displayName: displayName)
+            try await accountManager.signUp(email: email, password: password, displayName: displayName)
         } catch {
             self.errorMessage = error.localizedDescription
         }
