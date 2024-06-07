@@ -19,6 +19,7 @@
 		865408302C1195FF0034055A /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8654082F2C1195FF0034055A /* AccountManager.swift */; };
 		865408322C11C9280034055A /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408312C11C9280034055A /* SignUpViewModel.swift */; };
 		865408352C129B800034055A /* AccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408342C129B800034055A /* AccountProtocol.swift */; };
+		865408372C12A16E0034055A /* MockAccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408362C12A16E0034055A /* MockAccountManager.swift */; };
 		86748B322C1060A0004312AB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B312C1060A0004312AB /* HomeView.swift */; };
 		86748B352C1060DB004312AB /* BookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B342C1060DB004312AB /* BookmarkView.swift */; };
 		86748B382C106107004312AB /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B372C106107004312AB /* DrawerView.swift */; };
@@ -61,6 +62,7 @@
 		8654082F2C1195FF0034055A /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		865408312C11C9280034055A /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		865408342C129B800034055A /* AccountProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProtocol.swift; sourceTree = "<group>"; };
+		865408362C12A16E0034055A /* MockAccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAccountManager.swift; sourceTree = "<group>"; };
 		86748B312C1060A0004312AB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		86748B342C1060DB004312AB /* BookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkView.swift; sourceTree = "<group>"; };
 		86748B372C106107004312AB /* DrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			children = (
 				8654082F2C1195FF0034055A /* AccountManager.swift */,
 				865408342C129B800034055A /* AccountProtocol.swift */,
+				865408362C12A16E0034055A /* MockAccountManager.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -475,6 +478,7 @@
 				86748B582C1062EE004312AB /* AccountSettingsView.swift in Sources */,
 				86748B462C1061BF004312AB /* SignUpView.swift in Sources */,
 				86748B552C1062B8004312AB /* DarkModeSettingsView.swift in Sources */,
+				865408372C12A16E0034055A /* MockAccountManager.swift in Sources */,
 				86748B5B2C106331004312AB /* WithdrawalConfirmationView.swift in Sources */,
 				86748B492C1061F0004312AB /* SignInView.swift in Sources */,
 				865408352C129B800034055A /* AccountProtocol.swift in Sources */,
