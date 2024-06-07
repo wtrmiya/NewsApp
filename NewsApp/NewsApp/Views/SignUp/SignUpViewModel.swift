@@ -26,7 +26,16 @@ final class SignUpViewModel: ObservableObject {
         do {
             try await accountManager.signUp(email: email, password: password, displayName: displayName)
         } catch {
-            self.errorMessage = error.localizedDescription
+            if let error = error as? AuthError {
+                switch error {
+                case .authError(let errorMessage):
+                    self.errorMessage = errorMessage
+                case .unknownError(let errorMessage):
+                    self.errorMessage = errorMessage
+                }
+            } else {
+                errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
+            }
         }
     }
 }

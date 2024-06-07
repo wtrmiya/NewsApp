@@ -9,7 +9,9 @@ import SwiftUI
 
 struct SignUpView: View {
     @StateObject private var signUpViewModel = SignUpViewModel()
-
+    @State private var isShowingAlert: Bool = false
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         ZStack(alignment: .top) {
             Text("Sign Up")
@@ -64,6 +66,22 @@ struct SignUpView: View {
             }
         }
         .padding()
+        .alert("Error", isPresented: $isShowingAlert, actions: {
+            Button(action: {
+                dismiss()
+            }, label: {
+                Text("OK")
+            })
+        }, message: {
+            if let errorMessage = signUpViewModel.errorMessage {
+                Text(errorMessage)
+            }
+        })
+        .onReceive(signUpViewModel.$errorMessage, perform: { _ in
+            if signUpViewModel.errorMessage != nil {
+                isShowingAlert = true
+            }
+        })
     }
     
     private func signUp() async {
