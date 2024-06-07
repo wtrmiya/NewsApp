@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct SignInView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
+    @StateObject private var signInViewModel: SignInViewModel = SignInViewModel()
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -27,12 +26,12 @@ struct SignInView: View {
                 VStack {
                     VStack(alignment: .leading) {
                         Text("Email")
-                        TextField("Input email", text: $email)
+                        TextField("Input email", text: $signInViewModel.email)
                             .textFieldStyle(.roundedBorder)
                     }
                     VStack(alignment: .leading) {
                         Text("Password")
-                        TextField("Input password", text: $password)
+                        TextField("Input password", text: $signInViewModel.password)
                             .textFieldStyle(.roundedBorder)
                     }
                 }
@@ -40,7 +39,9 @@ struct SignInView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                        Task {
+                            await signIn()
+                        }
                     }, label: {
                         Text("Sign In")
                     })
@@ -51,6 +52,10 @@ struct SignInView: View {
             }
         }
         .padding()
+    }
+    
+    private func signIn() async {
+        await signInViewModel.signIn()
     }
 }
 
