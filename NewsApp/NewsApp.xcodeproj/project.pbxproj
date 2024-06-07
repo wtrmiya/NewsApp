@@ -16,6 +16,10 @@
 		865407F02C1152540034055A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 865407EF2C1152540034055A /* FirebaseAuth */; };
 		865407F22C1152540034055A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F12C1152540034055A /* FirebaseFirestore */; };
 		865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F32C1152540034055A /* FirebaseFirestoreSwift */; };
+		865408302C1195FF0034055A /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8654082F2C1195FF0034055A /* AccountManager.swift */; };
+		865408322C11C9280034055A /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408312C11C9280034055A /* SignUpViewModel.swift */; };
+		865408352C129B800034055A /* AccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408342C129B800034055A /* AccountProtocol.swift */; };
+		865408372C12A16E0034055A /* MockAccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408362C12A16E0034055A /* MockAccountManager.swift */; };
 		86748B322C1060A0004312AB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B312C1060A0004312AB /* HomeView.swift */; };
 		86748B352C1060DB004312AB /* BookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B342C1060DB004312AB /* BookmarkView.swift */; };
 		86748B382C106107004312AB /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B372C106107004312AB /* DrawerView.swift */; };
@@ -31,6 +35,8 @@
 		86748B552C1062B8004312AB /* DarkModeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B542C1062B8004312AB /* DarkModeSettingsView.swift */; };
 		86748B582C1062EE004312AB /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B572C1062EE004312AB /* AccountSettingsView.swift */; };
 		86748B5B2C106331004312AB /* WithdrawalConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B5A2C106331004312AB /* WithdrawalConfirmationView.swift */; };
+		86E7D4C02C12EEF900F56485 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4BF2C12EEF900F56485 /* AuthError.swift */; };
+		86E7D4C22C12F65000F56485 /* SignUpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4C12C12F65000F56485 /* SignUpViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +61,10 @@
 		86119B182C0FDCB60067DC64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		86119B1D2C0FF36F0067DC64 /* NewsAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NewsAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		86119B1F2C0FF36F0067DC64 /* NewsAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsAppTests.swift; sourceTree = "<group>"; };
+		8654082F2C1195FF0034055A /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
+		865408312C11C9280034055A /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		865408342C129B800034055A /* AccountProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProtocol.swift; sourceTree = "<group>"; };
+		865408362C12A16E0034055A /* MockAccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAccountManager.swift; sourceTree = "<group>"; };
 		86748B312C1060A0004312AB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		86748B342C1060DB004312AB /* BookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkView.swift; sourceTree = "<group>"; };
 		86748B372C106107004312AB /* DrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
@@ -70,6 +80,8 @@
 		86748B542C1062B8004312AB /* DarkModeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeSettingsView.swift; sourceTree = "<group>"; };
 		86748B572C1062EE004312AB /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		86748B5A2C106331004312AB /* WithdrawalConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalConfirmationView.swift; sourceTree = "<group>"; };
+		86E7D4BF2C12EEF900F56485 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
+		86E7D4C12C12F65000F56485 /* SignUpViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				86119B0D2C0FD9520067DC64 /* App */,
+				8654082E2C1195530034055A /* Managers */,
 				86748B2F2C10607E004312AB /* Views */,
 				86119B002C0FD80A0067DC64 /* Assets.xcassets */,
 				86119B162C0FDBB60067DC64 /* Development.xcconfig */,
@@ -147,8 +160,28 @@
 			isa = PBXGroup;
 			children = (
 				86119B1F2C0FF36F0067DC64 /* NewsAppTests.swift */,
+				86E7D4C12C12F65000F56485 /* SignUpViewModelTests.swift */,
 			);
 			path = NewsAppTests;
+			sourceTree = "<group>";
+		};
+		8654082E2C1195530034055A /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				865408332C129B4D0034055A /* Account */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		865408332C129B4D0034055A /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				8654082F2C1195FF0034055A /* AccountManager.swift */,
+				865408342C129B800034055A /* AccountProtocol.swift */,
+				865408362C12A16E0034055A /* MockAccountManager.swift */,
+				86E7D4BF2C12EEF900F56485 /* AuthError.swift */,
+			);
+			path = Account;
 			sourceTree = "<group>";
 		};
 		86748B2F2C10607E004312AB /* Views */ = {
@@ -220,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				86748B452C1061BF004312AB /* SignUpView.swift */,
+				865408312C11C9280034055A /* SignUpViewModel.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -441,18 +475,23 @@
 			files = (
 				86119B0C2C0FD8F90067DC64 /* AppDelegate.swift in Sources */,
 				86748B352C1060DB004312AB /* BookmarkView.swift in Sources */,
+				865408322C11C9280034055A /* SignUpViewModel.swift in Sources */,
 				86748B522C106266004312AB /* LetterSizeSettingsView.swift in Sources */,
 				86748B322C1060A0004312AB /* HomeView.swift in Sources */,
 				86748B3B2C10612C004312AB /* SearchView.swift in Sources */,
+				86E7D4C02C12EEF900F56485 /* AuthError.swift in Sources */,
 				86748B4F2C106248004312AB /* PushNotificationSettingsView.swift in Sources */,
 				86748B412C106173004312AB /* LicenseListView.swift in Sources */,
 				86748B582C1062EE004312AB /* AccountSettingsView.swift in Sources */,
 				86748B462C1061BF004312AB /* SignUpView.swift in Sources */,
 				86748B552C1062B8004312AB /* DarkModeSettingsView.swift in Sources */,
+				865408372C12A16E0034055A /* MockAccountManager.swift in Sources */,
 				86748B5B2C106331004312AB /* WithdrawalConfirmationView.swift in Sources */,
 				86748B492C1061F0004312AB /* SignInView.swift in Sources */,
+				865408352C129B800034055A /* AccountProtocol.swift in Sources */,
 				86748B432C106192004312AB /* LicenseDetailView.swift in Sources */,
 				86748B3E2C106155004312AB /* TermView.swift in Sources */,
+				865408302C1195FF0034055A /* AccountManager.swift in Sources */,
 				86748B382C106107004312AB /* DrawerView.swift in Sources */,
 				86119AFF2C0FD8090067DC64 /* ContentView.swift in Sources */,
 				86119AFD2C0FD8090067DC64 /* NewsAppApp.swift in Sources */,
@@ -464,6 +503,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86E7D4C22C12F65000F56485 /* SignUpViewModelTests.swift in Sources */,
 				86119B202C0FF36F0067DC64 /* NewsAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
