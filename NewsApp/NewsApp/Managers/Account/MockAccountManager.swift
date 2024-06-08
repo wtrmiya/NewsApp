@@ -9,7 +9,6 @@ import Foundation
 
 final class MockAccountManager: AccountProtocol {
     var users: [String: [String]] = [:]
-    
     var user: [String: [String]]?
 
     func signUp(email: String, password: String, displayName: String) async throws {
