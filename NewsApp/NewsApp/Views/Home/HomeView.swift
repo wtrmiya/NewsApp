@@ -20,6 +20,8 @@ struct HomeView: View {
     
     let dummyArticle = ["NHK", "2024-06-05", "記事のタイトル", "記事概要テキスト記事概要テキスト記事概要テキスト記事概要テキスト", "apple.logo"]
     
+    @State private var isShowingSearchView: Bool = false
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -67,13 +69,16 @@ struct HomeView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                        isShowingSearchView = true
                     }, label: {
                         Image(systemName: "magnifyingglass")
                     })
                 }
             }
         }
+        .fullScreenCover(isPresented: $isShowingSearchView, content: {
+            SearchView()
+        })
     }
 }
 
