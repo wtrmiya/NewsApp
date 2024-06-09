@@ -2,87 +2,50 @@
 //  DrawerView.swift
 //  NewsApp
 //
-//  Created by Wataru Miyakoshi on 2024/06/05.
+//  Created by Wataru Miyakoshi on 2024/06/10.
 //
 
 import SwiftUI
 
 struct DrawerView: View {
+    @Binding var isShowing: Bool
+    @State private var opacity: CGFloat = 0.0
+    @State private var offsetX: CGFloat = -250
+
     var body: some View {
-        VStack {
-            HStack {
-                Text("Yamada Tarou")
-                Spacer()
-                Button(action: {
-                    print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-                }, label: {
-                    Image(systemName: "multiply")
-                })
+        ZStack(alignment: .leading) {
+            if isShowing {
+                Rectangle()
+                    .background(.black)
+                    .opacity(opacity)
+                    .onTapGesture {
+                        withAnimation(.easeOut(duration: 0.1)) {
+                            offsetX = -250
+                        }
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            isShowing = false
+                        }
+                    }
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            opacity = 0.2
+                        }
+                    }
+                
+                DrawerContentView()
+                    .frame(width: 250)
+                    .background(.white)
+                    .offset(x: offsetX)
+                    .onAppear {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            offsetX = 0
+                        }
+                    }
             }
-            
-            Spacer()
-                .frame(height: 50)
-            Divider()
-            Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-            }, label: {
-                HStack {
-                    Text("Bookmark")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-            })
-            Divider()
-            Spacer()
-            Divider()
-            Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-            }, label: {
-                HStack {
-                    Text("Settings")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-            })
-            Divider()
-            Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-            }, label: {
-                HStack {
-                    Text("Terms")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-            })
-            Divider()
-            Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-            }, label: {
-                HStack {
-                    Text("Licenses")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-            })
-            Divider()
-            Spacer()
-                .frame(height: 50)
-            Divider()
-            Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-            }, label: {
-                HStack {
-                    Text("Sign Out")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-            })
-            Divider()
         }
-        .padding()
     }
 }
 
 #Preview {
-    DrawerView()
+    DrawerView(isShowing: .constant(true))
 }

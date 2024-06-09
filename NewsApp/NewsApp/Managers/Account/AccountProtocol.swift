@@ -11,4 +11,6 @@ protocol AccountProtocol: AnyObject {
     func signUp(email: String, password: String, displayName: String) async throws
     func signIn(email: String, password: String) async throws
     func signOut() throws
+    
+    var isSignedIn: Bool { get }
 }

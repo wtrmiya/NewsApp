@@ -10,6 +10,14 @@ import Foundation
 final class MockAccountManager: AccountProtocol {
     var users: [String: [String]] = [:]
     var user: [String: [String]]?
+    
+    var isSignedIn: Bool {
+        if user != nil {
+            return true
+        } else {
+            return false
+        }
+    }
 
     func signUp(email: String, password: String, displayName: String) async throws {
         guard email.isValidEmail()
