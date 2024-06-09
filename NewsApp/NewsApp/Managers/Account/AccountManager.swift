@@ -16,6 +16,14 @@ final class AccountManager {
 }
 
 extension AccountManager: AccountProtocol {
+    var isSignedIn: Bool {
+        if Auth.auth().currentUser != nil {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     func signUp(email: String, password: String, displayName: String) async throws {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
