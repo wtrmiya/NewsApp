@@ -18,6 +18,12 @@ struct ContentView: View {
                 .tabItem {
                     Label("Bookmark", systemImage: "bookmark.fill")
                 }
+            #if DEBUG
+            DebugView()
+                .tabItem {
+                    Label("Debug", systemImage: "gear")
+                }
+            #endif
         }
     }
 }
