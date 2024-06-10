@@ -11,6 +11,10 @@ struct DrawerView: View {
     @Binding var isShowing: Bool
     @State private var opacity: CGFloat = 0.0
     @State private var offsetX: CGFloat = -250
+    
+    private let openingDuration: CGFloat = 0.2
+    private let closingDuration: CGFloat = 0.1
+    private let drawerWidth: CGFloat = 250
 
     var body: some View {
         ZStack(alignment: .leading) {
@@ -19,29 +23,43 @@ struct DrawerView: View {
                     .background(.black)
                     .opacity(opacity)
                     .onTapGesture {
-                        withAnimation(.easeOut(duration: 0.1)) {
-                            offsetX = -250
-                        }
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            isShowing = false
-                        }
+                        closeDrawer()
                     }
                     .onAppear {
-                        withAnimation(.easeInOut(duration: 0.2)) {
+                        withAnimation(.easeInOut(duration: openingDuration)) {
                             opacity = 0.2
                         }
                     }
                 
-                DrawerContentView()
-                    .frame(width: 250)
-                    .background(.white)
-                    .offset(x: offsetX)
-                    .onAppear {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            offsetX = 0
-                        }
+                ZStack(alignment: .topLeading) {
+                    DrawerContentView()
+                        .frame(width: drawerWidth)
+                        .background(.white)
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            closeDrawer()
+                        }, label: {
+                            Image(systemName: "multiply")
+                        })
+                        .padding()
                     }
+                    .frame(width: drawerWidth)
+                }
+                .offset(x: offsetX)
+                .onAppear {
+                    withAnimation(.easeOut(duration: openingDuration)) {
+                        offsetX = 0
+                    }
+                }
             }
+        }
+    }
+    
+    private func closeDrawer() {
+        withAnimation(.easeOut(duration: closingDuration)) {
+            offsetX = -drawerWidth
+            isShowing = false
         }
     }
 }

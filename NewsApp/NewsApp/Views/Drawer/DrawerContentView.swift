@@ -13,11 +13,6 @@ struct DrawerContentView: View {
             HStack {
                 Text("Yamada Tarou")
                 Spacer()
-                Button(action: {
-                    print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-                }, label: {
-                    Image(systemName: "multiply")
-                })
             }
             
             Spacer()
