@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AccountSettingsView: View {
+    @Binding var isShowing: Bool
+    
     var body: some View {
         VStack {
             HStack {
@@ -47,7 +49,7 @@ struct AccountSettingsView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                    isShowing = false
                 }, label: {
                     Text("Dismiss")
                 })
@@ -58,6 +60,6 @@ struct AccountSettingsView: View {
 
 #Preview {
     NavigationStack {
-        AccountSettingsView()
+        AccountSettingsView(isShowing: .constant(true))
     }
 }

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DarkModeSettingsView: View {
+    @Binding var isShowing: Bool
+    
     var body: some View {
         VStack {
             List {
@@ -30,7 +32,7 @@ struct DarkModeSettingsView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                    isShowing = false
                 }, label: {
                     Text("Dismiss")
                 })
@@ -41,6 +43,6 @@ struct DarkModeSettingsView: View {
 
 #Preview {
     NavigationStack {
-        DarkModeSettingsView()
+        DarkModeSettingsView(isShowing: .constant(true))
     }
 }

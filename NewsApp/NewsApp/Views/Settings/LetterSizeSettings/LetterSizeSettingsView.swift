@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct LetterSizeSettingsView: View {
+    @Binding var isShowing: Bool
+    
     var body: some View {
         VStack {
             Text("記事タイトルが入ります記事タイトルが入ります記事タイトルが入ります記事タイトルが入ります")
@@ -57,7 +59,7 @@ struct LetterSizeSettingsView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                    isShowing = false
                 }, label: {
                     Text("Dismiss")
                 })
@@ -68,6 +70,6 @@ struct LetterSizeSettingsView: View {
 
 #Preview {
     NavigationStack {
-        LetterSizeSettingsView()
+        LetterSizeSettingsView(isShowing: .constant(true))
     }
 }

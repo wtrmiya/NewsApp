@@ -12,6 +12,8 @@ struct PushNotificationSettingsView: View {
     @State private var afternoonNewsEnabled: Bool = true
     @State private var eveningNewsEnabled: Bool = true
     
+    @Binding var isShowing: Bool
+    
     var body: some View {
         List {
             Toggle("朝のニュース", isOn: $morningNewsEnabled)
@@ -23,7 +25,7 @@ struct PushNotificationSettingsView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                    isShowing = false
                 }, label: {
                     Text("Dismiss")
                 })
@@ -34,6 +36,6 @@ struct PushNotificationSettingsView: View {
 
 #Preview {
     NavigationStack {
-        PushNotificationSettingsView()
+        PushNotificationSettingsView(isShowing: .constant(true))
     }
 }
