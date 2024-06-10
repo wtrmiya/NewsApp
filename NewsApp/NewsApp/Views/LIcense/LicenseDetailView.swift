@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct LicenseDetailView: View {
+    @Binding var isShowing: Bool
     var body: some View {
         Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                        isShowing = false
                     }, label: {
                         Text("Dismiss")
                     })
@@ -23,5 +24,5 @@ struct LicenseDetailView: View {
 }
 
 #Preview {
-    LicenseDetailView()
+    LicenseDetailView(isShowing: .constant(true))
 }

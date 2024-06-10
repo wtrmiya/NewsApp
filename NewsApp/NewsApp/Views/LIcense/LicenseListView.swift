@@ -19,7 +19,11 @@ struct LicenseListView: View {
         NavigationStack {
             List {
                 ForEach(dummyLicenses, id: \.self) { license in
-                    Text(license)
+                    NavigationLink {
+                        LicenseDetailView(isShowing: $isShowing)
+                    } label: {
+                        Text(license)
+                    }
                 }
             }
             .navigationTitle("License")
