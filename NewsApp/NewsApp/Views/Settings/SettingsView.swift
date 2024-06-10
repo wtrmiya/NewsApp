@@ -14,7 +14,7 @@ struct SettingsView: View {
             Form {
                 Section {
                     NavigationLink {
-                        PushNotificationSettingsView()
+                        PushNotificationSettingsView(isShowing: $isShowing)
                     } label: {
                         HStack {
                             Text("PUSH通知の設定")
@@ -27,7 +27,7 @@ struct SettingsView: View {
                 }
                 Section {
                     NavigationLink {
-                        LetterSizeSettingsView()
+                        LetterSizeSettingsView(isShowing: $isShowing)
                     } label: {
                         HStack {
                             Text("文字サイズの設定")
@@ -36,7 +36,7 @@ struct SettingsView: View {
                         }
                     }
                     NavigationLink {
-                        DarkModeSettingsView()
+                        DarkModeSettingsView(isShowing: $isShowing)
                     } label: {
                         HStack {
                             Text("ダークモードの設定")
@@ -49,7 +49,7 @@ struct SettingsView: View {
                 }
                 Section {
                     NavigationLink {
-                        AccountSettingsView()
+                        AccountSettingsView(isShowing: $isShowing)
                     } label: {
                         HStack {
                             Text("アカウントの設定")
