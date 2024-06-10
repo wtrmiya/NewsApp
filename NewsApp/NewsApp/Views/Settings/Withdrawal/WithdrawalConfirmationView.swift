@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct WithdrawalConfirmationView: View {
+    @Binding var isShowing: Bool
+    @State private var isShowingWithdrawalCompletionAlert: Bool = false
     var body: some View {
         VStack {
             HStack {
@@ -27,18 +29,31 @@ struct WithdrawalConfirmationView: View {
             Spacer()
             
             Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                isShowing = false
+            }, label: {
+                Text("退会せずこのまま使用する")
+            })
+
+            Button(action: {
+                isShowingWithdrawalCompletionAlert = true
             }, label: {
                 Text("退会する")
             })
         }
         .padding()
+        .alert("退会しました。\nご利用ありがとうございました。", isPresented: $isShowingWithdrawalCompletionAlert, actions: {
+            Button(action: {
+                isShowing = false
+            }, label: {
+                Text("ホームへ")
+            })
+        })
         .navigationTitle("アカウントの設定")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                    isShowing = false
                 }, label: {
                     Text("Dismiss")
                 })
@@ -49,6 +64,6 @@ struct WithdrawalConfirmationView: View {
 
 #Preview {
     NavigationStack {
-        WithdrawalConfirmationView()
+        WithdrawalConfirmationView(isShowing: .constant(true))
     }
 }
