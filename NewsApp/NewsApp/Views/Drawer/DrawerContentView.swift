@@ -89,7 +89,7 @@ struct DrawerContentView: View {
             SettingsView()
         }
         .fullScreenCover(isPresented: $isShowingTermView) {
-            TermView()
+            TermView(isShowing: $isShowingTermView)
         }
         .fullScreenCover(isPresented: $isShowingLicenseListView) {
             LicenseListView()
