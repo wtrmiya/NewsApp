@@ -12,6 +12,9 @@ struct LicenseListView: View {
         "xxxLibrary",
         "yyyLibrary"
     ]
+    
+    @Binding var isShowing: Bool
+    
     var body: some View {
         NavigationStack {
             List {
@@ -24,7 +27,7 @@ struct LicenseListView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                        isShowing = false
                     }, label: {
                         Text("Dismiss")
                     })
@@ -35,5 +38,5 @@ struct LicenseListView: View {
 }
 
 #Preview {
-    LicenseListView()
+    LicenseListView(isShowing: .constant(true))
 }
