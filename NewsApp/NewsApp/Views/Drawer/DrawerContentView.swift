@@ -8,16 +8,21 @@
 import SwiftUI
 
 struct DrawerContentView: View {
+    @State private var isShowingSettingsView: Bool = false
+    @State private var isShowingTermView: Bool = false
+    @State private var isShowingLicenseListView: Bool = false
+    @State private var isShowingSignOutAlert: Bool = false
+    
+    @StateObject private var drawerViewModel: DrawerViewModel = DrawerViewModel()
+    
+    @Binding var isShowing: Bool
+    @Environment(\.dismiss) private var dismiss
+
     var body: some View {
         VStack {
             HStack {
                 Text("Yamada Tarou")
                 Spacer()
-                Button(action: {
-                    print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-                }, label: {
-                    Image(systemName: "multiply")
-                })
             }
             
             Spacer()
@@ -36,7 +41,7 @@ struct DrawerContentView: View {
             Spacer()
             Divider()
             Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                isShowingSettingsView = true
             }, label: {
                 HStack {
                     Text("Settings")
@@ -46,7 +51,7 @@ struct DrawerContentView: View {
             })
             Divider()
             Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                isShowingTermView = true
             }, label: {
                 HStack {
                     Text("Terms")
@@ -56,7 +61,7 @@ struct DrawerContentView: View {
             })
             Divider()
             Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                isShowingLicenseListView = true
             }, label: {
                 HStack {
                     Text("Licenses")
@@ -69,7 +74,7 @@ struct DrawerContentView: View {
                 .frame(height: 50)
             Divider()
             Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                isShowingSignOutAlert = true
             }, label: {
                 HStack {
                     Text("Sign Out")
@@ -80,9 +85,31 @@ struct DrawerContentView: View {
             Divider()
         }
         .padding()
+        .fullScreenCover(isPresented: $isShowingSettingsView) {
+            SettingsView()
+        }
+        .fullScreenCover(isPresented: $isShowingTermView) {
+            TermView()
+        }
+        .fullScreenCover(isPresented: $isShowingLicenseListView) {
+            LicenseListView()
+        }
+        .alert("現在サインイン中です\nサインアウトしますか", isPresented: $isShowingSignOutAlert) {
+            Button(role: .cancel, action: {
+                isShowing = false
+                dismiss()
+            }, label: {
+                Text("Cancel")
+            })
+            Button(action: {
+                drawerViewModel.signOut()
+            }, label: {
+                Text("Sign Out")
+            })
+        }
     }
 }
 
 #Preview {
-    DrawerContentView()
+    DrawerContentView(isShowing: .constant(true))
 }

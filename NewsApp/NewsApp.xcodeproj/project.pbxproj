@@ -40,6 +40,7 @@
 		868B12532C13BECC0000F5D6 /* SignInViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868B12522C13BECC0000F5D6 /* SignInViewModelTests.swift */; };
 		869161B62C16454000454D12 /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161B52C16454000454D12 /* DrawerView.swift */; };
 		869161BA2C166DA700454D12 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161B92C166DA700454D12 /* DebugView.swift */; };
+		869161BC2C16A81400454D12 /* DrawerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161BB2C16A81400454D12 /* DrawerViewModel.swift */; };
 		86E7D4C02C12EEF900F56485 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4BF2C12EEF900F56485 /* AuthError.swift */; };
 		86E7D4C22C12F65000F56485 /* SignUpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4C12C12F65000F56485 /* SignUpViewModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -90,6 +91,7 @@
 		868B12522C13BECC0000F5D6 /* SignInViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModelTests.swift; sourceTree = "<group>"; };
 		869161B52C16454000454D12 /* DrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
 		869161B92C166DA700454D12 /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
+		869161BB2C16A81400454D12 /* DrawerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerViewModel.swift; sourceTree = "<group>"; };
 		86E7D4BF2C12EEF900F56485 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		86E7D4C12C12F65000F56485 /* SignUpViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -233,6 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				86748B372C106107004312AB /* DrawerContentView.swift */,
+				869161BB2C16A81400454D12 /* DrawerViewModel.swift */,
 				869161B52C16454000454D12 /* DrawerView.swift */,
 			);
 			path = Drawer;
@@ -513,6 +516,7 @@
 				86748B382C106107004312AB /* DrawerContentView.swift in Sources */,
 				868B12512C13B9DC0000F5D6 /* SignInViewModel.swift in Sources */,
 				86119AFF2C0FD8090067DC64 /* ContentView.swift in Sources */,
+				869161BC2C16A81400454D12 /* DrawerViewModel.swift in Sources */,
 				86119AFD2C0FD8090067DC64 /* NewsAppApp.swift in Sources */,
 				86748B4C2C106224004312AB /* SettingsView.swift in Sources */,
 			);
