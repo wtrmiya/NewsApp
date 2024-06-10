@@ -11,36 +11,54 @@ struct SettingsView: View {
     @Binding var isShowing: Bool
     var body: some View {
         NavigationStack {
-            List {
+            Form {
                 Section {
-                    HStack {
-                        Text("PUSH通知の設定")
-                        Spacer()
-                        Text("受け取る")
-                        Image(systemName: "chevron.right")
+                    NavigationLink {
+                        PushNotificationSettingsView()
+                    } label: {
+                        HStack {
+                            Text("PUSH通知の設定")
+                            Spacer()
+                            Text("受け取る")
+                        }
                     }
+                } header: {
+                    Text("PUSH")
                 }
                 Section {
-                    HStack {
-                        Text("文字サイズの設定")
-                        Spacer()
-                        Text("中")
-                        Image(systemName: "chevron.right")
+                    NavigationLink {
+                        LetterSizeSettingsView()
+                    } label: {
+                        HStack {
+                            Text("文字サイズの設定")
+                            Spacer()
+                            Text("中")
+                        }
                     }
-                    HStack {
-                        Text("ダークモードの設定")
-                        Spacer()
-                        Text("端末の設定")
-                        Image(systemName: "chevron.right")
+                    NavigationLink {
+                        DarkModeSettingsView()
+                    } label: {
+                        HStack {
+                            Text("ダークモードの設定")
+                            Spacer()
+                            Text("端末の設定")
+                        }
                     }
+                } header: {
+                    Text("APPEARANCE")
                 }
                 Section {
-                    HStack {
-                        Text("アカウントの設定")
-                        Spacer()
-                        Text("サインイン中")
-                        Image(systemName: "chevron.right")
+                    NavigationLink {
+                        AccountSettingsView()
+                    } label: {
+                        HStack {
+                            Text("アカウントの設定")
+                            Spacer()
+                            Text("サインイン中")
+                        }
                     }
+                } header: {
+                    Text("ACCOUNT")
                 }
             }
             .toolbar {
