@@ -10,8 +10,17 @@ import SwiftUI
 struct BookmarkView: View {
     private let bookmarkViewModel: BookmarkViewModel = BookmarkViewModel()
     @State private var isShowingAlert: Bool = false
-    
-    let dummyArticle = ["NHK", "2024-06-05", "記事のタイトル", "記事概要テキスト記事概要テキスト記事概要テキスト記事概要テキスト", "apple.logo"]
+    @State private var isShowingSearchView: Bool = false
+    @State private var isShowingDrawer: Bool = false
+
+    let dummyArticle = [
+        "NHK",
+        "2024-06-05",
+        "記事のタイトル",
+        "記事概要テキスト記事概要テキスト記事概要テキスト記事概要テキスト",
+        "apple.logo",
+        "https://apple.com"
+    ]
     
     var body: some View {
         ZStack {
@@ -19,21 +28,23 @@ struct BookmarkView: View {
                 VStack {
                     List {
                         ForEach(0..<7, id: \.self) { _ in
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    Text(dummyArticle[0])
-                                    Text(dummyArticle[2])
-                                    Text(dummyArticle[3])
+                            Link(destination: URL(string: dummyArticle[5])!, label: {
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text(dummyArticle[0])
+                                        Text(dummyArticle[2])
+                                        Text(dummyArticle[3])
+                                    }
+                                    VStack {
+                                        Text(dummyArticle[0])
+                                        Image(systemName: dummyArticle[4])
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 60, height: 60)
+                                        Image(systemName: "bookmark.fill")
+                                    }
                                 }
-                                VStack {
-                                    Text(dummyArticle[0])
-                                    Image(systemName: dummyArticle[4])
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 60, height: 60)
-                                    Image(systemName: "bookmark.fill")
-                                }
-                            }
+                            })
                         }
                     }
                 }
@@ -42,14 +53,14 @@ struct BookmarkView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button(action: {
-                            print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                            isShowingDrawer = true
                         }, label: {
                             Image(systemName: "list.bullet")
                         })
                     }
                     ToolbarItemGroup(placement: .topBarTrailing) {
                         Button(action: {
-                            print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                            isShowingSearchView = true
                         }, label: {
                             Image(systemName: "magnifyingglass")
                         })
@@ -58,6 +69,8 @@ struct BookmarkView: View {
                 }
             }
             
+            DrawerView(isShowing: $isShowingDrawer)
+
             if !bookmarkViewModel.isSignedIn {
                 ZStack {
                     Color.gray.opacity(0.7)
@@ -66,6 +79,9 @@ struct BookmarkView: View {
                 }
             }
         }
+        .fullScreenCover(isPresented: $isShowingSearchView, content: {
+            SearchView()
+        })
     }
 }
 
