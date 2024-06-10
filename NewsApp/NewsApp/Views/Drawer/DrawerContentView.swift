@@ -92,7 +92,7 @@ struct DrawerContentView: View {
             TermView(isShowing: $isShowingTermView)
         }
         .fullScreenCover(isPresented: $isShowingLicenseListView) {
-            LicenseListView()
+            LicenseListView(isShowing: $isShowingLicenseListView)
         }
         .alert("現在サインイン中です\nサインアウトしますか", isPresented: $isShowingSignOutAlert) {
             Button(role: .cancel, action: {
