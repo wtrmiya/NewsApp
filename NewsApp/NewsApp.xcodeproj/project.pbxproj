@@ -41,6 +41,9 @@
 		869161B62C16454000454D12 /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161B52C16454000454D12 /* DrawerView.swift */; };
 		869161BA2C166DA700454D12 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161B92C166DA700454D12 /* DebugView.swift */; };
 		869161BC2C16A81400454D12 /* DrawerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161BB2C16A81400454D12 /* DrawerViewModel.swift */; };
+		869161BE2C16CBC600454D12 /* AccountInfoEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161BD2C16CBC600454D12 /* AccountInfoEditingView.swift */; };
+		869161C02C16CDD100454D12 /* AccountInfoConfirmingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161BF2C16CDD100454D12 /* AccountInfoConfirmingView.swift */; };
+		869161C22C16D07900454D12 /* AccountInfoUpdateCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161C12C16D07900454D12 /* AccountInfoUpdateCompletionView.swift */; };
 		86E7D4C02C12EEF900F56485 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4BF2C12EEF900F56485 /* AuthError.swift */; };
 		86E7D4C22C12F65000F56485 /* SignUpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4C12C12F65000F56485 /* SignUpViewModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -92,6 +95,9 @@
 		869161B52C16454000454D12 /* DrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
 		869161B92C166DA700454D12 /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 		869161BB2C16A81400454D12 /* DrawerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerViewModel.swift; sourceTree = "<group>"; };
+		869161BD2C16CBC600454D12 /* AccountInfoEditingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoEditingView.swift; sourceTree = "<group>"; };
+		869161BF2C16CDD100454D12 /* AccountInfoConfirmingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoConfirmingView.swift; sourceTree = "<group>"; };
+		869161C12C16D07900454D12 /* AccountInfoUpdateCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoUpdateCompletionView.swift; sourceTree = "<group>"; };
 		86E7D4BF2C12EEF900F56485 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		86E7D4C12C12F65000F56485 /* SignUpViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -325,6 +331,9 @@
 			isa = PBXGroup;
 			children = (
 				86748B572C1062EE004312AB /* AccountSettingsView.swift */,
+				869161BD2C16CBC600454D12 /* AccountInfoEditingView.swift */,
+				869161BF2C16CDD100454D12 /* AccountInfoConfirmingView.swift */,
+				869161C12C16D07900454D12 /* AccountInfoUpdateCompletionView.swift */,
 			);
 			path = AccountSettings;
 			sourceTree = "<group>";
@@ -499,10 +508,13 @@
 				869161B62C16454000454D12 /* DrawerView.swift in Sources */,
 				86748B322C1060A0004312AB /* HomeView.swift in Sources */,
 				86748B3B2C10612C004312AB /* SearchView.swift in Sources */,
+				869161C02C16CDD100454D12 /* AccountInfoConfirmingView.swift in Sources */,
 				86E7D4C02C12EEF900F56485 /* AuthError.swift in Sources */,
 				86748B4F2C106248004312AB /* PushNotificationSettingsView.swift in Sources */,
+				869161C22C16D07900454D12 /* AccountInfoUpdateCompletionView.swift in Sources */,
 				86748B412C106173004312AB /* LicenseListView.swift in Sources */,
 				86748B582C1062EE004312AB /* AccountSettingsView.swift in Sources */,
+				869161BE2C16CBC600454D12 /* AccountInfoEditingView.swift in Sources */,
 				86748B462C1061BF004312AB /* SignUpView.swift in Sources */,
 				86748B552C1062B8004312AB /* DarkModeSettingsView.swift in Sources */,
 				865408372C12A16E0034055A /* MockAccountManager.swift in Sources */,

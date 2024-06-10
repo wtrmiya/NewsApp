@@ -9,7 +9,9 @@ import SwiftUI
 
 struct AccountSettingsView: View {
     @Binding var isShowing: Bool
-    
+    @State private var isShowingConfirmSignOutAlert: Bool = false
+    @State private var isShowingSignOutCompletionAlert: Bool = false
+
     var body: some View {
         VStack {
             HStack {
@@ -24,26 +26,48 @@ struct AccountSettingsView: View {
             Spacer()
                 .frame(height: 50)
             
-            Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-            }, label: {
+            NavigationLink {
+                AccountInfoEditingView(isShowing: $isShowing)
+                    .navigationBarBackButtonHidden()
+            } label: {
                 Text("アカウント情報の編集")
-            })
+            }
             Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                isShowingConfirmSignOutAlert = true
             }, label: {
                 Text("サインアウト")
             })
             
             Spacer()
             
-            Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-            }, label: {
+            NavigationLink {
+                WithdrawalConfirmationView(isShowing: $isShowing)
+            } label: {
                 Text("退会する")
-            })
+            }
         }
         .padding()
+        .alert("Yamada Tarou\nでサインイン中です。\nサインアウトしますか", isPresented: $isShowingConfirmSignOutAlert, actions: {
+            Button(role: .cancel, action: {
+                isShowingConfirmSignOutAlert = false
+            }, label: {
+                Text("キャンセル")
+            })
+            Button(action: {
+                isShowingConfirmSignOutAlert = false
+                isShowingSignOutCompletionAlert = true
+            }, label: {
+                Text("サインアウト")
+            })
+        })
+        .alert("サインアウトしました", isPresented: $isShowingSignOutCompletionAlert, actions: {
+            Button(action: {
+                isShowingSignOutCompletionAlert = false
+                isShowing = false
+            }, label: {
+                Text("OK")
+            })
+        })
         .navigationTitle("アカウントの設定")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
