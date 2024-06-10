@@ -32,7 +32,7 @@ struct DrawerView: View {
                     }
                 
                 ZStack(alignment: .topLeading) {
-                    DrawerContentView()
+                    DrawerContentView(isShowing: $isShowing)
                         .frame(width: drawerWidth)
                         .background(.white)
                     HStack {
