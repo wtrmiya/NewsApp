@@ -11,6 +11,7 @@ struct BookmarkView: View {
     private let bookmarkViewModel: BookmarkViewModel = BookmarkViewModel()
     @State private var isShowingAlert: Bool = false
     @State private var isShowingSearchView: Bool = false
+    @State private var isShowingDrawer: Bool = false
 
     let dummyArticle = ["NHK", "2024-06-05", "記事のタイトル", "記事概要テキスト記事概要テキスト記事概要テキスト記事概要テキスト", "apple.logo"]
     
@@ -43,7 +44,7 @@ struct BookmarkView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button(action: {
-                            print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                            isShowingDrawer = true
                         }, label: {
                             Image(systemName: "list.bullet")
                         })
@@ -59,6 +60,8 @@ struct BookmarkView: View {
                 }
             }
             
+            DrawerView(isShowing: $isShowingDrawer)
+
             if !bookmarkViewModel.isSignedIn {
                 ZStack {
                     Color.gray.opacity(0.7)
