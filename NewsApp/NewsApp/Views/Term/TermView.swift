@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TermView: View {
+    @Binding var isShowing: Bool
     var body: some View {
         NavigationStack {
             Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, ")
@@ -16,7 +17,7 @@ struct TermView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: {
-                            print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                            isShowing = false
                         }, label: {
                             Text("Dismiss")
                         })
@@ -27,5 +28,5 @@ struct TermView: View {
 }
 
 #Preview {
-    TermView()
+    TermView(isShowing: .constant(true))
 }
