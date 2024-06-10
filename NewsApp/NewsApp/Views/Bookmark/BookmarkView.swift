@@ -10,7 +10,8 @@ import SwiftUI
 struct BookmarkView: View {
     private let bookmarkViewModel: BookmarkViewModel = BookmarkViewModel()
     @State private var isShowingAlert: Bool = false
-    
+    @State private var isShowingSearchView: Bool = false
+
     let dummyArticle = ["NHK", "2024-06-05", "記事のタイトル", "記事概要テキスト記事概要テキスト記事概要テキスト記事概要テキスト", "apple.logo"]
     
     var body: some View {
@@ -49,7 +50,7 @@ struct BookmarkView: View {
                     }
                     ToolbarItemGroup(placement: .topBarTrailing) {
                         Button(action: {
-                            print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                            isShowingSearchView = true
                         }, label: {
                             Image(systemName: "magnifyingglass")
                         })
@@ -66,6 +67,9 @@ struct BookmarkView: View {
                 }
             }
         }
+        .fullScreenCover(isPresented: $isShowingSearchView, content: {
+            SearchView()
+        })
     }
 }
 
