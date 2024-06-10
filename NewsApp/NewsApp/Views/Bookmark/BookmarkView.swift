@@ -80,7 +80,7 @@ struct BookmarkView: View {
             }
         }
         .fullScreenCover(isPresented: $isShowingSearchView, content: {
-            SearchView()
+            SearchView(isShowing: $isShowingSearchView)
         })
     }
 }

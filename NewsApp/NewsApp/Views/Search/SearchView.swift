@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SearchView: View {
     @State private var inputText: String = ""
+    @Binding var isShowing: Bool
     
     let dummyArticle = ["NHK", "2024-06-05", "記事のタイトル", "記事概要テキスト記事概要テキスト記事概要テキスト記事概要テキスト", "apple.logo"]
 
@@ -42,7 +43,7 @@ struct SearchView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                        isShowing = false
                     }, label: {
                         Text("Cancel")
                     })
@@ -53,5 +54,5 @@ struct SearchView: View {
 }
 
 #Preview {
-    SearchView()
+    SearchView(isShowing: .constant(true))
 }

@@ -91,7 +91,7 @@ struct HomeView: View {
             DrawerView(isShowing: $isShowingDrawer)
         }
         .fullScreenCover(isPresented: $isShowingSearchView, content: {
-            SearchView()
+            SearchView(isShowing: $isShowingSearchView)
         })
     }
 }
