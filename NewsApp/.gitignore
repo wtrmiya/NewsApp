@@ -95,3 +95,6 @@ iOSInjectionProject/
 # Firebase
 GoogleService-info-dev.plist
 GoogleService-info-prod.plist
+
+# NewsAPI Key
+Config.xcconfig

@@ -6,5 +6,10 @@
 	<string>$(APP_NAME)</string>
 	<key>CFBundleDisplayName</key>
 	<string>$(APP_NAME)</string>
+	<key>ApiKeys</key>
+	<dict>
+		<key>API_KEY_NewsAPI</key>
+		<string>${API_KEY_NewsAPI}</string>
+	</dict>
 </dict>
 </plist>

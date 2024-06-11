@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		86027CED2C17D186006CD41B /* ArticleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86027CEC2C17D186006CD41B /* ArticleManager.swift */; };
 		86027CEF2C17D24C006CD41B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86027CEE2C17D24C006CD41B /* HomeViewModel.swift */; };
+		86027CF32C1810E3006CD41B /* APIKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86027CF22C1810E3006CD41B /* APIKeyManager.swift */; };
 		86119AFD2C0FD8090067DC64 /* NewsAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86119AFC2C0FD8090067DC64 /* NewsAppApp.swift */; };
 		86119AFF2C0FD8090067DC64 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86119AFE2C0FD8090067DC64 /* ContentView.swift */; };
 		86119B012C0FD80A0067DC64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86119B002C0FD80A0067DC64 /* Assets.xcassets */; };
@@ -63,6 +64,8 @@
 /* Begin PBXFileReference section */
 		86027CEC2C17D186006CD41B /* ArticleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleManager.swift; sourceTree = "<group>"; };
 		86027CEE2C17D24C006CD41B /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		86027CF02C180E2F006CD41B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		86027CF22C1810E3006CD41B /* APIKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeyManager.swift; sourceTree = "<group>"; };
 		86119AF92C0FD8090067DC64 /* NewsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86119AFC2C0FD8090067DC64 /* NewsAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsAppApp.swift; sourceTree = "<group>"; };
 		86119AFE2C0FD8090067DC64 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -135,6 +138,14 @@
 			path = Article;
 			sourceTree = "<group>";
 		};
+		86027CF12C1810D6006CD41B /* APIKey */ = {
+			isa = PBXGroup;
+			children = (
+				86027CF22C1810E3006CD41B /* APIKeyManager.swift */,
+			);
+			path = APIKey;
+			sourceTree = "<group>";
+		};
 		86119AF02C0FD8090067DC64 = {
 			isa = PBXGroup;
 			children = (
@@ -162,6 +173,7 @@
 				86119B002C0FD80A0067DC64 /* Assets.xcassets */,
 				86119B162C0FDBB60067DC64 /* Development.xcconfig */,
 				86119B172C0FDBBE0067DC64 /* Production.xcconfig */,
+				86027CF02C180E2F006CD41B /* Config.xcconfig */,
 				86119B182C0FDCB60067DC64 /* Info.plist */,
 				86119B022C0FD80A0067DC64 /* Preview Content */,
 			);
@@ -200,6 +212,7 @@
 		8654082E2C1195530034055A /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				86027CF12C1810D6006CD41B /* APIKey */,
 				86027CEB2C17D177006CD41B /* Article */,
 				865408332C129B4D0034055A /* Account */,
 			);
@@ -536,6 +549,7 @@
 				865408372C12A16E0034055A /* MockAccountManager.swift in Sources */,
 				86748B5B2C106331004312AB /* WithdrawalConfirmationView.swift in Sources */,
 				86748B492C1061F0004312AB /* SignInView.swift in Sources */,
+				86027CF32C1810E3006CD41B /* APIKeyManager.swift in Sources */,
 				865408352C129B800034055A /* AccountProtocol.swift in Sources */,
 				86748B432C106192004312AB /* LicenseDetailView.swift in Sources */,
 				86748B3E2C106155004312AB /* TermView.swift in Sources */,

@@ -57,6 +57,7 @@ enum NetworkError: String, Error {
     case invalidResponse
     case invalidData
     case failedInJSONSerialization
+    case invalidAPIKey
 }
 
 final class HomeViewModel: ObservableObject {
