@@ -27,7 +27,6 @@ extension ArticleManager: ArticleManagerProtocol {
             }
             
             let articleResponse = try JSONDecoder().decode(ArticleResponse.self, from: data)
-            
             return articleResponse.articles
         } catch {
             throw error

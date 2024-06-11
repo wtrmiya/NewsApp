@@ -30,6 +30,10 @@ struct HomeView: View {
     @State private var isShowingSearchView: Bool = false
     @State private var isShowingDrawer: Bool = false
     
+    @StateObject private var homeViewModel: HomeViewModel = HomeViewModel()
+    
+    @State private var isShowingErrorAlert: Bool = false
+    
     var body: some View {
         ZStack {
             NavigationStack {
@@ -47,20 +51,21 @@ struct HomeView: View {
                         }
                     }
                     List {
-                        ForEach(0..<7, id: \.self) { _ in
-                            Link(destination: URL(string: dummyArticle[5])!) {
+                        ForEach(homeViewModel.articles, id: \.self) { article in
+                            Link(destination: URL(string: article.url)!) {
                                 HStack {
                                     VStack(alignment: .leading) {
-                                        Text(dummyArticle[0])
-                                        Text(dummyArticle[2])
-                                        Text(dummyArticle[3])
+                                        Text(article.source.name)
+                                        Text(article.title)
+                                        Text(article.description ?? "no description")
                                     }
                                     VStack {
-                                        Text(dummyArticle[0])
-                                        Image(systemName: dummyArticle[4])
+                                        Text(article.publishedAt)
+//                                        AsyncImage(url: URL(string: article.urlToImage))
+                                        Image(systemName: "apple.logo")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(width: 60, height: 60)
+                                            .frame(width: 100, height: 100)
                                         Image(systemName: "bookmark.fill")
                                     }
                                 }
@@ -92,6 +97,25 @@ struct HomeView: View {
         }
         .fullScreenCover(isPresented: $isShowingSearchView, content: {
             SearchView(isShowing: $isShowingSearchView)
+        })
+        .task {
+            await homeViewModel.populateArticles()
+        }
+        .alert("Error", isPresented: $isShowingErrorAlert, actions: {
+            Button(action: {
+                isShowingErrorAlert = false
+            }, label: {
+                Text("OK")
+            })
+        }, message: {
+            if let errorMessage = homeViewModel.errorMessage {
+                Text(errorMessage)
+            }
+        })
+        .onReceive(homeViewModel.$errorMessage, perform: { newValue in
+            if newValue != nil {
+                isShowingErrorAlert = true
+            }
         })
     }
 }
