@@ -30,6 +30,10 @@ struct HomeView: View {
     @State private var isShowingSearchView: Bool = false
     @State private var isShowingDrawer: Bool = false
     
+    @StateObject private var homeViewModel: HomeViewModel = HomeViewModel()
+    
+    @State private var isShowingErrorAlert: Bool = false
+    
     var body: some View {
         ZStack {
             NavigationStack {
@@ -47,26 +51,42 @@ struct HomeView: View {
                         }
                     }
                     List {
-                        ForEach(0..<7, id: \.self) { _ in
-                            Link(destination: URL(string: dummyArticle[5])!) {
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        Text(dummyArticle[0])
-                                        Text(dummyArticle[2])
-                                        Text(dummyArticle[3])
+                        ForEach(homeViewModel.articles, id: \.self) { article in
+                            Link(destination: URL(string: article.url)!) {
+                                VStack {
+                                    HStack {
+                                        Text(article.source.name)
+                                        Spacer()
+                                        Text(article.publishedAt)
                                     }
-                                    VStack {
-                                        Text(dummyArticle[0])
-                                        Image(systemName: dummyArticle[4])
+                                    AsyncImage(url: URL(string: article.urlToImage)) { image in
+                                        image
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(width: 60, height: 60)
+                                            .frame(width: 300, height: 200)
+                                    } placeholder: {
+                                        Image(systemName: "photo.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 300, height: 200)
+                                    }
+                                    HStack {
+                                        Spacer()
                                         Image(systemName: "bookmark.fill")
                                     }
+                                    
+                                    Text(article.title)
+                                        .font(.title2)
+                                    Spacer()
+                                        .frame(height: 10)
+                                    Text(article.description ?? "NO DESCRIPTION")
+                                        .font(.headline)
+                                        .lineLimit(2)
                                 }
                             }
                         }
                     }
+                    .listStyle(.plain)
                 }
                 .navigationTitle("My News")
                 .navigationBarTitleDisplayMode(.inline)
@@ -92,6 +112,25 @@ struct HomeView: View {
         }
         .fullScreenCover(isPresented: $isShowingSearchView, content: {
             SearchView(isShowing: $isShowingSearchView)
+        })
+        .task {
+            await homeViewModel.populateArticles()
+        }
+        .alert("Error", isPresented: $isShowingErrorAlert, actions: {
+            Button(action: {
+                isShowingErrorAlert = false
+            }, label: {
+                Text("OK")
+            })
+        }, message: {
+            if let errorMessage = homeViewModel.errorMessage {
+                Text(errorMessage)
+            }
+        })
+        .onReceive(homeViewModel.$errorMessage, perform: { newValue in
+            if newValue != nil {
+                isShowingErrorAlert = true
+            }
         })
     }
 }
