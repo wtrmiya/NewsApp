@@ -59,12 +59,19 @@ struct HomeView: View {
                                         Spacer()
                                         Text(article.publishedAt)
                                     }
-                                    AsyncImage(url: URL(string: article.urlToImage)) { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 300, height: 200)
-                                    } placeholder: {
+                                    if let imageUrl = article.urlToImage {
+                                        AsyncImage(url: URL(string: imageUrl)) { image in
+                                            image
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 300, height: 200)
+                                        } placeholder: {
+                                            Image(systemName: "photo.fill")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 300, height: 200)
+                                        }
+                                    } else {
                                         Image(systemName: "photo.fill")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
