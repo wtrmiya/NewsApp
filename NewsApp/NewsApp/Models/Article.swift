@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct ArticleResponse: Decodable {
     let status: String
@@ -35,7 +36,7 @@ struct ArticleResponse: Decodable {
     }
 }
 
-struct Article: Decodable, Hashable {
+struct Article: Decodable, Hashable, Identifiable {
     let source: ArticleSource
     let author: String?
     let title: String
@@ -46,6 +47,10 @@ struct Article: Decodable, Hashable {
     let bookmarked: Bool
     let documentId: String?
     let bookmarkedAt: Date?
+    
+    var id: String {
+        documentId ?? UUID().uuidString
+    }
     
     enum CodingKeys: String, CodingKey {
         case source, author, title, description, url, urlToImage, publishedAt
@@ -88,6 +93,52 @@ struct Article: Decodable, Hashable {
         self.bookmarked = bookmarked
         self.documentId = documentId
         self.bookmarkedAt = bookmarkedAt
+    }
+}
+
+extension Article {
+    func toDictionary() -> [String: Any] {
+        return [
+            "source": source,
+            "author": author as Any,
+            "title": title,
+            "description": description as Any,
+            "url": url,
+            "urlToImage": urlToImage as Any,
+            "publishedAt": publishedAt,
+            "bookmarked": bookmarked,
+            "bookmarkedAt": bookmarkedAt as Any
+        ]
+    }
+    
+    static func fromSnapshot(snapshot: QueryDocumentSnapshot) -> Article? {
+        let dictionary = snapshot.data()
+        guard let source = dictionary["source"] as? String,
+              let title = dictionary["title"] as? String,
+              let url = dictionary["url"] as? String,
+              let publishedAt = dictionary["publishedAt"] as? String,
+              let bookmarked = dictionary["bookmarked"] as? Bool
+        else {
+            return nil
+        }
+        
+        let author = dictionary["author"] as? String
+        let description = dictionary["description"] as? String
+        let urlToImage = dictionary["urlToImage"] as? String
+        let bookmarkedAt = dictionary["bookmarkedAt"] as? Date
+
+        return Article(
+            source: ArticleSource(name: source),
+            author: author,
+            title: title,
+            description: description,
+            url: url,
+            urlToImage: urlToImage,
+            publishedAt: publishedAt,
+            bookmarked: bookmarked,
+            documentId: snapshot.documentID,
+            bookmarkedAt: bookmarkedAt
+        )
     }
 }
 
