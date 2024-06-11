@@ -53,25 +53,40 @@ struct HomeView: View {
                     List {
                         ForEach(homeViewModel.articles, id: \.self) { article in
                             Link(destination: URL(string: article.url)!) {
-                                HStack {
-                                    VStack(alignment: .leading) {
+                                VStack {
+                                    HStack {
                                         Text(article.source.name)
-                                        Text(article.title)
-                                        Text(article.description ?? "no description")
-                                    }
-                                    VStack {
+                                        Spacer()
                                         Text(article.publishedAt)
-//                                        AsyncImage(url: URL(string: article.urlToImage))
-                                        Image(systemName: "apple.logo")
+                                    }
+                                    AsyncImage(url: URL(string: article.urlToImage)) { image in
+                                        image
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(width: 100, height: 100)
+                                            .frame(width: 300, height: 200)
+                                    } placeholder: {
+                                        Image(systemName: "photo.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 300, height: 200)
+                                    }
+                                    HStack {
+                                        Spacer()
                                         Image(systemName: "bookmark.fill")
                                     }
+                                    
+                                    Text(article.title)
+                                        .font(.title2)
+                                    Spacer()
+                                        .frame(height: 10)
+                                    Text(article.description ?? "NO DESCRIPTION")
+                                        .font(.headline)
+                                        .lineLimit(2)
                                 }
                             }
                         }
                     }
+                    .listStyle(.plain)
                 }
                 .navigationTitle("My News")
                 .navigationBarTitleDisplayMode(.inline)
