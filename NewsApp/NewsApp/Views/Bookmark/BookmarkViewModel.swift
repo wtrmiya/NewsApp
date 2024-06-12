@@ -35,13 +35,29 @@ final class BookmarkViewModel: ObservableObject {
         )
     ]
     
-    let accountManager: AccountProtocol
+    @Published var errorMessage: String?
     
+    let accountManager: AccountProtocol
+    let bookmarkManager = BookmarkManager.shared
+
     init(accountManager: AccountProtocol = AccountManager.shared) {
         self.accountManager = accountManager
     }
     
     var isSignedIn: Bool {
         accountManager.isSignedIn
+    }
+    
+    func populateBookmarkedArticles() async {
+        do {
+//            let articles = try await bookmarkManager.getBookmarkedArticles()
+//            self.articles = articles
+        } catch {
+            if let error = error as? NetworkError {
+                self.errorMessage = error.rawValue
+            } else {
+                self.errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
+            }
+        }
     }
 }

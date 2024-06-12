@@ -93,6 +93,9 @@ struct BookmarkView: View {
         .fullScreenCover(isPresented: $isShowingSearchView, content: {
             SearchView(isShowing: $isShowingSearchView)
         })
+        .task {
+            await bookmarkViewModel.populateBookmarkedArticles()
+        }
     }
 }
 
