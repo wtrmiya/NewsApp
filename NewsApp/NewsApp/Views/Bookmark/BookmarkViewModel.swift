@@ -13,10 +13,13 @@ final class BookmarkViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     let accountManager: AccountProtocol
-    let bookmarkManager = BookmarkManager.shared
+    let bookmarkManager: BookmarkManagerProtocol
 
-    init(accountManager: AccountProtocol = AccountManager.shared) {
+    init(accountManager: AccountProtocol = AccountManager.shared,
+         bookmarkManager: BookmarkManagerProtocol = BookmarkManager.shared
+    ) {
         self.accountManager = accountManager
+        self.bookmarkManager = bookmarkManager
     }
     
     var isSignedIn: Bool {
