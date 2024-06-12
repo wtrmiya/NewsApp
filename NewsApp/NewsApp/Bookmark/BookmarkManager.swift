@@ -52,4 +52,22 @@ extension BookmarkManager: BookmarkManagerProtocol {
         let updatedArticle = article.updateBookmarkedData(documentId: nil)
         return updatedArticle
     }
+    
+    func getBookmarks(uid: String) async throws -> [Article] {
+        let firestoreDB = Firestore.firestore()
+        guard let userDocumentID = try await firestoreDB.collection("users")
+            .whereField("uid", isEqualTo: uid)
+            .getDocuments()
+            .documents.first?.documentID
+        else { return [] }
+        
+        let snapshot = try await firestoreDB.collection("users").document(userDocumentID)
+            .collection("bookmarks").getDocuments()
+        
+        let bookmarks = snapshot.documents.compactMap { snapshot in
+            Article.fromSnapshot(snapshot: snapshot)
+        }
+        
+        return bookmarks
+    }
 }
