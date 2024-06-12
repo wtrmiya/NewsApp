@@ -20,9 +20,24 @@ struct DrawerContentView: View {
 
     var body: some View {
         VStack {
-            HStack {
-                Text("Yamada Tarou")
-                Spacer()
+            if let user = drawerViewModel.sidnedInUser {
+                HStack {
+                    Text(user.displayName)
+                    Spacer()
+                }
+            } else {
+                HStack {
+                    Button(action: {
+                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                    }, label: {
+                        Text("Sign Up")
+                    })
+                    Button(action: {
+                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                    }, label: {
+                        Text("Sign In")
+                    })
+                }
             }
             
             Spacer()
