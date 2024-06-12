@@ -7,6 +7,8 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 final class AccountManager {
     static let shared = AccountManager()
@@ -29,6 +31,7 @@ extension AccountManager: AccountProtocol {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
             try await updateDisplayName(user: result.user, displayName: displayName)
             self.user = result.user
+            try await createUserDataToFirestore(user: result.user)
         } catch {
             if let error = error as? AuthErrorCode {
                 let errorMessage: String
@@ -104,5 +107,13 @@ extension AccountManager: AccountProtocol {
         let request = user.createProfileChangeRequest()
         request.displayName = displayName
         try await request.commitChanges()
+    }
+    
+    private func createUserDataToFirestore(user: User) async throws {
+        let firestoreDB = Firestore.firestore()
+        try await firestoreDB.collection("users").addDocument(data: [
+            "uid": user.uid,
+            "displayName": user.displayName ?? "no display name"
+        ])
     }
 }
