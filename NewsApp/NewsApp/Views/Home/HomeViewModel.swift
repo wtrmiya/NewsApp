@@ -54,7 +54,14 @@ final class HomeViewModel: ObservableObject {
                 
                 articles[articleIndex] = updatedArticle
             } else {
-                bookmarkManager.removeBookmark(article: toggledArticle, uid: currentUser.uid)
+                guard let updatedArticle = try await bookmarkManager.removeBookmark(
+                    article: toggledArticle,
+                    uid: currentUser.uid
+                )
+                else {
+                    return
+                }
+                articles[articleIndex] = updatedArticle
             }
         } catch {
             errorMessage = error.localizedDescription

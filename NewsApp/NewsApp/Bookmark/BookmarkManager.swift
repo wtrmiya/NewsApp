@@ -33,7 +33,23 @@ extension BookmarkManager {
         return updatedArticle
     }
     
-    func removeBookmark(article: Article, uid: String) {
-        guard !article.bookmarked else { return }
+    func removeBookmark(article: Article, uid: String) async throws -> Article? {
+        guard !article.bookmarked else { return nil }
+        
+        let firestoreDB = Firestore.firestore()
+        guard let userDocumentID = try await firestoreDB.collection("users")
+            .whereField("uid", isEqualTo: uid)
+            .getDocuments()
+            .documents.first?.documentID
+        else { return nil }
+        
+        guard let bookmarkDocumentId = article.documentId
+        else { return nil }
+        
+        let docRef = firestoreDB.collection("users").document(userDocumentID)
+            .collection("bookmarks").document(bookmarkDocumentId)
+        try await docRef.delete()
+        let updatedArticle = article.updateBookmarkedData(documentId: nil)
+        return updatedArticle
     }
 }

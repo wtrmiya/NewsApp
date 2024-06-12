@@ -145,7 +145,7 @@ extension Article {
         )
     }
     
-    func updateBookmarkedData(documentId: String) -> Article {
+    func updateBookmarkedData(documentId: String?) -> Article {
         return Article(
             source: self.source,
             author: self.author,
@@ -156,7 +156,7 @@ extension Article {
             publishedAt: self.publishedAt,
             bookmarked: self.bookmarked,
             documentId: documentId,
-            bookmarkedAt: Date()
+            bookmarkedAt: documentId != nil ? Date() : nil
         )
     }
 }
