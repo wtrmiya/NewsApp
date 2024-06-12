@@ -51,7 +51,8 @@ struct HomeView: View {
                         }
                     }
                     List {
-                        ForEach(homeViewModel.articles, id: \.self) { article in
+                        ForEach(homeViewModel.articles.indices, id: \.self) { index in
+                            let article = homeViewModel.articles[index]
                             Link(destination: URL(string: article.url)!) {
                                 VStack {
                                     HStack {
@@ -79,7 +80,10 @@ struct HomeView: View {
                                     }
                                     HStack {
                                         Spacer()
-                                        Image(systemName: "bookmark.fill")
+                                        Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
+                                            .onTapGesture {
+                                                bookmarkTapped(articleIndex: index)
+                                            }
                                     }
                                     
                                     Text(article.title)
@@ -139,6 +143,10 @@ struct HomeView: View {
                 isShowingErrorAlert = true
             }
         })
+    }
+    
+    private func bookmarkTapped(articleIndex: Int) {
+        homeViewModel.toggleBookmark(articleIndex: articleIndex)
     }
 }
 

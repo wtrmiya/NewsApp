@@ -31,4 +31,8 @@ final class HomeViewModel: ObservableObject {
             }
         }
     }
+    
+    func toggleBookmark(articleIndex: Int) {
+        articles[articleIndex].toggleBookmark()
+    }
 }

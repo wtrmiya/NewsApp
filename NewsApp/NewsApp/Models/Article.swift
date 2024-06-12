@@ -44,9 +44,9 @@ struct Article: Decodable, Hashable, Identifiable {
     let url: String
     let urlToImage: String?
     let publishedAt: String
-    let bookmarked: Bool
-    let documentId: String?
-    let bookmarkedAt: Date?
+    var bookmarked: Bool
+    var documentId: String?
+    var bookmarkedAt: Date?
     
     var id: String {
         documentId ?? UUID().uuidString
@@ -93,6 +93,10 @@ struct Article: Decodable, Hashable, Identifiable {
         self.bookmarked = bookmarked
         self.documentId = documentId
         self.bookmarkedAt = bookmarkedAt
+    }
+    
+    mutating func toggleBookmark() {
+        bookmarked.toggle()
     }
 }
 
