@@ -12,7 +12,11 @@ import FirebaseFirestoreSwift
 
 final class AccountManager {
     static let shared = AccountManager()
-    private init() {}
+    private init() {
+        if let user = Auth.auth().currentUser {
+            self.user = user
+        }
+    }
     
     var user: User?
 }

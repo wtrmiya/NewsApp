@@ -13,6 +13,8 @@ final class HomeViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     let articleManager: ArticleManagerProtocol
+    let bookmarkManager = BookmarkManager.shared
+    let accountManager = AccountManager.shared
     
     init(articleManager: ArticleManagerProtocol = ArticleManager.shared) {
         self.articleManager = articleManager
@@ -32,7 +34,30 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    func toggleBookmark(articleIndex: Int) {
+    @MainActor
+    func toggleBookmark(articleIndex: Int) async {
         articles[articleIndex].toggleBookmark()
+        let toggledArticle = articles[articleIndex]
+        guard let currentUser = accountManager.user else {
+            return
+        }
+        
+        do {
+            if toggledArticle.bookmarked {
+                guard let updatedArticle = try await bookmarkManager.addBookmark(
+                    article: toggledArticle,
+                    uid: currentUser.uid
+                )
+                else {
+                    return
+                }
+                
+                articles[articleIndex] = updatedArticle
+            } else {
+                bookmarkManager.removeBookmark(article: toggledArticle, uid: currentUser.uid)
+            }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
 }

@@ -82,7 +82,9 @@ struct HomeView: View {
                                         Spacer()
                                         Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
                                             .onTapGesture {
-                                                bookmarkTapped(articleIndex: index)
+                                                Task {
+                                                    await bookmarkTapped(articleIndex: index)
+                                                }
                                             }
                                     }
                                     
@@ -145,8 +147,8 @@ struct HomeView: View {
         })
     }
     
-    private func bookmarkTapped(articleIndex: Int) {
-        homeViewModel.toggleBookmark(articleIndex: articleIndex)
+    private func bookmarkTapped(articleIndex: Int) async {
+        await homeViewModel.toggleBookmark(articleIndex: articleIndex)
     }
 }
 

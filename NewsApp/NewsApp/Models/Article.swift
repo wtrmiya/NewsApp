@@ -103,7 +103,7 @@ struct Article: Decodable, Hashable, Identifiable {
 extension Article {
     func toDictionary() -> [String: Any] {
         return [
-            "source": source,
+            "source": source.name,
             "author": author as Any,
             "title": title,
             "description": description as Any,
@@ -142,6 +142,21 @@ extension Article {
             bookmarked: bookmarked,
             documentId: snapshot.documentID,
             bookmarkedAt: bookmarkedAt
+        )
+    }
+    
+    func updateBookmarkedData(documentId: String) -> Article {
+        return Article(
+            source: self.source,
+            author: self.author,
+            title: self.title,
+            description: self.description,
+            url: self.url,
+            urlToImage: self.urlToImage,
+            publishedAt: self.publishedAt,
+            bookmarked: self.bookmarked,
+            documentId: documentId,
+            bookmarkedAt: Date()
         )
     }
 }
