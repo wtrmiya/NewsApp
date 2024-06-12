@@ -11,8 +11,10 @@ struct DrawerContentView: View {
     @State private var isShowingSettingsView: Bool = false
     @State private var isShowingTermView: Bool = false
     @State private var isShowingLicenseListView: Bool = false
+    @State private var isShowingSignUpView: Bool = false
+    @State private var isShowingSignInView: Bool = false
     @State private var isShowingSignOutAlert: Bool = false
-    
+
     @StateObject private var drawerViewModel: DrawerViewModel = DrawerViewModel()
     
     @Binding var isShowing: Bool
@@ -28,12 +30,12 @@ struct DrawerContentView: View {
             } else {
                 HStack {
                     Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                        isShowingSignUpView = true
                     }, label: {
                         Text("Sign Up")
                     })
                     Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                        isShowingSignInView = true
                     }, label: {
                         Text("Sign In")
                     })
@@ -108,6 +110,12 @@ struct DrawerContentView: View {
         }
         .fullScreenCover(isPresented: $isShowingLicenseListView) {
             LicenseListView(isShowing: $isShowingLicenseListView)
+        }
+        .fullScreenCover(isPresented: $isShowingSignUpView) {
+            SignUpView()
+        }
+        .fullScreenCover(isPresented: $isShowingSignInView) {
+            SignInView()
         }
         .alert("現在サインイン中です\nサインアウトしますか", isPresented: $isShowingSignOutAlert) {
             Button(role: .cancel, action: {
