@@ -13,11 +13,16 @@ final class HomeViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     let articleManager: ArticleManagerProtocol
-    let bookmarkManager = BookmarkManager.shared
-    let accountManager = AccountManager.shared
+    let bookmarkManager: BookmarkManagerProtocol
+    let accountManager: AccountProtocol
     
-    init(articleManager: ArticleManagerProtocol = ArticleManager.shared) {
+    init(articleManager: ArticleManagerProtocol = ArticleManager.shared,
+         bookmarkManager: BookmarkManagerProtocol = BookmarkManager.shared,
+         accountManager: AccountProtocol = AccountManager.shared
+    ) {
         self.articleManager = articleManager
+        self.bookmarkManager = bookmarkManager
+        self.accountManager = accountManager
     }
     
     @MainActor

@@ -14,7 +14,7 @@ final class BookmarkManager {
     private init() {}
 }
 
-extension BookmarkManager {
+extension BookmarkManager: BookmarkManagerProtocol {
     func addBookmark(article: Article, uid: String) async throws -> Article? {
         guard article.bookmarked else { return nil }
         

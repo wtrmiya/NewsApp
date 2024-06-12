@@ -9,7 +9,7 @@ import Foundation
 
 final class MockAccountManager: AccountProtocol {
     var users: [String: [String]] = [:]
-    var user: [String: [String]]?
+    var user: UserAccount?
     
     var isSignedIn: Bool {
         if user != nil {
@@ -35,7 +35,11 @@ final class MockAccountManager: AccountProtocol {
         }
         
         users[email] = [password, displayName]
-        user = [email: [password, displayName]]
+        user = UserAccount(
+            uid: UUID().uuidString,
+            email: email,
+            displayName: displayName
+        )
     }
     
     func signIn(email: String, password: String) async throws {
@@ -55,7 +59,11 @@ final class MockAccountManager: AccountProtocol {
         
         let displayName = users[email]![1]
         
-        user = [email: [password, displayName]]
+        user = UserAccount(
+            uid: UUID().uuidString,
+            email: email,
+            displayName: displayName
+        )
     }
     
     func signOut() throws {

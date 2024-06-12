@@ -30,6 +30,8 @@
 		865408352C129B800034055A /* AccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408342C129B800034055A /* AccountProtocol.swift */; };
 		865408372C12A16E0034055A /* MockAccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408362C12A16E0034055A /* MockAccountManager.swift */; };
 		865C0CF22C1933B500A091E4 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF12C1933B500A091E4 /* BookmarkManager.swift */; };
+		865C0CF42C1946DB00A091E4 /* BookmarkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */; };
+		865C0CF62C196A3000A091E4 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF52C196A3000A091E4 /* UserAccount.swift */; };
 		86748B322C1060A0004312AB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B312C1060A0004312AB /* HomeView.swift */; };
 		86748B352C1060DB004312AB /* BookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B342C1060DB004312AB /* BookmarkView.swift */; };
 		86748B382C106107004312AB /* DrawerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B372C106107004312AB /* DrawerContentView.swift */; };
@@ -94,6 +96,8 @@
 		865408342C129B800034055A /* AccountProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProtocol.swift; sourceTree = "<group>"; };
 		865408362C12A16E0034055A /* MockAccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAccountManager.swift; sourceTree = "<group>"; };
 		865C0CF12C1933B500A091E4 /* BookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManager.swift; sourceTree = "<group>"; };
+		865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManagerProtocol.swift; sourceTree = "<group>"; };
+		865C0CF52C196A3000A091E4 /* UserAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
 		86748B312C1060A0004312AB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		86748B342C1060DB004312AB /* BookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkView.swift; sourceTree = "<group>"; };
 		86748B372C106107004312AB /* DrawerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerContentView.swift; sourceTree = "<group>"; };
@@ -229,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				862F1D632C18D4C60013DE91 /* Article.swift */,
+				865C0CF52C196A3000A091E4 /* UserAccount.swift */,
 				862F1D652C18D5160013DE91 /* Errors */,
 			);
 			path = Models;
@@ -268,6 +273,7 @@
 			isa = PBXGroup;
 			children = (
 				865C0CF12C1933B500A091E4 /* BookmarkManager.swift */,
+				865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */,
 			);
 			name = Bookmark;
 			path = ../Bookmark;
@@ -573,6 +579,7 @@
 				86119B0C2C0FD8F90067DC64 /* AppDelegate.swift in Sources */,
 				86027CF92C184320006CD41B /* MockArticleManager.swift in Sources */,
 				862F1D692C18D5530013DE91 /* ArticleManagerProtocol.swift in Sources */,
+				865C0CF42C1946DB00A091E4 /* BookmarkManagerProtocol.swift in Sources */,
 				86027CEF2C17D24C006CD41B /* HomeViewModel.swift in Sources */,
 				863F20D72C15756800186A4C /* BookmarkViewModel.swift in Sources */,
 				86748B352C1060DB004312AB /* BookmarkView.swift in Sources */,
@@ -607,6 +614,7 @@
 				868B12512C13B9DC0000F5D6 /* SignInViewModel.swift in Sources */,
 				86119AFF2C0FD8090067DC64 /* ContentView.swift in Sources */,
 				869161BC2C16A81400454D12 /* DrawerViewModel.swift in Sources */,
+				865C0CF62C196A3000A091E4 /* UserAccount.swift in Sources */,
 				86119AFD2C0FD8090067DC64 /* NewsAppApp.swift in Sources */,
 				86748B4C2C106224004312AB /* SettingsView.swift in Sources */,
 			);
