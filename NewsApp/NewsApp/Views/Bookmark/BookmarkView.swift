@@ -8,45 +8,56 @@
 import SwiftUI
 
 struct BookmarkView: View {
-    private let bookmarkViewModel: BookmarkViewModel = BookmarkViewModel()
+    @StateObject private var bookmarkViewModel: BookmarkViewModel = BookmarkViewModel()
     @State private var isShowingAlert: Bool = false
     @State private var isShowingSearchView: Bool = false
     @State private var isShowingDrawer: Bool = false
 
-    let dummyArticle = [
-        "NHK",
-        "2024-06-05",
-        "記事のタイトル",
-        "記事概要テキスト記事概要テキスト記事概要テキスト記事概要テキスト",
-        "apple.logo",
-        "https://apple.com"
-    ]
-    
     var body: some View {
         ZStack {
             NavigationStack {
                 VStack {
                     List {
-                        ForEach(0..<7, id: \.self) { _ in
-                            Link(destination: URL(string: dummyArticle[5])!, label: {
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        Text(dummyArticle[0])
-                                        Text(dummyArticle[2])
-                                        Text(dummyArticle[3])
+                        ForEach(bookmarkViewModel.articles.indices, id: \.self) { index in
+                            let article = bookmarkViewModel.articles[index]
+                            Link(destination: URL(string: article.url)!, label: {
+                                VStack {
+                                    HStack {
+                                        Text(article.source.name)
+                                        Spacer()
+                                        Text(article.publishedAt)
                                     }
-                                    VStack {
-                                        Text(dummyArticle[0])
-                                        Image(systemName: dummyArticle[4])
+                                    if let imageUrl = article.urlToImage {
+                                        AsyncImage(url: URL(string: imageUrl)) { image in
+                                            image
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 300, height: 200)
+                                        } placeholder: {
+                                            Image(systemName: "photo.fill")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 300, height: 200)
+                                        }
+                                    } else {
+                                        Image(systemName: "photo.fill")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(width: 60, height: 60)
-                                        Image(systemName: "bookmark.fill")
+                                            .frame(width: 300, height: 200)
                                     }
+                                    
+                                    Text(article.title)
+                                        .font(.title2)
+                                    Spacer()
+                                        .frame(height: 10)
+                                    Text(article.description ?? "NO DESCRIPTION")
+                                        .font(.headline)
+                                        .lineLimit(2)
                                 }
                             })
                         }
                     }
+                    .listStyle(.plain)
                 }
                 .navigationTitle("Bookmark")
                 .navigationBarTitleDisplayMode(.inline)
