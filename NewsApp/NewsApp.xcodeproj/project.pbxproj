@@ -32,6 +32,7 @@
 		865C0CF22C1933B500A091E4 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF12C1933B500A091E4 /* BookmarkManager.swift */; };
 		865C0CF42C1946DB00A091E4 /* BookmarkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */; };
 		865C0CF62C196A3000A091E4 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF52C196A3000A091E4 /* UserAccount.swift */; };
+		865C0CF82C19718E00A091E4 /* MockBookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF72C19718E00A091E4 /* MockBookmarkManager.swift */; };
 		86748B322C1060A0004312AB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B312C1060A0004312AB /* HomeView.swift */; };
 		86748B352C1060DB004312AB /* BookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B342C1060DB004312AB /* BookmarkView.swift */; };
 		86748B382C106107004312AB /* DrawerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B372C106107004312AB /* DrawerContentView.swift */; };
@@ -98,6 +99,7 @@
 		865C0CF12C1933B500A091E4 /* BookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManager.swift; sourceTree = "<group>"; };
 		865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManagerProtocol.swift; sourceTree = "<group>"; };
 		865C0CF52C196A3000A091E4 /* UserAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
+		865C0CF72C19718E00A091E4 /* MockBookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBookmarkManager.swift; sourceTree = "<group>"; };
 		86748B312C1060A0004312AB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		86748B342C1060DB004312AB /* BookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkView.swift; sourceTree = "<group>"; };
 		86748B372C106107004312AB /* DrawerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerContentView.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 			children = (
 				865C0CF12C1933B500A091E4 /* BookmarkManager.swift */,
 				865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */,
+				865C0CF72C19718E00A091E4 /* MockBookmarkManager.swift */,
 			);
 			name = Bookmark;
 			path = ../Bookmark;
@@ -595,6 +598,7 @@
 				869161C22C16D07900454D12 /* AccountInfoUpdateCompletionView.swift in Sources */,
 				86748B412C106173004312AB /* LicenseListView.swift in Sources */,
 				86748B582C1062EE004312AB /* AccountSettingsView.swift in Sources */,
+				865C0CF82C19718E00A091E4 /* MockBookmarkManager.swift in Sources */,
 				862F1D672C18D5270013DE91 /* NetworkError.swift in Sources */,
 				86027CED2C17D186006CD41B /* ArticleManager.swift in Sources */,
 				869161BE2C16CBC600454D12 /* AccountInfoEditingView.swift in Sources */,
