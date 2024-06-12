@@ -14,7 +14,7 @@ final class TermManager {
     private init() {}
 }
 
-extension TermManager {
+extension TermManager: TermManagerProtocol {
     func getLatestTerm() async throws -> Term? {
         let firestoreDB = Firestore.firestore()
         guard let snapshot = try await firestoreDB.collection("terms")

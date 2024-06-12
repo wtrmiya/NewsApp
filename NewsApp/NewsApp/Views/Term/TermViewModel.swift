@@ -10,7 +10,11 @@ import Foundation
 final class TermViewModel: ObservableObject {
     @Published var term: Term = Term.emptyTerm
     
-    private let termManager = TermManager.shared
+    private let termManager: TermManagerProtocol
+    
+    init(termManager: TermManagerProtocol = TermManager.shared) {
+        self.termManager = termManager
+    }
     
     @MainActor
     func populateLatestTerm() async {
