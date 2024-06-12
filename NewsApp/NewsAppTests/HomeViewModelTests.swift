@@ -81,4 +81,105 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertEqual(errorMessage, "Sorry, something wrong. error: The operation couldn’t be completed. (NewsApp.AuthError error 1.)")
         // swiftlint:disable:previous line_length
     }
+
+    // MARK: - toggleBookmark(articleIndex: Int) async
+    func test_指定したインデックスの記事が非ブックマーク状態であればブックマークされた状態になること() {
+        let sut = HomeViewModel(
+            articleManager: MockArticleManagerVarid(),
+            bookmarkManager: MockBookmarkManager(),
+            accountManager: MockAccountManager()
+        )
+        
+        // ダミーユーザ作成
+        let email = "hello@example.com"
+        let password = "password"
+        let displayName = "testuser"
+
+        let expectation1 = XCTestExpectation()
+        Task {
+            do {
+                try await sut.accountManager.signUp(email: email, password: password, displayName: displayName)
+                expectation1.fulfill()
+                print("signUp completed.")
+            } catch {
+                print(error)
+            }
+        }
+        wait(for: [expectation1], timeout: 5.0)
+        XCTAssertNotNil(sut.accountManager.user)
+
+        // ダミー記事登録
+        let expectation2 = XCTestExpectation()
+        Task {
+            await sut.populateArticles()
+            expectation2.fulfill()
+        }
+        
+        wait(for: [expectation2], timeout: 5.0)
+        XCTAssertGreaterThan(sut.articles.count, 0)
+        let articleIndex = 0
+        sut.articles[articleIndex].bookmarked = false
+        
+        // テスト
+        let expectation3 = XCTestExpectation()
+        Task {
+            await sut.toggleBookmark(articleIndex: articleIndex)
+            expectation3.fulfill()
+        }
+        
+        wait(for: [expectation3], timeout: 5.0)
+        XCTAssertTrue(sut.articles[articleIndex].bookmarked)
+        XCTAssertNotNil(sut.articles[articleIndex].documentId)
+        XCTAssertNotNil(sut.articles[articleIndex].bookmarkedAt)
+    }
+    
+    func test_指定したインデックスの記事がブックマーク済み状態であれば非ブックマーク状態になること() {
+        let sut = HomeViewModel(
+            articleManager: MockArticleManagerVarid(),
+            bookmarkManager: MockBookmarkManager(),
+            accountManager: MockAccountManager()
+        )
+        
+        // ダミーユーザ作成
+        let email = "hello@example.com"
+        let password = "password"
+        let displayName = "testuser"
+
+        let expectation1 = XCTestExpectation()
+        Task {
+            do {
+                try await sut.accountManager.signUp(email: email, password: password, displayName: displayName)
+                expectation1.fulfill()
+                print("signUp completed.")
+            } catch {
+                print(error)
+            }
+        }
+        wait(for: [expectation1], timeout: 5.0)
+        XCTAssertNotNil(sut.accountManager.user)
+
+        // ダミー記事登録
+        let expectation2 = XCTestExpectation()
+        Task {
+            await sut.populateArticles()
+            expectation2.fulfill()
+        }
+        
+        wait(for: [expectation2], timeout: 5.0)
+        XCTAssertGreaterThan(sut.articles.count, 0)
+        let articleIndex = 0
+        sut.articles[articleIndex].bookmarked = true
+        
+        // テスト
+        let expectation3 = XCTestExpectation()
+        Task {
+            await sut.toggleBookmark(articleIndex: articleIndex)
+            expectation3.fulfill()
+        }
+        
+        wait(for: [expectation3], timeout: 5.0)
+        XCTAssertFalse(sut.articles[articleIndex].bookmarked)
+        XCTAssertNil(sut.articles[articleIndex].documentId)
+        XCTAssertNil(sut.articles[articleIndex].bookmarkedAt)
+    }
 }

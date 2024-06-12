@@ -51,7 +51,8 @@ struct HomeView: View {
                         }
                     }
                     List {
-                        ForEach(homeViewModel.articles, id: \.self) { article in
+                        ForEach(homeViewModel.articles.indices, id: \.self) { index in
+                            let article = homeViewModel.articles[index]
                             Link(destination: URL(string: article.url)!) {
                                 VStack {
                                     HStack {
@@ -59,12 +60,19 @@ struct HomeView: View {
                                         Spacer()
                                         Text(article.publishedAt)
                                     }
-                                    AsyncImage(url: URL(string: article.urlToImage)) { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 300, height: 200)
-                                    } placeholder: {
+                                    if let imageUrl = article.urlToImage {
+                                        AsyncImage(url: URL(string: imageUrl)) { image in
+                                            image
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 300, height: 200)
+                                        } placeholder: {
+                                            Image(systemName: "photo.fill")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 300, height: 200)
+                                        }
+                                    } else {
                                         Image(systemName: "photo.fill")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
@@ -72,7 +80,12 @@ struct HomeView: View {
                                     }
                                     HStack {
                                         Spacer()
-                                        Image(systemName: "bookmark.fill")
+                                        Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
+                                            .onTapGesture {
+                                                Task {
+                                                    await bookmarkTapped(articleIndex: index)
+                                                }
+                                            }
                                     }
                                     
                                     Text(article.title)
@@ -132,6 +145,10 @@ struct HomeView: View {
                 isShowingErrorAlert = true
             }
         })
+    }
+    
+    private func bookmarkTapped(articleIndex: Int) async {
+        await homeViewModel.toggleBookmark(articleIndex: articleIndex)
     }
 }
 

@@ -7,68 +7,22 @@
 
 import Foundation
 
-struct ArticleResponse: Decodable {
-    let status: String
-    let totalResults: Int
-    let articles: [Article]
-    
-    enum CodingKeys: String, CodingKey {
-        case status, totalResults, articles
-    }
-    
-    init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.status = try container.decode(String.self, forKey: .status)
-        self.totalResults = try container.decode(Int.self, forKey: .totalResults)
-        var articlesArrayForType = try container.nestedUnkeyedContainer(forKey: .articles)
-        var articles = [Article]()
-        
-        while !articlesArrayForType.isAtEnd {
-            if let article = try? articlesArrayForType.decode(Article.self) {
-                articles.append(article)
-            } else {
-                continue
-            }
-        }
-        
-        self.articles = articles
-    }
-}
-
-struct Article: Decodable, Hashable {
-    let source: ArticleSource
-    let author: String?
-    let title: String
-    let description: String?
-    let url: String
-    let urlToImage: String
-    let publishedAt: String
-}
-
-struct ArticleSource: Decodable, Hashable {
-    let name: String
-}
-
-protocol ArticleManagerProtocol {
-    func getGeneralArticles() async throws -> [Article]
-}
-
-enum NetworkError: String, Error {
-    case invalidResponse
-    case invalidData
-    case failedInJSONSerialization
-    case invalidAPIKey
-}
-
 final class HomeViewModel: ObservableObject {
     @Published var articles: [Article] = []
     
     @Published var errorMessage: String?
     
     let articleManager: ArticleManagerProtocol
+    let bookmarkManager: BookmarkManagerProtocol
+    let accountManager: AccountProtocol
     
-    init(articleManager: ArticleManagerProtocol = ArticleManager.shared) {
+    init(articleManager: ArticleManagerProtocol = ArticleManager.shared,
+         bookmarkManager: BookmarkManagerProtocol = BookmarkManager.shared,
+         accountManager: AccountProtocol = AccountManager.shared
+    ) {
         self.articleManager = articleManager
+        self.bookmarkManager = bookmarkManager
+        self.accountManager = accountManager
     }
     
     @MainActor
@@ -82,6 +36,40 @@ final class HomeViewModel: ObservableObject {
             } else {
                 self.errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
             }
+        }
+    }
+    
+    @MainActor
+    func toggleBookmark(articleIndex: Int) async {
+        articles[articleIndex].toggleBookmark()
+        let toggledArticle = articles[articleIndex]
+        guard let currentUser = accountManager.user else {
+            return
+        }
+        
+        do {
+            if toggledArticle.bookmarked {
+                guard let updatedArticle = try await bookmarkManager.addBookmark(
+                    article: toggledArticle,
+                    uid: currentUser.uid
+                )
+                else {
+                    return
+                }
+                
+                articles[articleIndex] = updatedArticle
+            } else {
+                guard let updatedArticle = try await bookmarkManager.removeBookmark(
+                    article: toggledArticle,
+                    uid: currentUser.uid
+                )
+                else {
+                    return
+                }
+                articles[articleIndex] = updatedArticle
+            }
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
 }

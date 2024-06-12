@@ -13,4 +13,5 @@ protocol AccountProtocol: AnyObject {
     func signOut() throws
     
     var isSignedIn: Bool { get }
+    var user: UserAccount? { get set }
 }
