@@ -14,6 +14,10 @@ final class DrawerViewModel: ObservableObject {
         self.accountManager = accountManager
     }
     
+    var sidnedInUser: UserAccount? {
+        return accountManager.user
+    }
+    
     func signOut() {
         do {
             try accountManager.signOut()

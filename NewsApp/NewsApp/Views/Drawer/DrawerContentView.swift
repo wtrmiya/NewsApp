@@ -11,8 +11,10 @@ struct DrawerContentView: View {
     @State private var isShowingSettingsView: Bool = false
     @State private var isShowingTermView: Bool = false
     @State private var isShowingLicenseListView: Bool = false
+    @State private var isShowingSignUpView: Bool = false
+    @State private var isShowingSignInView: Bool = false
     @State private var isShowingSignOutAlert: Bool = false
-    
+
     @StateObject private var drawerViewModel: DrawerViewModel = DrawerViewModel()
     
     @Binding var isShowing: Bool
@@ -20,9 +22,24 @@ struct DrawerContentView: View {
 
     var body: some View {
         VStack {
-            HStack {
-                Text("Yamada Tarou")
-                Spacer()
+            if let user = drawerViewModel.sidnedInUser {
+                HStack {
+                    Text(user.displayName)
+                    Spacer()
+                }
+            } else {
+                HStack {
+                    Button(action: {
+                        isShowingSignUpView = true
+                    }, label: {
+                        Text("Sign Up")
+                    })
+                    Button(action: {
+                        isShowingSignInView = true
+                    }, label: {
+                        Text("Sign In")
+                    })
+                }
             }
             
             Spacer()
@@ -93,6 +110,12 @@ struct DrawerContentView: View {
         }
         .fullScreenCover(isPresented: $isShowingLicenseListView) {
             LicenseListView(isShowing: $isShowingLicenseListView)
+        }
+        .fullScreenCover(isPresented: $isShowingSignUpView) {
+            SignUpView()
+        }
+        .fullScreenCover(isPresented: $isShowingSignInView) {
+            SignInView()
         }
         .alert("現在サインイン中です\nサインアウトしますか", isPresented: $isShowingSignOutAlert) {
             Button(role: .cancel, action: {
