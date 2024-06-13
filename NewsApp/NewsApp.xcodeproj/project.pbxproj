@@ -29,6 +29,7 @@
 		863F1CFA2C1A640B00EBF185 /* TermManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F1CF92C1A640B00EBF185 /* TermManagerProtocol.swift */; };
 		863F1CFC2C1A649C00EBF185 /* MockTermManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F1CFB2C1A649C00EBF185 /* MockTermManager.swift */; };
 		863F1CFE2C1A665F00EBF185 /* TermViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F1CFD2C1A665F00EBF185 /* TermViewModelTests.swift */; };
+		863F1D012C1A792B00EBF185 /* LicenseList in Frameworks */ = {isa = PBXBuildFile; productRef = 863F1D002C1A792B00EBF185 /* LicenseList */; };
 		863F20D72C15756800186A4C /* BookmarkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F20D62C15756800186A4C /* BookmarkViewModel.swift */; };
 		865407F02C1152540034055A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 865407EF2C1152540034055A /* FirebaseAuth */; };
 		865407F22C1152540034055A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F12C1152540034055A /* FirebaseFirestore */; };
@@ -46,8 +47,7 @@
 		86748B382C106107004312AB /* DrawerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B372C106107004312AB /* DrawerContentView.swift */; };
 		86748B3B2C10612C004312AB /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B3A2C10612C004312AB /* SearchView.swift */; };
 		86748B3E2C106155004312AB /* TermView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B3D2C106155004312AB /* TermView.swift */; };
-		86748B412C106173004312AB /* LicenseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B402C106173004312AB /* LicenseListView.swift */; };
-		86748B432C106192004312AB /* LicenseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B422C106192004312AB /* LicenseDetailView.swift */; };
+		86748B412C106173004312AB /* LicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B402C106173004312AB /* LicenseView.swift */; };
 		86748B462C1061BF004312AB /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B452C1061BF004312AB /* SignUpView.swift */; };
 		86748B492C1061F0004312AB /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B482C1061F0004312AB /* SignInView.swift */; };
 		86748B4C2C106224004312AB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B4B2C106224004312AB /* SettingsView.swift */; };
@@ -121,8 +121,7 @@
 		86748B372C106107004312AB /* DrawerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerContentView.swift; sourceTree = "<group>"; };
 		86748B3A2C10612C004312AB /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		86748B3D2C106155004312AB /* TermView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermView.swift; sourceTree = "<group>"; };
-		86748B402C106173004312AB /* LicenseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseListView.swift; sourceTree = "<group>"; };
-		86748B422C106192004312AB /* LicenseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseDetailView.swift; sourceTree = "<group>"; };
+		86748B402C106173004312AB /* LicenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseView.swift; sourceTree = "<group>"; };
 		86748B452C1061BF004312AB /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		86748B482C1061F0004312AB /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		86748B4B2C106224004312AB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -150,6 +149,7 @@
 			files = (
 				865407F02C1152540034055A /* FirebaseAuth in Frameworks */,
 				865407F22C1152540034055A /* FirebaseFirestore in Frameworks */,
+				863F1D012C1A792B00EBF185 /* LicenseList in Frameworks */,
 				865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -377,8 +377,7 @@
 		86748B3F2C106166004312AB /* LIcense */ = {
 			isa = PBXGroup;
 			children = (
-				86748B402C106173004312AB /* LicenseListView.swift */,
-				86748B422C106192004312AB /* LicenseDetailView.swift */,
+				86748B402C106173004312AB /* LicenseView.swift */,
 			);
 			path = LIcense;
 			sourceTree = "<group>";
@@ -479,6 +478,7 @@
 				865407EF2C1152540034055A /* FirebaseAuth */,
 				865407F12C1152540034055A /* FirebaseFirestore */,
 				865407F32C1152540034055A /* FirebaseFirestoreSwift */,
+				863F1D002C1A792B00EBF185 /* LicenseList */,
 			);
 			productName = NewsApp;
 			productReference = 86119AF92C0FD8090067DC64 /* NewsApp.app */;
@@ -532,6 +532,7 @@
 			mainGroup = 86119AF02C0FD8090067DC64;
 			packageReferences = (
 				865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */,
 			);
 			productRefGroup = 86119AFA2C0FD8090067DC64 /* Products */;
 			projectDirPath = "";
@@ -630,7 +631,7 @@
 				863F1CF62C1A5D2300EBF185 /* TermManager.swift in Sources */,
 				86748B4F2C106248004312AB /* PushNotificationSettingsView.swift in Sources */,
 				869161C22C16D07900454D12 /* AccountInfoUpdateCompletionView.swift in Sources */,
-				86748B412C106173004312AB /* LicenseListView.swift in Sources */,
+				86748B412C106173004312AB /* LicenseView.swift in Sources */,
 				86748B582C1062EE004312AB /* AccountSettingsView.swift in Sources */,
 				865C0CF82C19718E00A091E4 /* MockBookmarkManager.swift in Sources */,
 				862F1D672C18D5270013DE91 /* NetworkError.swift in Sources */,
@@ -644,7 +645,6 @@
 				86748B492C1061F0004312AB /* SignInView.swift in Sources */,
 				86027CF32C1810E3006CD41B /* APIKeyManager.swift in Sources */,
 				865408352C129B800034055A /* AccountProtocol.swift in Sources */,
-				86748B432C106192004312AB /* LicenseDetailView.swift in Sources */,
 				86748B3E2C106155004312AB /* TermView.swift in Sources */,
 				865408302C1195FF0034055A /* AccountManager.swift in Sources */,
 				869161BA2C166DA700454D12 /* DebugView.swift in Sources */,
@@ -1377,6 +1377,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cybozu/LicenseList";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.7.0;
+			};
+		};
 		865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -1388,6 +1396,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		863F1D002C1A792B00EBF185 /* LicenseList */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */;
+			productName = LicenseList;
+		};
 		865407EF2C1152540034055A /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

@@ -6,26 +6,14 @@
 //
 
 import SwiftUI
+import LicenseList
 
-struct LicenseListView: View {
-    let dummyLicenses = [
-        "xxxLibrary",
-        "yyyLibrary"
-    ]
-    
+struct LicenseView: View {
     @Binding var isShowing: Bool
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(dummyLicenses, id: \.self) { license in
-                    NavigationLink {
-                        LicenseDetailView(isShowing: $isShowing)
-                    } label: {
-                        Text(license)
-                    }
-                }
-            }
+            LicenseListView()
             .navigationTitle("License")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -42,5 +30,5 @@ struct LicenseListView: View {
 }
 
 #Preview {
-    LicenseListView(isShowing: .constant(true))
+    LicenseView(isShowing: .constant(true))
 }
