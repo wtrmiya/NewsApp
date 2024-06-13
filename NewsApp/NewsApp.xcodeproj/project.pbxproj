@@ -31,6 +31,7 @@
 		863F1CFE2C1A665F00EBF185 /* TermViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F1CFD2C1A665F00EBF185 /* TermViewModelTests.swift */; };
 		863F1D012C1A792B00EBF185 /* LicenseList in Frameworks */ = {isa = PBXBuildFile; productRef = 863F1D002C1A792B00EBF185 /* LicenseList */; };
 		863F20D72C15756800186A4C /* BookmarkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F20D62C15756800186A4C /* BookmarkViewModel.swift */; };
+		864CCE302C1B9141006D2B5B /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864CCE2F2C1B9141006D2B5B /* UserSettings.swift */; };
 		865407F02C1152540034055A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 865407EF2C1152540034055A /* FirebaseAuth */; };
 		865407F22C1152540034055A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F12C1152540034055A /* FirebaseFirestore */; };
 		865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F32C1152540034055A /* FirebaseFirestoreSwift */; };
@@ -108,6 +109,7 @@
 		863F1CFB2C1A649C00EBF185 /* MockTermManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTermManager.swift; sourceTree = "<group>"; };
 		863F1CFD2C1A665F00EBF185 /* TermViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermViewModelTests.swift; sourceTree = "<group>"; };
 		863F20D62C15756800186A4C /* BookmarkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkViewModel.swift; sourceTree = "<group>"; };
+		864CCE2F2C1B9141006D2B5B /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		8654082F2C1195FF0034055A /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		865408312C11C9280034055A /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		865408342C129B800034055A /* AccountProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProtocol.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 				862F1D632C18D4C60013DE91 /* Article.swift */,
 				865C0CF52C196A3000A091E4 /* UserAccount.swift */,
 				863F1CF72C1A5D9400EBF185 /* Term.swift */,
+				864CCE2F2C1B9141006D2B5B /* UserSettings.swift */,
 				862F1D652C18D5160013DE91 /* Errors */,
 			);
 			path = Models;
@@ -630,6 +633,7 @@
 				86E7D4C02C12EEF900F56485 /* AuthError.swift in Sources */,
 				863F1CF62C1A5D2300EBF185 /* TermManager.swift in Sources */,
 				86748B4F2C106248004312AB /* PushNotificationSettingsView.swift in Sources */,
+				864CCE302C1B9141006D2B5B /* UserSettings.swift in Sources */,
 				869161C22C16D07900454D12 /* AccountInfoUpdateCompletionView.swift in Sources */,
 				86748B412C106173004312AB /* LicenseView.swift in Sources */,
 				86748B582C1062EE004312AB /* AccountSettingsView.swift in Sources */,
