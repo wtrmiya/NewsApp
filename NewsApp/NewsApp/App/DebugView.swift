@@ -22,15 +22,7 @@ struct DebugView: View {
                 Text("Password: \(password)")
                 Button(action: {
                     Task {
-                        do {
-                            try await AccountManager.shared.signUp(
-                                email: email,
-                                password: password,
-                                displayName: displayName
-                            )
-                        } catch {
-                            print(error)
-                        }
+                        await signUp()
                     }
                 }, label: {
                     Text("Sign Up")
@@ -74,6 +66,21 @@ struct DebugView: View {
             return "サインイン中"
         } else {
             return "サインアウト中"
+        }
+    }
+    
+    private func signUp() async {
+        do {
+            try await AccountManager.shared.signUp(
+                email: email,
+                password: password,
+                displayName: displayName
+            )
+            guard let user = AccountManager.shared.user
+            else { return }
+            try await UserSettingsManager.shared.registerDefaultUserSettings(uid: user.uid)
+        } catch {
+            print(error)
         }
     }
 }

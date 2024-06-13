@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct UserSettings: Decodable {
+struct UserSettings {
     let uid: String
     let pushMorningEnabled: Bool
     let pushAfternoonEnabled: Bool
@@ -18,6 +18,17 @@ struct UserSettings: Decodable {
 }
 
 extension UserSettings {
+    static func defaultSettings(uid: String) -> UserSettings {
+        return UserSettings(
+            uid: uid,
+            pushMorningEnabled: true,
+            pushAfternoonEnabled: true,
+            pushEveningEnabled: true,
+            createdAt: Date(),
+            updatedAt: Date()
+        )
+    }
+    
     func toDictionary() -> [String: Any] {
         return [
             "uid": uid,
