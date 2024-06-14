@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 final class AppDependencyContainer: ObservableObject {
     private let sharedAccountManager: AccountProtocol
@@ -25,7 +26,7 @@ final class AppDependencyContainer: ObservableObject {
     }
     
     func makeHomeView() -> HomeView {
-        HomeView(homeViewModel: makeHomeViewModel())
+        return HomeView(homeViewModel: makeHomeViewModel())
     }
     
     func makeHomeViewModel() -> HomeViewModel {
@@ -37,7 +38,7 @@ final class AppDependencyContainer: ObservableObject {
     }
     
     func makeBookmarkView() -> BookmarkView {
-        BookmarkView(bookmarkViewModel: makeBookmarkViewModel())
+        return BookmarkView(bookmarkViewModel: makeBookmarkViewModel())
     }
     
     func makeBookmarkViewModel() -> BookmarkViewModel {
@@ -45,5 +46,16 @@ final class AppDependencyContainer: ObservableObject {
             accountManager: sharedAccountManager,
             bookmarkManager: BookmarkManager.shared
         )
+    }
+    
+    func makeDrawerContentView(isShowing: Binding<Bool>) -> DrawerContentView {
+        return DrawerContentView(
+            isShowing: isShowing,
+            drawerViewModel: makeDrawerViewModel()
+        )
+    }
+    
+    func makeDrawerViewModel() -> DrawerViewModel {
+        return DrawerViewModel(accountManager: sharedAccountManager)
     }
 }

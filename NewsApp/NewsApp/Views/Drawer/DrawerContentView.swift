@@ -15,10 +15,15 @@ struct DrawerContentView: View {
     @State private var isShowingSignInView: Bool = false
     @State private var isShowingSignOutAlert: Bool = false
 
-    @StateObject private var drawerViewModel: DrawerViewModel = DrawerViewModel()
+    @ObservedObject private var drawerViewModel: DrawerViewModel
     
     @Binding var isShowing: Bool
     @Environment(\.dismiss) private var dismiss
+    
+    init(isShowing: Binding<Bool>, drawerViewModel: DrawerViewModel) {
+        self._isShowing = isShowing
+        self.drawerViewModel = drawerViewModel
+    }
 
     var body: some View {
         VStack {
@@ -134,5 +139,6 @@ struct DrawerContentView: View {
 }
 
 #Preview {
-    DrawerContentView(isShowing: .constant(true))
+    let appDC = AppDependencyContainer()
+    return appDC.makeDrawerContentView(isShowing: .constant(true))
 }

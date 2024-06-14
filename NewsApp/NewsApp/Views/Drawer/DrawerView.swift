@@ -12,6 +12,8 @@ struct DrawerView: View {
     @State private var opacity: CGFloat = 0.0
     @State private var offsetX: CGFloat = -250
     
+    @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
+    
     private let openingDuration: CGFloat = 0.2
     private let closingDuration: CGFloat = 0.1
     private let drawerWidth: CGFloat = 250
@@ -32,7 +34,7 @@ struct DrawerView: View {
                     }
                 
                 ZStack(alignment: .topLeading) {
-                    DrawerContentView(isShowing: $isShowing)
+                    appDependencyContainer.makeDrawerContentView(isShowing: $isShowing)
                         .frame(width: drawerWidth)
                         .background(.white)
                     HStack {
