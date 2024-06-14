@@ -29,10 +29,13 @@ struct HomeView: View {
     
     @State private var isShowingSearchView: Bool = false
     @State private var isShowingDrawer: Bool = false
-    
-    @StateObject private var homeViewModel: HomeViewModel = HomeViewModel()
-    
     @State private var isShowingErrorAlert: Bool = false
+
+    @ObservedObject private var homeViewModel: HomeViewModel
+    
+    init(homeViewModel: HomeViewModel) {
+        self.homeViewModel = homeViewModel
+    }
     
     var body: some View {
         ZStack {
@@ -153,5 +156,6 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    let appDependencyContainer = AppDependencyContainer()
+    return appDependencyContainer.makeHomeView()
 }
