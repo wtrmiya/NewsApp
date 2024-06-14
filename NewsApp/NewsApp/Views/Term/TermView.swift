@@ -9,7 +9,13 @@ import SwiftUI
 
 struct TermView: View {
     @Binding var isShowing: Bool
-    @StateObject private var termViewModel = TermViewModel()
+    @ObservedObject private var termViewModel: TermViewModel
+    
+    init(isShowing: Binding<Bool>, termViewModel: TermViewModel) {
+        self._isShowing = isShowing
+        self.termViewModel = termViewModel
+    }
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
@@ -43,5 +49,6 @@ struct TermView: View {
 }
 
 #Preview {
-    TermView(isShowing: .constant(true))
+    let appDC = AppDependencyContainer()
+    return appDC.makeTermView(isShowing: .constant(true))
 }

@@ -13,16 +13,20 @@ final class AppDependencyContainer: ObservableObject {
     private let sharedUserSettingsManager: UserSettingsManagerProtocol
     
     init() {
-        self.sharedAccountManager = makeAccountManager()
-        self.sharedUserSettingsManager = UserSettingsManager.shared
-        
-        func makeAccountManager() -> AccountProtocol {
-            return AccountManager.shared
+        let accountManager = AccountManager.shared
+        let userSettingsManager = UserSettingsManager.shared
+        if let user = accountManager.user {
+            Task {
+                do {
+                    try await userSettingsManager.getCurrentUserSettings(uid: user.uid)
+                } catch {
+                    print(error)
+                }
+            }
         }
         
-        func makeUserSettingsManager() -> UserSettingsManagerProtocol {
-            return UserSettingsManager.shared
-        }
+        self.sharedAccountManager = accountManager
+        self.sharedUserSettingsManager = userSettingsManager
     }
     
     func makeHomeView() -> HomeView {
@@ -57,5 +61,30 @@ final class AppDependencyContainer: ObservableObject {
     
     func makeDrawerViewModel() -> DrawerViewModel {
         return DrawerViewModel(accountManager: sharedAccountManager)
+    }
+    
+    func makeTermView(isShowing: Binding<Bool>) -> TermView {
+        return TermView(
+            isShowing: isShowing,
+            termViewModel: makeTermViewModel()
+        )
+    }
+    
+    func makeTermViewModel() -> TermViewModel {
+        return TermViewModel(termManager: TermManager.shared)
+    }
+    
+    func makePushNotificationSettingsView(isShowing: Binding<Bool>) -> PushNotificationSettingsView {
+        return PushNotificationSettingsView(
+            isShowing: isShowing,
+            settingsViewModel: makeSettingsViewModel()
+        )
+    }
+    
+    func makeSettingsViewModel() -> SettingsViewModel {
+        return SettingsViewModel(
+            accountManager: sharedAccountManager,
+            userSettingsManager: sharedUserSettingsManager
+        )
     }
 }

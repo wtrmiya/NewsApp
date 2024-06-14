@@ -10,11 +10,11 @@ import FirebaseFirestore
 
 struct UserSettings {
     let uid: String
-    let pushMorningEnabled: Bool
-    let pushAfternoonEnabled: Bool
-    let pushEveningEnabled: Bool
+    var pushMorningEnabled: Bool
+    var pushAfternoonEnabled: Bool
+    var pushEveningEnabled: Bool
     let createdAt: Date
-    let updatedAt: Date
+    var updatedAt: Date
 }
 
 extension UserSettings {
@@ -29,6 +29,17 @@ extension UserSettings {
         )
     }
     
+    static func defaultSettingsWithDummyUID() -> UserSettings {
+        return UserSettings(
+            uid: UUID().uuidString,
+            pushMorningEnabled: true,
+            pushAfternoonEnabled: true,
+            pushEveningEnabled: true,
+            createdAt: Date(),
+            updatedAt: Date()
+        )
+    }
+
     func toDictionary() -> [String: Any] {
         return [
             "uid": uid,

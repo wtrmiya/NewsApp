@@ -12,17 +12,28 @@ import FirebaseFirestoreSwift
 final class UserSettingsManager {
     static let shared = UserSettingsManager()
     private init() {}
-    
-    private var currentUserSettings: UserSettings?
+    private var userSettings: UserSettings? {
+        didSet {
+            print(userSettings.debugDescription)
+        }
+    }
 }
 
 extension UserSettingsManager: UserSettingsManagerProtocol {
+    var currentUserSettings: UserSettings {
+        if let userSettings {
+            return userSettings
+        } else {
+            return UserSettings.defaultSettingsWithDummyUID()
+        }
+    }
+
     func registerDefaultUserSettings(uid: String) async throws {
         let firestoreDB = Firestore.firestore()
         let defaultSettings = UserSettings.defaultSettings(uid: uid)
         let defaultSettingsDict = defaultSettings.toDictionary()
         try await firestoreDB.collection("user_settings").addDocument(data: defaultSettingsDict)
-        self.currentUserSettings = defaultSettings
+        self.userSettings = defaultSettings
     }
     
     func getCurrentUserSettings(uid: String) async throws {
@@ -30,10 +41,13 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
         guard let snapshot = try await firestoreDB.collection("user_settings")
             .whereField("uid", isEqualTo: uid)
             .getDocuments().documents.first
-        else { return }
+        else {
+            print("\(#function) #1")
+            return
+        }
         
         let currentUserSettings = UserSettings.fromSnapshot(snapshot: snapshot)
-        return self.currentUserSettings = currentUserSettings
+        self.userSettings = currentUserSettings
     }
     
     func updateUserSettings(by updatedUserSettings: UserSettings) async throws {
@@ -48,6 +62,6 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
     }
     
     func removeCurrentUserSettings() {
-        self.currentUserSettings = nil
+        self.userSettings = nil
     }
 }

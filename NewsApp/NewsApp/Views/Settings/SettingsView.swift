@@ -9,12 +9,14 @@ import SwiftUI
 
 struct SettingsView: View {
     @Binding var isShowing: Bool
+    @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
+    
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     NavigationLink {
-                        PushNotificationSettingsView(isShowing: $isShowing)
+                        appDependencyContainer.makePushNotificationSettingsView(isShowing: $isShowing)
                     } label: {
                         HStack {
                             Text("PUSH通知の設定")

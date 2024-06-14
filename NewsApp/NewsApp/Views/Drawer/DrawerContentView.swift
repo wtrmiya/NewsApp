@@ -19,6 +19,7 @@ struct DrawerContentView: View {
     
     @Binding var isShowing: Bool
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
     init(isShowing: Binding<Bool>, drawerViewModel: DrawerViewModel) {
         self._isShowing = isShowing
@@ -111,7 +112,7 @@ struct DrawerContentView: View {
             SettingsView(isShowing: $isShowingSettingsView)
         }
         .fullScreenCover(isPresented: $isShowingTermView) {
-            TermView(isShowing: $isShowingTermView)
+            appDependencyContainer.makeTermView(isShowing: $isShowingTermView)
         }
         .fullScreenCover(isPresented: $isShowingLicenseListView) {
             LicenseView(isShowing: $isShowingLicenseListView)
