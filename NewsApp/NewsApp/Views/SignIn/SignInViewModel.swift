@@ -15,7 +15,8 @@ final class SignInViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let accountManager: AccountProtocol
-    
+    private let userSettingsManager = UserSettingsManager.shared
+
     init(accountManager: AccountProtocol = AccountManager.shared) {
         self.accountManager = accountManager
     }
@@ -23,6 +24,8 @@ final class SignInViewModel: ObservableObject {
     func signIn() async {
         do {
             try await accountManager.signIn(email: email, password: password)
+            guard let user = accountManager.user else { return }
+            try await userSettingsManager.getCurrentUserSettings(uid: user.uid)
         } catch {
             if let error = error as? AuthError {
                 switch error {
