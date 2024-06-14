@@ -27,7 +27,7 @@ struct SettingsView: View {
                         HStack {
                             Text("PUSH通知の設定")
                             Spacer()
-                            Text("受け取る")
+                            Text(settingsViewModel.userSettings.pushSettingsDescription)
                         }
                     }
                 } header: {

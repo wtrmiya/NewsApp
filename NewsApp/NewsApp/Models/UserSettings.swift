@@ -39,6 +39,14 @@ extension UserSettings {
             updatedAt: Date()
         )
     }
+    
+    var pushSettingsDescription: String {
+        if !pushMorningEnabled && !pushAfternoonEnabled && !pushEveningEnabled {
+            return "許可しない"
+        } else {
+            return "許可する"
+        }
+    }
 
     func toDictionary() -> [String: Any] {
         return [
