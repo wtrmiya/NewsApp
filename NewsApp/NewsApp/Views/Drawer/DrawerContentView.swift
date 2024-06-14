@@ -109,7 +109,7 @@ struct DrawerContentView: View {
         }
         .padding()
         .fullScreenCover(isPresented: $isShowingSettingsView) {
-            SettingsView(isShowing: $isShowingSettingsView)
+            appDependencyContainer.makeSettingsView(isShowing: $isShowingSettingsView)
         }
         .fullScreenCover(isPresented: $isShowingTermView) {
             appDependencyContainer.makeTermView(isShowing: $isShowingTermView)

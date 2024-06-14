@@ -74,6 +74,13 @@ final class AppDependencyContainer: ObservableObject {
         return TermViewModel(termManager: TermManager.shared)
     }
     
+    func makeSettingsView(isShowing: Binding<Bool>) -> SettingsView {
+        return SettingsView(
+            isShowing: isShowing,
+            settingsViewModel: makeSettingsViewModel()
+        )
+    }
+    
     func makePushNotificationSettingsView(isShowing: Binding<Bool>) -> PushNotificationSettingsView {
         return PushNotificationSettingsView(
             isShowing: isShowing,

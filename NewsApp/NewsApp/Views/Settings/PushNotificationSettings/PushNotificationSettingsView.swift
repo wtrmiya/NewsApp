@@ -33,6 +33,9 @@ struct PushNotificationSettingsView: View {
                 })
             }
         }
+        .task {
+            await settingsViewModel.populateUserSettings()
+        }
     }
 }
 
