@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     var body: some View {
         TabView {
-            HomeView()
+            appDependencyContainer.makeHomeView()
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
                 }
-            BookmarkView()
+            appDependencyContainer.makeBookmarkView()
                 .tabItem {
                     Label("Bookmark", systemImage: "bookmark.fill")
                 }

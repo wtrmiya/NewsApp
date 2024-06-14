@@ -11,9 +11,12 @@ import SwiftUI
 struct NewsAppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
+    @StateObject private var appDependencyContainer: AppDependencyContainer = AppDependencyContainer()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(appDependencyContainer)
         }
     }
 }

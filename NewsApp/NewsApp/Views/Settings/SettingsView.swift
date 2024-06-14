@@ -9,17 +9,25 @@ import SwiftUI
 
 struct SettingsView: View {
     @Binding var isShowing: Bool
+    @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+    
+    init(isShowing: Binding<Bool>, settingsViewModel: SettingsViewModel) {
+        self._isShowing = isShowing
+        self.settingsViewModel = settingsViewModel
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     NavigationLink {
-                        PushNotificationSettingsView(isShowing: $isShowing)
+                        appDependencyContainer.makePushNotificationSettingsView(isShowing: $isShowing)
                     } label: {
                         HStack {
                             Text("PUSH通知の設定")
                             Spacer()
-                            Text("受け取る")
+                            Text(settingsViewModel.userSettings.pushSettingsDescription)
                         }
                     }
                 } header: {
@@ -71,9 +79,13 @@ struct SettingsView: View {
                 }
             }
         }
+        .task {
+            await settingsViewModel.populateUserSettings()
+        }
     }
 }
 
 #Preview {
-    SettingsView(isShowing: .constant(true))
+    let appDC = AppDependencyContainer()
+    return appDC.makeSettingsView(isShowing: .constant(true))
 }

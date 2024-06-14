@@ -8,17 +8,19 @@
 import SwiftUI
 
 struct PushNotificationSettingsView: View {
-    @State private var morningNewsEnabled: Bool = true
-    @State private var afternoonNewsEnabled: Bool = true
-    @State private var eveningNewsEnabled: Bool = true
-    
     @Binding var isShowing: Bool
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+    
+    init(isShowing: Binding<Bool>, settingsViewModel: SettingsViewModel) {
+        self._isShowing = isShowing
+        self.settingsViewModel = settingsViewModel
+    }
     
     var body: some View {
         List {
-            Toggle("朝のニュース", isOn: $morningNewsEnabled)
-            Toggle("昼のニュース", isOn: $afternoonNewsEnabled)
-            Toggle("夕方のニュース", isOn: $eveningNewsEnabled)
+            Toggle("朝のニュース", isOn: $settingsViewModel.userSettings.pushMorningEnabled)
+            Toggle("昼のニュース", isOn: $settingsViewModel.userSettings.pushAfternoonEnabled)
+            Toggle("夕方のニュース", isOn: $settingsViewModel.userSettings.pushEveningEnabled)
         }
         .navigationTitle("PUSH通知の設定")
         .navigationBarTitleDisplayMode(.inline)
@@ -31,11 +33,15 @@ struct PushNotificationSettingsView: View {
                 })
             }
         }
+        .task {
+            await settingsViewModel.populateUserSettings()
+        }
     }
 }
 
 #Preview {
-    NavigationStack {
-        PushNotificationSettingsView(isShowing: .constant(true))
+    let appDC = AppDependencyContainer()
+    return NavigationStack {
+        appDC.makePushNotificationSettingsView(isShowing: .constant(true))
     }
 }

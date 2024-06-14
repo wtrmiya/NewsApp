@@ -17,14 +17,20 @@ final class SignUpViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let accountManager: AccountProtocol
-    
-    init(accountManager: AccountProtocol = AccountManager.shared) {
+    private let userSettingsManager: UserSettingsManagerProtocol
+
+    init(accountManager: AccountProtocol = AccountManager.shared,
+         userSettingsManager: UserSettingsManagerProtocol = UserSettingsManager.shared
+    ) {
         self.accountManager = accountManager
+        self.userSettingsManager = userSettingsManager
     }
 
     func signUp() async {
         do {
             try await accountManager.signUp(email: email, password: password, displayName: displayName)
+            guard let user = accountManager.user else { return }
+            try await userSettingsManager.registerDefaultUserSettings(uid: user.uid)
         } catch {
             if let error = error as? AuthError {
                 switch error {
