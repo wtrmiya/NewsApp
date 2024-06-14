@@ -35,4 +35,15 @@ final class AppDependencyContainer: ObservableObject {
             accountManager: sharedAccountManager
         )
     }
+    
+    func makeBookmarkView() -> BookmarkView {
+        BookmarkView(bookmarkViewModel: makeBookmarkViewModel())
+    }
+    
+    func makeBookmarkViewModel() -> BookmarkViewModel {
+        return BookmarkViewModel(
+            accountManager: sharedAccountManager,
+            bookmarkManager: BookmarkManager.shared
+        )
+    }
 }

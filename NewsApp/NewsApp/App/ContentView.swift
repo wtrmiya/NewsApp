@@ -15,7 +15,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
                 }
-            BookmarkView()
+            appDependencyContainer.makeBookmarkView()
                 .tabItem {
                     Label("Bookmark", systemImage: "bookmark.fill")
                 }

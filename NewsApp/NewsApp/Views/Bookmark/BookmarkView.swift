@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct BookmarkView: View {
-    @StateObject private var bookmarkViewModel: BookmarkViewModel = BookmarkViewModel()
     @State private var isShowingAlert: Bool = false
     @State private var isShowingSearchView: Bool = false
     @State private var isShowingDrawer: Bool = false
+    
+    @ObservedObject private var bookmarkViewModel: BookmarkViewModel
+    
+    init(bookmarkViewModel: BookmarkViewModel) {
+        self.bookmarkViewModel = bookmarkViewModel
+    }
 
     var body: some View {
         ZStack {
@@ -100,7 +105,8 @@ struct BookmarkView: View {
 }
 
 #Preview {
-    BookmarkView()
+    let appDependencyContainer = AppDependencyContainer()
+    return appDependencyContainer.makeBookmarkView()
 }
 
 struct SuggestSignInView: View {
