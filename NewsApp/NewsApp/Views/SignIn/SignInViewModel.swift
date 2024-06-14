@@ -15,10 +15,13 @@ final class SignInViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let accountManager: AccountProtocol
-    private let userSettingsManager = UserSettingsManager.shared
+    private let userSettingsManager: UserSettingsManagerProtocol
 
-    init(accountManager: AccountProtocol = AccountManager.shared) {
+    init(accountManager: AccountProtocol = AccountManager.shared,
+         userSettingsManager: UserSettingsManagerProtocol = UserSettingsManager.shared
+    ) {
         self.accountManager = accountManager
+        self.userSettingsManager = userSettingsManager
     }
 
     func signIn() async {

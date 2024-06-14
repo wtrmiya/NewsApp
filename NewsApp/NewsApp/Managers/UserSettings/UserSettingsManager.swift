@@ -16,7 +16,7 @@ final class UserSettingsManager {
     private var currentUserSettings: UserSettings?
 }
 
-extension UserSettingsManager {
+extension UserSettingsManager: UserSettingsManagerProtocol {
     func registerDefaultUserSettings(uid: String) async throws {
         let firestoreDB = Firestore.firestore()
         let defaultSettings = UserSettings.defaultSettings(uid: uid)
