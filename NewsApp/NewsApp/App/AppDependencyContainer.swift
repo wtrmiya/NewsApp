@@ -88,6 +88,13 @@ final class AppDependencyContainer: ObservableObject {
         )
     }
     
+    func makeLetterSizeSettingsView(isShowing: Binding<Bool>) -> LetterSizeSettingsView {
+        return LetterSizeSettingsView(
+            isShowing: isShowing,
+            settingsViewModel: makeSettingsViewModel()
+        )
+    }
+
     func makeSettingsViewModel() -> SettingsViewModel {
         return SettingsViewModel(
             accountManager: sharedAccountManager,

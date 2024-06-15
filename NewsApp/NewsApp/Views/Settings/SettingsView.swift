@@ -35,12 +35,12 @@ struct SettingsView: View {
                 }
                 Section {
                     NavigationLink {
-                        LetterSizeSettingsView(isShowing: $isShowing)
+                        appDependencyContainer.makeLetterSizeSettingsView(isShowing: $isShowing)
                     } label: {
                         HStack {
                             Text("文字サイズの設定")
                             Spacer()
-                            Text("中")
+                            Text(settingsViewModel.userSettings.letterSettingsDescription)
                         }
                     }
                     NavigationLink {
