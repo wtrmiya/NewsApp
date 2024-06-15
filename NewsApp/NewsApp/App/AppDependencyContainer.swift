@@ -11,6 +11,7 @@ import SwiftUI
 final class AppDependencyContainer: ObservableObject {
     private let sharedAccountManager: AccountProtocol
     private let sharedUserSettingsManager: UserSettingsManagerProtocol
+    private let sharedAccountSettingsViewModel: AccountSettingsViewModel
     
     init() {
         let accountManager = AccountManager.shared
@@ -27,6 +28,9 @@ final class AppDependencyContainer: ObservableObject {
         
         self.sharedAccountManager = accountManager
         self.sharedUserSettingsManager = userSettingsManager
+        self.sharedAccountSettingsViewModel = AccountSettingsViewModel(
+            accountManager: sharedAccountManager
+        )
     }
     
     func makeHomeView() -> HomeView {
@@ -116,9 +120,27 @@ final class AppDependencyContainer: ObservableObject {
         )
     }
     
-    func makeAccountSettingsViewModel() -> AccountSettingsViewModel {
-        return AccountSettingsViewModel(
-            accountManager: sharedAccountManager
+    func makeAccountInfoEditingView(isShowing: Binding<Bool>) -> AccountInfoEditingView {
+        return AccountInfoEditingView(
+            isShowing: isShowing,
+            accountSettingsViewModel: makeAccountSettingsViewModel()
         )
+    }
+    
+    func makeAccountInfoConfirmingView(isShowing: Binding<Bool>) -> AccountInfoConfirmingView {
+        return AccountInfoConfirmingView(
+            isShowing: isShowing,
+            accountSettingsViewModel: makeAccountSettingsViewModel()
+        )
+    }
+    
+    func makeAccountInfoUpdateCompletionView(isShowing: Binding<Bool>) -> AccountInfoUpdateCompletionView {
+        return AccountInfoUpdateCompletionView(
+            isShowing: isShowing
+        )
+    }
+
+    func makeAccountSettingsViewModel() -> AccountSettingsViewModel {
+        return sharedAccountSettingsViewModel
     }
 }

@@ -9,13 +9,25 @@ import SwiftUI
 
 struct AccountInfoConfirmingView: View {
     @Binding var isShowing: Bool
+    @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
+    
+    @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
+    
+    init(isShowing: Binding<Bool>, accountSettingsViewModel: AccountSettingsViewModel) {
+        self._isShowing = isShowing
+        self.accountSettingsViewModel = accountSettingsViewModel
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 VStack(alignment: .leading) {
                     Text("表示名")
-                    Text("変更後: Yamada Tarou New")
+                    if let inputUserAccount = accountSettingsViewModel.inputUserAccount {
+                        Text("変更後: \(inputUserAccount.displayName)")
+                    } else {
+                        Text("変更なし")
+                    }
                 }
                 Spacer()
             }
@@ -24,7 +36,11 @@ struct AccountInfoConfirmingView: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text("Email")
-                    Text("変更後: ytaronew@example.com")
+                    if let inputUserAccount = accountSettingsViewModel.inputUserAccount {
+                        Text("変更後: \(inputUserAccount.email)")
+                    } else {
+                        Text("変更なし")
+                    }
                 }
                 Spacer()
             }
@@ -41,7 +57,7 @@ struct AccountInfoConfirmingView: View {
             HStack {
                 Spacer()
                 NavigationLink {
-                    AccountInfoUpdateCompletionView(isShowing: $isShowing)
+                    appDependencyContainer.makeAccountInfoUpdateCompletionView(isShowing: $isShowing)
                         .navigationBarBackButtonHidden()
                 } label: {
                     Text("変更を確定する")
@@ -66,7 +82,8 @@ struct AccountInfoConfirmingView: View {
 }
 
 #Preview {
-    NavigationStack {
-        AccountInfoConfirmingView(isShowing: .constant(true))
+    let appDC = AppDependencyContainer()
+    return NavigationStack {
+        appDC.makeAccountInfoConfirmingView(isShowing: .constant(true))
     }
 }

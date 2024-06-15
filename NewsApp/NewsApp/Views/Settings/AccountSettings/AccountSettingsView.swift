@@ -13,6 +13,7 @@ struct AccountSettingsView: View {
     @State private var isShowingSignOutCompletionAlert: Bool = false
     
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
+    @EnvironmentObject private var appDependenciyContainer: AppDependencyContainer
     
     init(isShowing: Binding<Bool>, accountSettingsViewModel: AccountSettingsViewModel) {
         self._isShowing = isShowing
@@ -36,7 +37,7 @@ struct AccountSettingsView: View {
                 .frame(height: 50)
             
             NavigationLink {
-                AccountInfoEditingView(isShowing: $isShowing)
+                appDependenciyContainer.makeAccountInfoEditingView(isShowing: $isShowing)
                     .navigationBarBackButtonHidden()
             } label: {
                 Text("アカウント情報の編集")

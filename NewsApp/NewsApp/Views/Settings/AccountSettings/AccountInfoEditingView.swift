@@ -14,13 +14,23 @@ struct AccountInfoEditingView: View {
     @State private var repeatedPassword: String = ""
     
     @Binding var isShowing: Bool
+    @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
+    
+    @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
+    
+    init(isShowing: Binding<Bool>, accountSettingsViewModel: AccountSettingsViewModel) {
+        self._isShowing = isShowing
+        self.accountSettingsViewModel = accountSettingsViewModel
+    }
     
     var body: some View {
         VStack {
             Form {
                 Section {
-                    Text("Yamada Tarou")
-                    Text("ytaro@example.com")
+                    if let userAccount = accountSettingsViewModel.userAccount {
+                        Text(userAccount.displayName)
+                        Text(userAccount.email)
+                    }
                 } header: {
                     Text("サインイン中のアカウント")
                 }
@@ -49,7 +59,7 @@ struct AccountInfoEditingView: View {
                 }
             }
             NavigationLink {
-                AccountInfoConfirmingView(isShowing: $isShowing)
+                appDependencyContainer.makeAccountInfoConfirmingView(isShowing: $isShowing)
             } label: {
                 Text("変更内容の確認")
             }
@@ -69,7 +79,8 @@ struct AccountInfoEditingView: View {
 }
 
 #Preview {
-    NavigationStack {
-        AccountInfoEditingView(isShowing: .constant(true))
+    let appDC = AppDependencyContainer()
+    return NavigationStack {
+        appDC.makeAccountInfoEditingView(isShowing: .constant(true))
     }
 }
