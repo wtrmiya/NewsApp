@@ -44,12 +44,12 @@ struct SettingsView: View {
                         }
                     }
                     NavigationLink {
-                        DarkModeSettingsView(isShowing: $isShowing)
+                        appDependencyContainer.makeDarkModeSettingsView(isShowing: $isShowing)
                     } label: {
                         HStack {
                             Text("ダークモードの設定")
                             Spacer()
-                            Text("端末の設定")
+                            Text(settingsViewModel.userSettings.darkModeDescription)
                         }
                     }
                 } header: {
