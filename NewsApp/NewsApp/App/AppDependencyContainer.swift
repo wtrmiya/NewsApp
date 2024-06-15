@@ -108,4 +108,17 @@ final class AppDependencyContainer: ObservableObject {
             userSettingsManager: sharedUserSettingsManager
         )
     }
+    
+    func makeAccountSettingsView(isShowing: Binding<Bool>) -> AccountSettingsView {
+        return AccountSettingsView(
+            isShowing: isShowing,
+            accountSettingsViewModel: makeAccountSettingsViewModel()
+        )
+    }
+    
+    func makeAccountSettingsViewModel() -> AccountSettingsViewModel {
+        return AccountSettingsViewModel(
+            accountManager: sharedAccountManager
+        )
+    }
 }

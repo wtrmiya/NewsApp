@@ -57,7 +57,7 @@ struct SettingsView: View {
                 }
                 Section {
                     NavigationLink {
-                        AccountSettingsView(isShowing: $isShowing)
+                        appDependencyContainer.makeAccountSettingsView(isShowing: $isShowing)
                     } label: {
                         HStack {
                             Text("アカウントの設定")
