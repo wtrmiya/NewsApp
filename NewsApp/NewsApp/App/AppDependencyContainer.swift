@@ -94,6 +94,13 @@ final class AppDependencyContainer: ObservableObject {
             settingsViewModel: makeSettingsViewModel()
         )
     }
+    
+    func makeDarkModeSettingsView(isShowing: Binding<Bool>) -> DarkModeSettingsView {
+        return DarkModeSettingsView(
+            isShowing: isShowing,
+            settingsViewModel: makeSettingsViewModel()
+        )
+    }
 
     func makeSettingsViewModel() -> SettingsViewModel {
         return SettingsViewModel(

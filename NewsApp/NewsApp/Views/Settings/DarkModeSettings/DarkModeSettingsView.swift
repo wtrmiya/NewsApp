@@ -9,10 +9,17 @@ import SwiftUI
 
 struct DarkModeSettingsView: View {
     @Binding var isShowing: Bool
+    @ObservedObject private var settingsViewModel: SettingsViewModel
     
+    init(isShowing: Binding<Bool>, settingsViewModel: SettingsViewModel) {
+        self._isShowing = isShowing
+        self.settingsViewModel = settingsViewModel
+    }
+
     var body: some View {
         VStack {
             List {
+                Text(settingsViewModel.userSettings.darkMode.description)
                 HStack {
                     Image(systemName: "checkmark.circle.fill")
                     Text("端末の設定に沿う")
@@ -38,11 +45,15 @@ struct DarkModeSettingsView: View {
                 })
             }
         }
+        .task {
+            await settingsViewModel.populateUserSettings()
+        }
     }
 }
 
 #Preview {
     NavigationStack {
-        DarkModeSettingsView(isShowing: .constant(true))
+        let appDC = AppDependencyContainer()
+        return appDC.makeDarkModeSettingsView(isShowing: .constant(true))
     }
 }
