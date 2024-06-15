@@ -10,6 +10,12 @@ import SwiftUI
 struct LetterSizeSettingsView: View {
     @Binding var isShowing: Bool
     
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+    init(isShowing: Binding<Bool>, settingsViewModel: SettingsViewModel) {
+        self._isShowing = isShowing
+        self.settingsViewModel = settingsViewModel
+    }
+
     var body: some View {
         VStack {
             Text("記事タイトルが入ります記事タイトルが入ります記事タイトルが入ります記事タイトルが入ります")
@@ -20,6 +26,7 @@ struct LetterSizeSettingsView: View {
             
             VStack {
                 Text("サイズ")
+                Text(settingsViewModel.userSettings.letterSize.description)
                 HStack {
                     Button(action: {
                         print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
@@ -40,6 +47,7 @@ struct LetterSizeSettingsView: View {
             }
             VStack {
                 Text("太さ")
+                Text(settingsViewModel.userSettings.letterWeight.description)
                 HStack {
                     Button(action: {
                         print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
@@ -65,11 +73,15 @@ struct LetterSizeSettingsView: View {
                 })
             }
         }
+        .task {
+            await settingsViewModel.populateUserSettings()
+        }
     }
 }
 
 #Preview {
     NavigationStack {
-        LetterSizeSettingsView(isShowing: .constant(true))
+        let appDC = AppDependencyContainer()
+        return appDC.makeLetterSizeSettingsView(isShowing: .constant(true))
     }
 }

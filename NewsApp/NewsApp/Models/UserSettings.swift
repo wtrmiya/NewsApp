@@ -53,6 +53,34 @@ extension UserSettings {
             return "許可する"
         }
     }
+    
+    var letterSettingsDescription: String {
+        return "\(letterSizeSettingsDescription)/\(letterWeightSettingsDescription)"
+    }
+    
+    private var letterSizeSettingsDescription: String {
+        switch letterSize {
+        case 0:
+            "小"
+        case 1:
+            "通常"
+        case 2:
+            "大"
+        default:
+            "通常"
+        }
+    }
+    
+    private var letterWeightSettingsDescription: String {
+        switch letterWeight {
+        case 0:
+            "通常"
+        case 1:
+            "太い"
+        default:
+            "通常"
+        }
+    }
 
     func toDictionary() -> [String: Any] {
         return [
