@@ -69,6 +69,7 @@
 		869161BE2C16CBC600454D12 /* AccountInfoEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161BD2C16CBC600454D12 /* AccountInfoEditingView.swift */; };
 		869161C02C16CDD100454D12 /* AccountInfoConfirmingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161BF2C16CDD100454D12 /* AccountInfoConfirmingView.swift */; };
 		869161C22C16D07900454D12 /* AccountInfoUpdateCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161C12C16D07900454D12 /* AccountInfoUpdateCompletionView.swift */; };
+		8694061C2C1D6D5E00436C96 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8694061B2C1D6D5E00436C96 /* AccountSettingsViewModel.swift */; };
 		86E7D4C02C12EEF900F56485 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4BF2C12EEF900F56485 /* AuthError.swift */; };
 		86E7D4C22C12F65000F56485 /* SignUpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4C12C12F65000F56485 /* SignUpViewModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -148,6 +149,7 @@
 		869161BD2C16CBC600454D12 /* AccountInfoEditingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoEditingView.swift; sourceTree = "<group>"; };
 		869161BF2C16CDD100454D12 /* AccountInfoConfirmingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoConfirmingView.swift; sourceTree = "<group>"; };
 		869161C12C16D07900454D12 /* AccountInfoUpdateCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoUpdateCompletionView.swift; sourceTree = "<group>"; };
+		8694061B2C1D6D5E00436C96 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		86E7D4BF2C12EEF900F56485 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		86E7D4C12C12F65000F56485 /* SignUpViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -467,6 +469,7 @@
 				869161BD2C16CBC600454D12 /* AccountInfoEditingView.swift */,
 				869161BF2C16CDD100454D12 /* AccountInfoConfirmingView.swift */,
 				869161C12C16D07900454D12 /* AccountInfoUpdateCompletionView.swift */,
+				8694061B2C1D6D5E00436C96 /* AccountSettingsViewModel.swift */,
 			);
 			path = AccountSettings;
 			sourceTree = "<group>";
@@ -658,6 +661,7 @@
 				864CCE302C1B9141006D2B5B /* UserSettings.swift in Sources */,
 				869161C22C16D07900454D12 /* AccountInfoUpdateCompletionView.swift in Sources */,
 				86748B412C106173004312AB /* LicenseView.swift in Sources */,
+				8694061C2C1D6D5E00436C96 /* AccountSettingsViewModel.swift in Sources */,
 				86748B582C1062EE004312AB /* AccountSettingsView.swift in Sources */,
 				865C0CF82C19718E00A091E4 /* MockBookmarkManager.swift in Sources */,
 				862F1D672C18D5270013DE91 /* NetworkError.swift in Sources */,

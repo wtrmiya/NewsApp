@@ -10,6 +10,10 @@ import SwiftUI
 struct AccountInfoUpdateCompletionView: View {
     @Binding var isShowing: Bool
     
+    init(isShowing: Binding<Bool>) {
+        self._isShowing = isShowing
+    }
+    
     var body: some View {
         VStack {
             Text("アカウント情報を更新しました。")
@@ -37,7 +41,8 @@ struct AccountInfoUpdateCompletionView: View {
 }
 
 #Preview {
-    NavigationStack {
-        AccountInfoUpdateCompletionView(isShowing: .constant(true))
+    let appDC = AppDependencyContainer()
+    return NavigationStack {
+        appDC.makeAccountInfoUpdateCompletionView(isShowing: .constant(true))
     }
 }
