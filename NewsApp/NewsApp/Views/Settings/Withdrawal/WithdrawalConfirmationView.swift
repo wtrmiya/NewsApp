@@ -10,13 +10,24 @@ import SwiftUI
 struct WithdrawalConfirmationView: View {
     @Binding var isShowing: Bool
     @State private var isShowingWithdrawalCompletionAlert: Bool = false
+    
+    @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
+    @EnvironmentObject private var appDependenciyContainer: AppDependencyContainer
+    
+    init(isShowing: Binding<Bool>, accountSettingsViewModel: AccountSettingsViewModel) {
+        self._isShowing = isShowing
+        self.accountSettingsViewModel = accountSettingsViewModel
+    }
+
     var body: some View {
         VStack {
             HStack {
                 VStack(alignment: .leading) {
-                    Text("サインイン中のアカウント")
-                    Text("Yamada Tarou")
-                    Text("ytaro@example.com")
+                    if let userAccount = accountSettingsViewModel.userAccount {
+                        Text("サインイン中のアカウント")
+                        Text(userAccount.displayName)
+                        Text(userAccount.email)
+                    }
                 }
                 Spacer()
             }
@@ -63,7 +74,8 @@ struct WithdrawalConfirmationView: View {
 }
 
 #Preview {
-    NavigationStack {
-        WithdrawalConfirmationView(isShowing: .constant(true))
+    let appDC = AppDependencyContainer()
+    return NavigationStack {
+        appDC.makeWithdrawalConfirmationView(isShowing: .constant(true))
     }
 }
