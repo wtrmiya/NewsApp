@@ -139,6 +139,13 @@ final class AppDependencyContainer: ObservableObject {
             isShowing: isShowing
         )
     }
+    
+    func makeWithdrawalConfirmationView(isShowing: Binding<Bool>) -> WithdrawalConfirmationView {
+        return WithdrawalConfirmationView(
+            isShowing: isShowing,
+            accountSettingsViewModel: makeAccountSettingsViewModel()
+        )
+    }
 
     func makeAccountSettingsViewModel() -> AccountSettingsViewModel {
         return sharedAccountSettingsViewModel

@@ -51,7 +51,7 @@ struct AccountSettingsView: View {
             Spacer()
             
             NavigationLink {
-                WithdrawalConfirmationView(isShowing: $isShowing)
+                appDependenciyContainer.makeWithdrawalConfirmationView(isShowing: $isShowing)
             } label: {
                 Text("退会する")
             }
