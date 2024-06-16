@@ -8,25 +8,6 @@
 import SwiftUI
 
 struct HomeView: View {
-    let categories = [
-        "トップ",
-        "ビジネス",
-        "テクノロジ",
-        "エンタメ",
-        "スポーツ",
-        "健康",
-        "科学"
-    ]
-    
-    let dummyArticle = [
-        "NHK",
-        "2024-06-05",
-        "記事のタイトル",
-        "記事概要テキスト記事概要テキスト記事概要テキスト記事概要テキスト",
-        "apple.logo",
-        "https://apple.com"
-    ]
-    
     @State private var isShowingSearchView: Bool = false
     @State private var isShowingDrawer: Bool = false
     @State private var isShowingErrorAlert: Bool = false
@@ -43,8 +24,8 @@ struct HomeView: View {
                 VStack {
                     ScrollView(.horizontal) {
                         HStack {
-                            ForEach(categories, id: \.self) { category in
-                                Text(category)
+                            ForEach(ArticleCategory.allCases, id: \.self) { category in
+                                Text(category.description)
                                     .frame(width: 150, height: 50)
                                     .background(.gray)
                                     .foregroundStyle(.white)
