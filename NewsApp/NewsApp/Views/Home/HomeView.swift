@@ -31,7 +31,9 @@ struct HomeView: View {
                                         .background(.gray.opacity(0.3))
                                         .foregroundStyle(.black)
                                         .onTapGesture {
-                                            homeViewModel.selectCategory(category)
+                                            Task {
+                                                await homeViewModel.selectCategory(category)
+                                            }
                                         }
                                 } else {
                                     Text(category.description)
@@ -39,7 +41,9 @@ struct HomeView: View {
                                         .background(.gray)
                                         .foregroundStyle(.white)
                                         .onTapGesture {
-                                            homeViewModel.selectCategory(category)
+                                            Task {
+                                                await homeViewModel.selectCategory(category)
+                                            }
                                         }
                                 }
                             }

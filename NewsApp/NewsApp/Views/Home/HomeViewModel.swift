@@ -29,7 +29,7 @@ final class HomeViewModel: ObservableObject {
     @MainActor
     func populateArticles() async {
         do {
-            let articles = try await articleManager.getGeneralArticles()
+            let articles = try await articleManager.getArticles(category: .general)
             self.articles = articles
         } catch {
             if let error = error as? NetworkError {
@@ -74,7 +74,18 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    func selectCategory(_ category: ArticleCategory) {
-        selectedCategory = category
+    @MainActor
+    func selectCategory(_ category: ArticleCategory) async {
+        do {
+            let articles = try await articleManager.getArticles(category: category)
+            selectedCategory = category
+            self.articles = articles
+        } catch {
+            if let error = error as? NetworkError {
+                self.errorMessage = error.rawValue
+            } else {
+                self.errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
+            }
+        }
     }
 }
