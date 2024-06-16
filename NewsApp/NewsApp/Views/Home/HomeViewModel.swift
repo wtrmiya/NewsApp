@@ -9,6 +9,7 @@ import Foundation
 
 final class HomeViewModel: ObservableObject {
     @Published var articles: [Article] = []
+    @Published var selectedCategory: ArticleCategory = .general
     
     @Published var errorMessage: String?
     
@@ -71,5 +72,9 @@ final class HomeViewModel: ObservableObject {
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+    
+    func selectCategory(_ category: ArticleCategory) {
+        selectedCategory = category
     }
 }

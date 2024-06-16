@@ -25,10 +25,23 @@ struct HomeView: View {
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(ArticleCategory.allCases, id: \.self) { category in
-                                Text(category.description)
-                                    .frame(width: 150, height: 50)
-                                    .background(.gray)
-                                    .foregroundStyle(.white)
+                                if category == homeViewModel.selectedCategory {
+                                    Text(category.description)
+                                        .frame(width: 150, height: 50)
+                                        .background(.gray.opacity(0.3))
+                                        .foregroundStyle(.black)
+                                        .onTapGesture {
+                                            homeViewModel.selectCategory(category)
+                                        }
+                                } else {
+                                    Text(category.description)
+                                        .frame(width: 150, height: 50)
+                                        .background(.gray)
+                                        .foregroundStyle(.white)
+                                        .onTapGesture {
+                                            homeViewModel.selectCategory(category)
+                                        }
+                                }
                             }
                             Spacer()
                                 .frame(width: 5)
