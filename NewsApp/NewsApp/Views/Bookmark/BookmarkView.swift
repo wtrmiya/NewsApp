@@ -75,11 +75,6 @@ struct BookmarkView: View {
                         })
                     }
                     ToolbarItemGroup(placement: .topBarTrailing) {
-                        Button(action: {
-                            isShowingSearchView = true
-                        }, label: {
-                            Image(systemName: "magnifyingglass")
-                        })
                         EditButton()
                     }
                 }
