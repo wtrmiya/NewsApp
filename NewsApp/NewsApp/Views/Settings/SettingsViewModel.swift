@@ -26,7 +26,7 @@ final class SettingsViewModel: ObservableObject {
         do {
             guard let user = accountManager.user
             else { return }
-            try await userSettingsManager.getCurrentUserSettings(uid: user.uid)
+            try await userSettingsManager.getCurrentUserSettings(user: user)
             self.userSettings = userSettingsManager.currentUserSettings
         } catch {
             print(error)

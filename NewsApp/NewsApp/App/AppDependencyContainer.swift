@@ -19,7 +19,7 @@ final class AppDependencyContainer: ObservableObject {
         if let user = accountManager.user {
             Task {
                 do {
-                    try await userSettingsManager.getCurrentUserSettings(uid: user.uid)
+                    try await userSettingsManager.getCurrentUserSettings(user: user)
                 } catch {
                     print(error)
                 }

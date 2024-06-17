@@ -27,19 +27,19 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
             return UserSettings.defaultSettingsWithDummyUID()
         }
     }
-
-    func registerDefaultUserSettings(uid: String) async throws {
+    
+    func createDefaultUserSettings(user: UserAccount) async throws {
         let firestoreDB = Firestore.firestore()
-        let defaultSettings = UserSettings.defaultSettings(uid: uid)
+        let defaultSettings = UserSettings.defaultSettings(uid: user.uid)
         let defaultSettingsDict = defaultSettings.toDictionary()
         try await firestoreDB.collection("user_settings").addDocument(data: defaultSettingsDict)
         self.userSettings = defaultSettings
     }
-    
-    func getCurrentUserSettings(uid: String) async throws {
+
+    func getCurrentUserSettings(user: UserAccount) async throws {
         let firestoreDB = Firestore.firestore()
         guard let snapshot = try await firestoreDB.collection("user_settings")
-            .whereField("uid", isEqualTo: uid)
+            .whereField("uid", isEqualTo: user.uid)
             .getDocuments().documents.first
         else {
             print("\(#function) #1")

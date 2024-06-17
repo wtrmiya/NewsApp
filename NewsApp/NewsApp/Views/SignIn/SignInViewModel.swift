@@ -30,10 +30,11 @@ final class SignInViewModel: ObservableObject {
     func signIn() async {
         do {
             try await accountManager.signIn(email: email, password: password)
-            guard let user = accountManager.user else { return }
-            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: user)
+            guard let tempUser = accountManager.user else { return }
+            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
             accountManager.setDocumentIdToCurrentUser(documentId: userDocumentId)
-            try await userSettingsManager.getCurrentUserSettings(uid: user.uid)
+            guard let user = accountManager.user else { return }
+            try await userSettingsManager.getCurrentUserSettings(user: user)
         } catch {
             if let error = error as? AuthError {
                 switch error {
