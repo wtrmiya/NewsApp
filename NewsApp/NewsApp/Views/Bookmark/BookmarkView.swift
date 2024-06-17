@@ -61,6 +61,11 @@ struct BookmarkView: View {
                                 }
                             })
                         }
+                        .onDelete(perform: { indexSet in
+                            Task {
+                                await deleteBookmarks(indexSet: indexSet)
+                            }
+                        })
                     }
                     .listStyle(.plain)
                 }
@@ -75,11 +80,6 @@ struct BookmarkView: View {
                         })
                     }
                     ToolbarItemGroup(placement: .topBarTrailing) {
-                        Button(action: {
-                            isShowingSearchView = true
-                        }, label: {
-                            Image(systemName: "magnifyingglass")
-                        })
                         EditButton()
                     }
                 }
@@ -101,6 +101,10 @@ struct BookmarkView: View {
         .task {
             await bookmarkViewModel.populateBookmarkedArticles()
         }
+    }
+    
+    private func deleteBookmarks(indexSet: IndexSet) async {
+        await bookmarkViewModel.deleteBookmarks(indexSet: indexSet)
     }
 }
 

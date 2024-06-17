@@ -40,8 +40,22 @@ final class HomeViewModel: ObservableObject {
     func populateArticles(of category: ArticleCategory) async {
         do {
             selectedCategory = category
-            let articles = try await articleManager.getArticles(category: category)
-            self.articles = articles
+            var downloadedArticles = try await articleManager.getArticles(category: category)
+            
+            // ログインしていれば、ブックマーク状態を反映する
+            if let currentUser = accountManager.user {
+                let bookmarkedArticles = try await bookmarkManager.getBookmarks(uid: currentUser.uid)
+                
+                for bookmaredArticle in bookmarkedArticles {
+                    // swiftlint:disable:next line_length
+                    for (index, downloadedArticle) in downloadedArticles.enumerated() where bookmaredArticle.hash == downloadedArticle.hash {
+                        // swiftlint:disable:previous line_length
+                        downloadedArticles[index] = bookmaredArticle
+                    }
+                }
+            }
+
+            self.articles = downloadedArticles
         } catch {
             if let error = error as? NetworkError {
                 self.errorMessage = error.rawValue
@@ -52,14 +66,20 @@ final class HomeViewModel: ObservableObject {
     }
     
     @MainActor
-    func toggleBookmark(articleIndex: Int) async {
-        articles[articleIndex].toggleBookmark()
-        let toggledArticle = articles[articleIndex]
+    func toggleBookmark(on articleToToggle: Article) async {
+        let (article, index) = toggledArticleAndIndexOnArticles(articleToToggle: articleToToggle)
+        
+        guard let toggledArticle = article,
+              let toggledArticleIndex = index
+        else { return }
+        
         guard let currentUser = accountManager.user else {
             return
         }
         
         do {
+            self.articles[toggledArticleIndex] = toggledArticle
+            
             if toggledArticle.bookmarked {
                 guard let updatedArticle = try await bookmarkManager.addBookmark(
                     article: toggledArticle,
@@ -69,19 +89,31 @@ final class HomeViewModel: ObservableObject {
                     return
                 }
                 
-                articles[articleIndex] = updatedArticle
+                articles[toggledArticleIndex] = updatedArticle
             } else {
-                guard let updatedArticle = try await bookmarkManager.removeBookmark(
+                guard let updatedArticle = try await bookmarkManager.deleteBookmark(
                     article: toggledArticle,
                     uid: currentUser.uid
                 )
                 else {
                     return
                 }
-                articles[articleIndex] = updatedArticle
+                articles[toggledArticleIndex] = updatedArticle
             }
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+    
+    private func toggledArticleAndIndexOnArticles(articleToToggle: Article) -> (Article?, Int?) {
+        var toggledArticle: Article?
+        var toggledArticleIndex: Int?
+        for (index, article) in articles.enumerated() where article.id == articleToToggle.id {
+            toggledArticle = article.bookmarkToggled
+            toggledArticleIndex = index
+            break
+        }
+        
+        return (toggledArticle, toggledArticleIndex)
     }
 }

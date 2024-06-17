@@ -33,7 +33,7 @@ extension BookmarkManager: BookmarkManagerProtocol {
         return updatedArticle
     }
     
-    func removeBookmark(article: Article, uid: String) async throws -> Article? {
+    func deleteBookmark(article: Article, uid: String) async throws -> Article? {
         guard !article.bookmarked else { return nil }
         
         let firestoreDB = Firestore.firestore()
@@ -51,6 +51,27 @@ extension BookmarkManager: BookmarkManagerProtocol {
         try await docRef.delete()
         let updatedArticle = article.updateBookmarkedData(documentId: nil)
         return updatedArticle
+    }
+    
+    func deleteBookmarks(articles: [Article], uid: String) async throws {
+        let firestoreDB = Firestore.firestore()
+        guard let userDocumentID = try await firestoreDB.collection("users")
+            .whereField("uid", isEqualTo: uid)
+            .getDocuments()
+            .documents.first?.documentID
+        else { return }
+        
+        let collectionRef = firestoreDB.collection("users").document(userDocumentID)
+            .collection("bookmarks")
+        
+        let batch = firestoreDB.batch()
+        for articleToDelete in articles {
+            guard let docID = articleToDelete.documentId
+            else { continue }
+            let ref = collectionRef.document(docID)
+            batch.deleteDocument(ref)
+        }
+        try await batch.commit()
     }
     
     func getBookmarks(uid: String) async throws -> [Article] {

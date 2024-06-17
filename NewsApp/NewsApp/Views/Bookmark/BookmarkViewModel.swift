@@ -42,4 +42,23 @@ final class BookmarkViewModel: ObservableObject {
             }
         }
     }
+    
+    @MainActor
+    func deleteBookmarks(indexSet: IndexSet) async {
+        do {
+            guard let currentUser = accountManager.user else {
+                return
+            }
+            let bookmarksToDelete = indexSet.compactMap { articles[$0] }
+            try await bookmarkManager.deleteBookmarks(articles: bookmarksToDelete, uid: currentUser.uid)
+            let updatedBookmarkedArticles = try await bookmarkManager.getBookmarks(uid: currentUser.uid)
+            self.articles = updatedBookmarkedArticles
+        } catch {
+            if let error = error as? NetworkError {
+                self.errorMessage = error.rawValue
+            } else {
+                self.errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
+            }
+        }
+    }
 }
