@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import CryptoKit
 
 struct ArticleResponse: Decodable {
     let status: String
@@ -37,6 +38,7 @@ struct ArticleResponse: Decodable {
 }
 
 struct Article: Decodable, Hashable, Identifiable {
+    var id: String
     let source: ArticleSource
     let author: String?
     let title: String
@@ -47,10 +49,6 @@ struct Article: Decodable, Hashable, Identifiable {
     var bookmarked: Bool
     var documentId: String?
     var bookmarkedAt: Date?
-    
-    var id: String {
-        documentId ?? UUID().uuidString
-    }
     
     enum CodingKeys: String, CodingKey {
         case source, author, title, description, url, urlToImage, publishedAt
@@ -66,12 +64,14 @@ struct Article: Decodable, Hashable, Identifiable {
         self.urlToImage = try container.decodeIfPresent(String.self, forKey: .urlToImage)
         self.publishedAt = try container.decode(String.self, forKey: .publishedAt)
         
+        self.id = UUID().uuidString
         self.bookmarked = false
         self.documentId = nil
         self.bookmarkedAt = nil
     }
     
     init(
+        id: String = UUID().uuidString,
         source: ArticleSource,
         author: String?,
         title: String,
@@ -83,6 +83,7 @@ struct Article: Decodable, Hashable, Identifiable {
         documentId: String?,
         bookmarkedAt: Date?
     ) {
+        self.id = id
         self.source = source
         self.author = author
         self.title = title
@@ -95,14 +96,27 @@ struct Article: Decodable, Hashable, Identifiable {
         self.bookmarkedAt = bookmarkedAt
     }
     
-    mutating func toggleBookmark() {
-        bookmarked.toggle()
+    var bookmarkToggled: Article {
+        return Article(
+            id: self.id,
+            source: self.source,
+            author: self.author,
+            title: self.title,
+            description: self.description,
+            url: self.url,
+            urlToImage: self.urlToImage,
+            publishedAt: self.publishedAt,
+            bookmarked: !self.bookmarked,
+            documentId: self.documentId,
+            bookmarkedAt: self.bookmarkedAt
+        )
     }
 }
 
 extension Article {
     func toDictionary() -> [String: Any] {
         return [
+            "id": id,
             "source": source.name,
             "author": author as Any,
             "title": title,
@@ -117,7 +131,8 @@ extension Article {
     
     static func fromSnapshot(snapshot: QueryDocumentSnapshot) -> Article? {
         let dictionary = snapshot.data()
-        guard let source = dictionary["source"] as? String,
+        guard let id = dictionary["id"] as? String,
+              let source = dictionary["source"] as? String,
               let title = dictionary["title"] as? String,
               let url = dictionary["url"] as? String,
               let publishedAt = dictionary["publishedAt"] as? String,
@@ -132,6 +147,7 @@ extension Article {
         let bookmarkedAt = dictionary["bookmarkedAt"] as? Date
 
         return Article(
+            id: id,
             source: ArticleSource(name: source),
             author: author,
             title: title,
@@ -147,6 +163,7 @@ extension Article {
     
     func updateBookmarkedData(documentId: String?) -> Article {
         return Article(
+            id: self.id,
             source: self.source,
             author: self.author,
             title: self.title,
@@ -158,6 +175,13 @@ extension Article {
             documentId: documentId,
             bookmarkedAt: documentId != nil ? Date() : nil
         )
+    }
+    
+    var hash: String {
+        let seedString = "\(title)\(url)\(publishedAt)"
+        let data = Data(seedString.utf8)
+        let hashed = SHA256.hash(data: data)
+        return hashed.compactMap { String(format: "%02x", $0)}.joined()
     }
 }
 
