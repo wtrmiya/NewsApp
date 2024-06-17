@@ -32,7 +32,7 @@ struct HomeView: View {
                                         .foregroundStyle(.black)
                                         .onTapGesture {
                                             Task {
-                                                await homeViewModel.selectCategory(category)
+                                                await homeViewModel.populateArticles(of: category)
                                             }
                                         }
                                 } else {
@@ -42,7 +42,7 @@ struct HomeView: View {
                                         .foregroundStyle(.white)
                                         .onTapGesture {
                                             Task {
-                                                await homeViewModel.selectCategory(category)
+                                                await homeViewModel.populateArticles(of: category)
                                             }
                                         }
                                 }
@@ -128,7 +128,10 @@ struct HomeView: View {
             SearchView(isShowing: $isShowingSearchView)
         })
         .task {
-            await homeViewModel.populateArticles()
+            await homeViewModel.populateDefaultArticles()
+        }
+        .refreshable {
+            await homeViewModel.populateArticlesOfCurrentCategory()
         }
         .alert("Error", isPresented: $isShowingErrorAlert, actions: {
             Button(action: {

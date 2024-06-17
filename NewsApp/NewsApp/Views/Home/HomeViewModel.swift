@@ -27,9 +27,20 @@ final class HomeViewModel: ObservableObject {
     }
     
     @MainActor
-    func populateArticles() async {
+    func populateDefaultArticles() async {
+        await populateArticles(of: .general)
+    }
+    
+    @MainActor
+    func populateArticlesOfCurrentCategory() async {
+        await populateArticles(of: self.selectedCategory)
+    }
+    
+    @MainActor
+    func populateArticles(of category: ArticleCategory) async {
         do {
-            let articles = try await articleManager.getArticles(category: .general)
+            selectedCategory = category
+            let articles = try await articleManager.getArticles(category: category)
             self.articles = articles
         } catch {
             if let error = error as? NetworkError {
@@ -71,21 +82,6 @@ final class HomeViewModel: ObservableObject {
             }
         } catch {
             errorMessage = error.localizedDescription
-        }
-    }
-    
-    @MainActor
-    func selectCategory(_ category: ArticleCategory) async {
-        do {
-            let articles = try await articleManager.getArticles(category: category)
-            selectedCategory = category
-            self.articles = articles
-        } catch {
-            if let error = error as? NetworkError {
-                self.errorMessage = error.rawValue
-            } else {
-                self.errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
-            }
         }
     }
 }
