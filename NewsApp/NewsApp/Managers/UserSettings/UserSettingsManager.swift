@@ -30,9 +30,10 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
     
     func createDefaultUserSettings(user: UserAccount) async throws {
         let firestoreDB = Firestore.firestore()
-        let defaultSettings = UserSettings.defaultSettings(uid: user.uid)
+        var defaultSettings = UserSettings.defaultSettings(uid: user.uid)
         let defaultSettingsDict = defaultSettings.toDictionary()
-        try await firestoreDB.collection("user_settings").addDocument(data: defaultSettingsDict)
+        let docRef = try await firestoreDB.collection("user_settings").addDocument(data: defaultSettingsDict)
+        defaultSettings.setDocumentId(documentId: docRef.documentID)
         self.userSettings = defaultSettings
     }
 
