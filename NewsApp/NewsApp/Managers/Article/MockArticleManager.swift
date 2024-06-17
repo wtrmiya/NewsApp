@@ -8,7 +8,7 @@
 import Foundation
 
 final class MockArticleManagerVarid: ArticleManagerProtocol {
-    func getGeneralArticles() async throws -> [Article] {
+    func getArticles(category: ArticleCategory) async throws -> [Article] {
         return [
             Article(
                 source: ArticleSource(name: "Example.com"),
@@ -39,19 +39,19 @@ final class MockArticleManagerVarid: ArticleManagerProtocol {
 }
 
 final class MockArticleManagerInvalidAPIKey: ArticleManagerProtocol {
-    func getGeneralArticles() async throws -> [Article] {
+    func getArticles(category: ArticleCategory) async throws -> [Article] {
         throw NetworkError.invalidAPIKey
     }
 }
 
 final class MockArticleManagerInvalidResponse: ArticleManagerProtocol {
-    func getGeneralArticles() async throws -> [Article] {
+    func getArticles(category: ArticleCategory) async throws -> [Article] {
         throw NetworkError.invalidResponse
     }
 }
 
 final class MockArticleManagerOtherError: ArticleManagerProtocol {
-    func getGeneralArticles() async throws -> [Article] {
+    func getArticles(category: ArticleCategory) async throws -> [Article] {
         throw AuthError.unknownError(errorMessage: "Unknown")
     }
 }

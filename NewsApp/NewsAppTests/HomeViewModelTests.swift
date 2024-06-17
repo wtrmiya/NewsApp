@@ -14,7 +14,7 @@ final class HomeViewModelTests: XCTestCase {
         let expectation = XCTestExpectation()
         let sut = HomeViewModel(articleManager: MockArticleManagerVarid())
         Task {
-            await sut.populateArticles()
+            await sut.populateDefaultArticles()
             expectation.fulfill()
         }
         
@@ -28,7 +28,7 @@ final class HomeViewModelTests: XCTestCase {
         let expectation = XCTestExpectation()
         let sut = HomeViewModel(articleManager: MockArticleManagerInvalidAPIKey())
         Task {
-            await sut.populateArticles()
+            await sut.populateDefaultArticles()
             expectation.fulfill()
         }
         
@@ -47,7 +47,7 @@ final class HomeViewModelTests: XCTestCase {
         let expectation = XCTestExpectation()
         let sut = HomeViewModel(articleManager: MockArticleManagerInvalidResponse())
         Task {
-            await sut.populateArticles()
+            await sut.populateDefaultArticles()
             expectation.fulfill()
         }
         
@@ -66,7 +66,7 @@ final class HomeViewModelTests: XCTestCase {
         let expectation = XCTestExpectation()
         let sut = HomeViewModel(articleManager: MockArticleManagerOtherError())
         Task {
-            await sut.populateArticles()
+            await sut.populateDefaultArticles()
             expectation.fulfill()
         }
         
@@ -111,7 +111,7 @@ final class HomeViewModelTests: XCTestCase {
         // ダミー記事登録
         let expectation2 = XCTestExpectation()
         Task {
-            await sut.populateArticles()
+            await sut.populateDefaultArticles()
             expectation2.fulfill()
         }
         
@@ -161,7 +161,7 @@ final class HomeViewModelTests: XCTestCase {
         // ダミー記事登録
         let expectation2 = XCTestExpectation()
         Task {
-            await sut.populateArticles()
+            await sut.populateDefaultArticles()
             expectation2.fulfill()
         }
         

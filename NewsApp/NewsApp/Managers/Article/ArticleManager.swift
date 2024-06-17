@@ -13,13 +13,13 @@ final class ArticleManager {
 }
 
 extension ArticleManager: ArticleManagerProtocol {
-    func getGeneralArticles() async throws -> [Article] {
+    func getArticles(category: ArticleCategory) async throws -> [Article] {
         guard let apiKey = APIKeyManager.shared.apiKey(for: "API_KEY_NewsAPI")
         else {
             throw NetworkError.invalidAPIKey
         }
         
-        let url = URL(string: "https://newsapi.org/v2/top-headlines?country=jp")!
+        let url = URL(string: "https://newsapi.org/v2/top-headlines?country=jp&category=\(category.rawValue)")!
         var request = URLRequest(url: url)
         request.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
         do {

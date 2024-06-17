@@ -9,6 +9,7 @@ import Foundation
 
 final class HomeViewModel: ObservableObject {
     @Published var articles: [Article] = []
+    @Published var selectedCategory: ArticleCategory = .general
     
     @Published var errorMessage: String?
     
@@ -26,9 +27,20 @@ final class HomeViewModel: ObservableObject {
     }
     
     @MainActor
-    func populateArticles() async {
+    func populateDefaultArticles() async {
+        await populateArticles(of: .general)
+    }
+    
+    @MainActor
+    func populateArticlesOfCurrentCategory() async {
+        await populateArticles(of: self.selectedCategory)
+    }
+    
+    @MainActor
+    func populateArticles(of category: ArticleCategory) async {
         do {
-            let articles = try await articleManager.getGeneralArticles()
+            selectedCategory = category
+            let articles = try await articleManager.getArticles(category: category)
             self.articles = articles
         } catch {
             if let error = error as? NetworkError {

@@ -72,6 +72,7 @@
 		8694061C2C1D6D5E00436C96 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8694061B2C1D6D5E00436C96 /* AccountSettingsViewModel.swift */; };
 		86E7D4C02C12EEF900F56485 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4BF2C12EEF900F56485 /* AuthError.swift */; };
 		86E7D4C22C12F65000F56485 /* SignUpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4C12C12F65000F56485 /* SignUpViewModelTests.swift */; };
+		86EDFECF2C1FAA09002F7F5E /* ArticleCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EDFECE2C1FAA09002F7F5E /* ArticleCategory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -152,6 +153,7 @@
 		8694061B2C1D6D5E00436C96 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		86E7D4BF2C12EEF900F56485 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		86E7D4C12C12F65000F56485 /* SignUpViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModelTests.swift; sourceTree = "<group>"; };
+		86EDFECE2C1FAA09002F7F5E /* ArticleCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,6 +272,7 @@
 				865C0CF52C196A3000A091E4 /* UserAccount.swift */,
 				863F1CF72C1A5D9400EBF185 /* Term.swift */,
 				864CCE2F2C1B9141006D2B5B /* UserSettings.swift */,
+				86EDFECE2C1FAA09002F7F5E /* ArticleCategory.swift */,
 				862F1D652C18D5160013DE91 /* Errors */,
 			);
 			path = Models;
@@ -639,6 +642,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86119B0C2C0FD8F90067DC64 /* AppDelegate.swift in Sources */,
+				86EDFECF2C1FAA09002F7F5E /* ArticleCategory.swift in Sources */,
 				86027CF92C184320006CD41B /* MockArticleManager.swift in Sources */,
 				863F1CF82C1A5D9400EBF185 /* Term.swift in Sources */,
 				862F1D692C18D5530013DE91 /* ArticleManagerProtocol.swift in Sources */,
