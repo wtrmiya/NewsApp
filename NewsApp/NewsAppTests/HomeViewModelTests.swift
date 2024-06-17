@@ -119,11 +119,12 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertGreaterThan(sut.articles.count, 0)
         let articleIndex = 0
         sut.articles[articleIndex].bookmarked = false
+        let articleToCheck = sut.articles[articleIndex]
         
         // テスト
         let expectation3 = XCTestExpectation()
         Task {
-            await sut.toggleBookmark(articleIndex: articleIndex)
+            await sut.toggleBookmark(on: articleToCheck)
             expectation3.fulfill()
         }
         
@@ -169,11 +170,12 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertGreaterThan(sut.articles.count, 0)
         let articleIndex = 0
         sut.articles[articleIndex].bookmarked = true
+        let articleToCheck = sut.articles[articleIndex]
         
         // テスト
         let expectation3 = XCTestExpectation()
         Task {
-            await sut.toggleBookmark(articleIndex: articleIndex)
+            await sut.toggleBookmark(on: articleToCheck)
             expectation3.fulfill()
         }
         
