@@ -61,6 +61,11 @@ struct BookmarkView: View {
                                 }
                             })
                         }
+                        .onDelete(perform: { indexSet in
+                            Task {
+                                await deleteBookmarks(indexSet: indexSet)
+                            }
+                        })
                     }
                     .listStyle(.plain)
                 }
@@ -96,6 +101,10 @@ struct BookmarkView: View {
         .task {
             await bookmarkViewModel.populateBookmarkedArticles()
         }
+    }
+    
+    private func deleteBookmarks(indexSet: IndexSet) async {
+        await bookmarkViewModel.deleteBookmarks(indexSet: indexSet)
     }
 }
 
