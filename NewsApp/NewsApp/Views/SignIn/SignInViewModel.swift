@@ -16,18 +16,23 @@ final class SignInViewModel: ObservableObject {
     
     private let accountManager: AccountProtocol
     private let userSettingsManager: UserSettingsManagerProtocol
+    private let userDataStoreManager: UserDataStoreManager
 
     init(accountManager: AccountProtocol = AccountManager.shared,
-         userSettingsManager: UserSettingsManagerProtocol = UserSettingsManager.shared
+         userSettingsManager: UserSettingsManagerProtocol = UserSettingsManager.shared,
+         userDataStoreManager: UserDataStoreManager = UserDataStoreManager.shared
     ) {
         self.accountManager = accountManager
         self.userSettingsManager = userSettingsManager
+        self.userDataStoreManager = userDataStoreManager
     }
 
     func signIn() async {
         do {
             try await accountManager.signIn(email: email, password: password)
             guard let user = accountManager.user else { return }
+            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: user)
+            accountManager.setDocumentIdToCurrentUser(documentId: userDocumentId)
             try await userSettingsManager.getCurrentUserSettings(uid: user.uid)
         } catch {
             if let error = error as? AuthError {

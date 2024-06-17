@@ -11,4 +11,9 @@ struct UserAccount {
     private(set) var uid: String
     private(set) var email: String
     private(set) var displayName: String
+    private(set) var documentId: String?
+    
+    mutating func setDocumentId(documentId: String) {
+        self.documentId = documentId
+    }
 }

@@ -69,6 +69,9 @@ final class MockAccountManager: AccountProtocol {
     func signOut() throws {
         user = nil
     }
+    
+    func setDocumentIdToCurrentUser(documentId: String) {
+    }
 }
 
 extension String {

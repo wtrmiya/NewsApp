@@ -118,4 +118,8 @@ extension AccountManager: AccountProtocol {
         request.displayName = displayName
         try await request.commitChanges()
     }
+    
+    func setDocumentIdToCurrentUser(documentId: String) {
+        self.user?.setDocumentId(documentId: documentId)
+    }
 }
