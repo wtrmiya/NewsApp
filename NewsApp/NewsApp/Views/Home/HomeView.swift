@@ -51,56 +51,62 @@ struct HomeView: View {
                                 .frame(width: 5)
                         }
                     }
-                    List {
-                        ForEach(homeViewModel.articles.indices, id: \.self) { index in
-                            let article = homeViewModel.articles[index]
-                            Link(destination: URL(string: article.url)!) {
-                                VStack {
-                                    HStack {
-                                        Text(article.source.name)
-                                        Spacer()
-                                        Text(article.publishedAt)
-                                    }
-                                    if let imageUrl = article.urlToImage {
-                                        AsyncImage(url: URL(string: imageUrl)) { image in
-                                            image
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 300, height: 200)
-                                        } placeholder: {
+                    if homeViewModel.articles.isEmpty {
+                        Spacer()
+                        Text("該当するカテゴリの記事が存在しません。")
+                        Spacer()
+                    } else {
+                        List {
+                            ForEach(homeViewModel.articles.indices, id: \.self) { index in
+                                let article = homeViewModel.articles[index]
+                                Link(destination: URL(string: article.url)!) {
+                                    VStack {
+                                        HStack {
+                                            Text(article.source.name)
+                                            Spacer()
+                                            Text(article.publishedAt)
+                                        }
+                                        if let imageUrl = article.urlToImage {
+                                            AsyncImage(url: URL(string: imageUrl)) { image in
+                                                image
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(width: 300, height: 200)
+                                            } placeholder: {
+                                                Image(systemName: "photo.fill")
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(width: 300, height: 200)
+                                            }
+                                        } else {
                                             Image(systemName: "photo.fill")
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(width: 300, height: 200)
                                         }
-                                    } else {
-                                        Image(systemName: "photo.fill")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 300, height: 200)
-                                    }
-                                    HStack {
-                                        Spacer()
-                                        Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
-                                            .onTapGesture {
-                                                Task {
-                                                    await bookmarkTapped(articleIndex: index)
+                                        HStack {
+                                            Spacer()
+                                            Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
+                                                .onTapGesture {
+                                                    Task {
+                                                        await bookmarkTapped(articleIndex: index)
+                                                    }
                                                 }
-                                            }
+                                        }
+                                        
+                                        Text(article.title)
+                                            .font(.title2)
+                                        Spacer()
+                                            .frame(height: 10)
+                                        Text(article.description ?? "NO DESCRIPTION")
+                                            .font(.headline)
+                                            .lineLimit(2)
                                     }
-                                    
-                                    Text(article.title)
-                                        .font(.title2)
-                                    Spacer()
-                                        .frame(height: 10)
-                                    Text(article.description ?? "NO DESCRIPTION")
-                                        .font(.headline)
-                                        .lineLimit(2)
                                 }
                             }
                         }
+                        .listStyle(.plain)
                     }
-                    .listStyle(.plain)
                 }
                 .navigationTitle("My News")
                 .navigationBarTitleDisplayMode(.inline)
