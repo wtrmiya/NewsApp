@@ -49,19 +49,6 @@ struct DrawerContentView: View {
             }
             
             Spacer()
-                .frame(height: 50)
-            Divider()
-            Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-            }, label: {
-                HStack {
-                    Text("Bookmark")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-            })
-            Divider()
-            Spacer()
             Divider()
             Button(action: {
                 isShowingSettingsView = true
