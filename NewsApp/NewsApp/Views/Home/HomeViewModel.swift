@@ -16,14 +16,17 @@ final class HomeViewModel: ObservableObject {
     let articleManager: ArticleManagerProtocol
     let bookmarkManager: BookmarkManagerProtocol
     let accountManager: AccountProtocol
+    let userDataStoreManager: UserDataStoreManagerProtocol
     
     init(articleManager: ArticleManagerProtocol = ArticleManager.shared,
          bookmarkManager: BookmarkManagerProtocol = BookmarkManager.shared,
-         accountManager: AccountProtocol = AccountManager.shared
+         accountManager: AccountProtocol = AccountManager.shared,
+         userDataSoreManager: UserDataStoreManagerProtocol = UserDataStoreManager.shared
     ) {
         self.articleManager = articleManager
         self.bookmarkManager = bookmarkManager
         self.accountManager = accountManager
+        self.userDataStoreManager = userDataSoreManager
     }
     
     @MainActor
@@ -43,8 +46,15 @@ final class HomeViewModel: ObservableObject {
             var downloadedArticles = try await articleManager.getArticles(category: category)
             
             // ログインしていれば、ブックマーク状態を反映する
-            if let currentUser = accountManager.user {
-                let bookmarkedArticles = try await bookmarkManager.getBookmarks(uid: currentUser.uid)
+            if let tempUser = accountManager.user {
+                let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
+                let currentUser = UserAccount(
+                    uid: tempUser.uid,
+                    email: tempUser.email,
+                    displayName: tempUser.displayName,
+                    documentId: userDocumentId
+                )
+                let bookmarkedArticles = try await bookmarkManager.getBookmarks(user: currentUser)
                 
                 for bookmaredArticle in bookmarkedArticles {
                     // swiftlint:disable:next line_length
@@ -73,17 +83,22 @@ final class HomeViewModel: ObservableObject {
               let toggledArticleIndex = index
         else { return }
         
-        guard let currentUser = accountManager.user else {
-            return
-        }
+        guard let tempUser = accountManager.user else { return }
         
         do {
+            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
+            let currentUser = UserAccount(
+                uid: tempUser.uid,
+                email: tempUser.email,
+                displayName: tempUser.displayName,
+                documentId: userDocumentId
+            )
             self.articles[toggledArticleIndex] = toggledArticle
             
             if toggledArticle.bookmarked {
                 guard let updatedArticle = try await bookmarkManager.addBookmark(
                     article: toggledArticle,
-                    uid: currentUser.uid
+                    user: currentUser
                 )
                 else {
                     return
@@ -93,7 +108,7 @@ final class HomeViewModel: ObservableObject {
             } else {
                 guard let updatedArticle = try await bookmarkManager.deleteBookmark(
                     article: toggledArticle,
-                    uid: currentUser.uid
+                    user: currentUser
                 )
                 else {
                     return

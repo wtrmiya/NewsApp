@@ -16,10 +16,20 @@ final class AppDependencyContainer: ObservableObject {
     init() {
         let accountManager = AccountManager.shared
         let userSettingsManager = UserSettingsManager.shared
-        if let user = accountManager.user {
+        if let tempUser = accountManager.user {
             Task {
                 do {
-                    try await userSettingsManager.getCurrentUserSettings(uid: user.uid)
+                    // この時点でユーザのDocumentIdが不明。
+                    // UserDataStoreから取得する必要がある。
+                    let userDataStoreDocumentId = try await UserDataStoreManager.shared
+                        .getUserDataStoreDocumentId(user: tempUser)
+                    let user = UserAccount(
+                        uid: tempUser.uid,
+                        email: tempUser.email,
+                        displayName: tempUser.displayName,
+                        documentId: userDataStoreDocumentId
+                    )
+                    try await userSettingsManager.fetchCurrentUserSettings(user: user)
                 } catch {
                     print(error)
                 }
@@ -41,7 +51,8 @@ final class AppDependencyContainer: ObservableObject {
         return HomeViewModel(
             articleManager: ArticleManager.shared,
             bookmarkManager: BookmarkManager.shared,
-            accountManager: sharedAccountManager
+            accountManager: sharedAccountManager,
+            userDataSoreManager: UserDataStoreManager.shared
         )
     }
     
@@ -52,7 +63,8 @@ final class AppDependencyContainer: ObservableObject {
     func makeBookmarkViewModel() -> BookmarkViewModel {
         return BookmarkViewModel(
             accountManager: sharedAccountManager,
-            bookmarkManager: BookmarkManager.shared
+            bookmarkManager: BookmarkManager.shared,
+            userDataStoreManager: UserDataStoreManager.shared
         )
     }
     

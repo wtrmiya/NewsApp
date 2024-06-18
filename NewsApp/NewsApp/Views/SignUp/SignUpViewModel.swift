@@ -18,19 +18,26 @@ final class SignUpViewModel: ObservableObject {
     
     private let accountManager: AccountProtocol
     private let userSettingsManager: UserSettingsManagerProtocol
+    private let userDataStoreManager: UserDataStoreManagerProtocol
 
     init(accountManager: AccountProtocol = AccountManager.shared,
-         userSettingsManager: UserSettingsManagerProtocol = UserSettingsManager.shared
+         userSettingsManager: UserSettingsManagerProtocol = UserSettingsManager.shared,
+         userDataStoreManager: UserDataStoreManagerProtocol = UserDataStoreManager.shared
     ) {
         self.accountManager = accountManager
         self.userSettingsManager = userSettingsManager
+        self.userDataStoreManager = userDataStoreManager
     }
 
     func signUp() async {
         do {
             try await accountManager.signUp(email: email, password: password, displayName: displayName)
+            guard let tempUser = accountManager.user else { return }
+            try await userDataStoreManager.createUserDataStore(user: tempUser)
+            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
+            accountManager.setDocumentIdToCurrentUser(documentId: userDocumentId)
             guard let user = accountManager.user else { return }
-            try await userSettingsManager.registerDefaultUserSettings(uid: user.uid)
+            try await userSettingsManager.createDefaultUserSettings(user: user)
         } catch {
             if let error = error as? AuthError {
                 switch error {

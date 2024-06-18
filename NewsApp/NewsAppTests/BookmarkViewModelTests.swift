@@ -12,7 +12,8 @@ final class BookmarkViewModelTests: XCTestCase {
     func test_ブックマークを取得できること() {
         let sut = BookmarkViewModel(
             accountManager: MockAccountManager(),
-            bookmarkManager: MockBookmarkManager()
+            bookmarkManager: MockBookmarkManager(),
+            userDataStoreManager: MockUserDataStoreManager()
         )
         
         // ダミーユーザ作成

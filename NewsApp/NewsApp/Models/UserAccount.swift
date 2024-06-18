@@ -6,25 +6,14 @@
 //
 
 import Foundation
-import FirebaseAuth
 
 struct UserAccount {
     private(set) var uid: String
     private(set) var email: String
     private(set) var displayName: String
+    private(set) var documentId: String?
     
-    init(uid: String, email: String, displayName: String) {
-        self.uid = uid
-        self.email = email
-        self.displayName = displayName
-    }
-    
-    init?(user: User) {
-        self.uid = user.uid
-        guard let email = user.email,
-              let displayName = user.displayName
-        else { return nil }
-        self.email = email
-        self.displayName = displayName
+    mutating func setDocumentId(documentId: String) {
+        self.documentId = documentId
     }
 }

@@ -8,23 +8,27 @@
 import Foundation
 
 final class MockBookmarkManager: BookmarkManagerProtocol {
-    func addBookmark(article: Article, uid: String) async throws -> Article? {
+    func addBookmark(article: Article, user: UserAccount) async throws -> Article? {
+        guard user.documentId != nil else { return nil }
         guard article.bookmarked else { return nil }
         let updatedArticle = article.updateBookmarkedData(documentId: UUID().uuidString)
         return updatedArticle
     }
     
-    func deleteBookmark(article: Article, uid: String) async throws -> Article? {
+    func deleteBookmark(article: Article, user: UserAccount) async throws -> Article? {
+        guard user.documentId != nil else { return nil }
         guard !article.bookmarked else { return nil }
         guard article.documentId != nil else { return nil }
         let updatedArticle = article.updateBookmarkedData(documentId: nil)
         return updatedArticle
     }
     
-    func deleteBookmarks(articles: [Article], uid: String) async throws {
+    func deleteBookmarks(articles: [Article], user: UserAccount) async throws {
+        guard user.documentId != nil else { return }
     }
     
-    func getBookmarks(uid: String) async throws -> [Article] {
+    func getBookmarks(user: UserAccount) async throws -> [Article] {
+        guard user.documentId != nil else { return [] }
         return [
             Article(
                 source: ArticleSource(name: "Example.com"),

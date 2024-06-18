@@ -12,78 +12,69 @@ import FirebaseFirestoreSwift
 final class BookmarkManager {
     static let shared = BookmarkManager()
     private init() {}
+    
+    private let firestoreDB = Firestore.firestore()
+}
+
+private extension BookmarkManager {
+    func getBookmarksCollectionReference(userDocumentId: String) -> CollectionReference {
+        let userDocRef = firestoreDB.collection("users").document(userDocumentId)
+        let bookmarksCollectionRef = userDocRef.collection("bookmarks")
+        return bookmarksCollectionRef
+    }
 }
 
 extension BookmarkManager: BookmarkManagerProtocol {
-    func addBookmark(article: Article, uid: String) async throws -> Article? {
-        guard article.bookmarked else { return nil }
-        
-        let firestoreDB = Firestore.firestore()
-        guard let userDocumentID = try await firestoreDB.collection("users")
-            .whereField("uid", isEqualTo: uid)
-            .getDocuments()
-            .documents.first?.documentID
-        else {
+    func addBookmark(article: Article, user: UserAccount) async throws -> Article? {
+        guard let userDocumentId = user.documentId else {
+            return nil
+        }
+        guard article.bookmarked else {
             return nil
         }
         
-        let docRef = try await firestoreDB.collection("users").document(userDocumentID)
-            .collection("bookmarks").addDocument(data: article.toDictionary())
+        let bookmarksCollectionRef = getBookmarksCollectionReference(userDocumentId: userDocumentId)
+        let docRef = try await bookmarksCollectionRef.addDocument(data: article.toDictionary())
         let updatedArticle = article.updateBookmarkedData(documentId: docRef.documentID)
         return updatedArticle
     }
     
-    func deleteBookmark(article: Article, uid: String) async throws -> Article? {
+    func deleteBookmark(article: Article, user: UserAccount) async throws -> Article? {
+        guard let userDocumentId = user.documentId else { return nil }
         guard !article.bookmarked else { return nil }
-        
-        let firestoreDB = Firestore.firestore()
-        guard let userDocumentID = try await firestoreDB.collection("users")
-            .whereField("uid", isEqualTo: uid)
-            .getDocuments()
-            .documents.first?.documentID
-        else { return nil }
         
         guard let bookmarkDocumentId = article.documentId
         else { return nil }
         
-        let docRef = firestoreDB.collection("users").document(userDocumentID)
-            .collection("bookmarks").document(bookmarkDocumentId)
+        let bookmarksCollectionRef = getBookmarksCollectionReference(userDocumentId: userDocumentId)
+
+        let docRef = bookmarksCollectionRef.document(bookmarkDocumentId)
         try await docRef.delete()
         let updatedArticle = article.updateBookmarkedData(documentId: nil)
         return updatedArticle
     }
     
-    func deleteBookmarks(articles: [Article], uid: String) async throws {
-        let firestoreDB = Firestore.firestore()
-        guard let userDocumentID = try await firestoreDB.collection("users")
-            .whereField("uid", isEqualTo: uid)
-            .getDocuments()
-            .documents.first?.documentID
-        else { return }
+    func deleteBookmarks(articles: [Article], user: UserAccount) async throws {
+        guard let userDocumentId = user.documentId else { return }
         
-        let collectionRef = firestoreDB.collection("users").document(userDocumentID)
-            .collection("bookmarks")
-        
+        let bookmarksCollectionRef = getBookmarksCollectionReference(userDocumentId: userDocumentId)
+
         let batch = firestoreDB.batch()
         for articleToDelete in articles {
             guard let docID = articleToDelete.documentId
             else { continue }
-            let ref = collectionRef.document(docID)
+            let ref = bookmarksCollectionRef.document(docID)
             batch.deleteDocument(ref)
         }
         try await batch.commit()
     }
     
-    func getBookmarks(uid: String) async throws -> [Article] {
-        let firestoreDB = Firestore.firestore()
-        guard let userDocumentID = try await firestoreDB.collection("users")
-            .whereField("uid", isEqualTo: uid)
-            .getDocuments()
-            .documents.first?.documentID
-        else { return [] }
+    func getBookmarks(user: UserAccount) async throws -> [Article] {
+        guard let userDocumentId = user.documentId else { return [] }
         
-        let snapshot = try await firestoreDB.collection("users").document(userDocumentID)
-            .collection("bookmarks").getDocuments()
+        let bookmarksCollectionRef = getBookmarksCollectionReference(userDocumentId: userDocumentId)
+
+        let snapshot = try await bookmarksCollectionRef.getDocuments()
         
         let bookmarks = snapshot.documents.compactMap { snapshot in
             Article.fromSnapshot(snapshot: snapshot)

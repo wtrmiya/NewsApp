@@ -36,6 +36,10 @@
 		863F20D72C15756800186A4C /* BookmarkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F20D62C15756800186A4C /* BookmarkViewModel.swift */; };
 		864CCE302C1B9141006D2B5B /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864CCE2F2C1B9141006D2B5B /* UserSettings.swift */; };
 		864CCE332C1BA4F7006D2B5B /* UserSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864CCE322C1BA4F7006D2B5B /* UserSettingsManager.swift */; };
+		864DA5122C20DBE400AB8D71 /* UserDataStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864DA5112C20DBE400AB8D71 /* UserDataStoreManager.swift */; };
+		864DA5142C212F6F00AB8D71 /* MockUserSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864DA5132C212F6F00AB8D71 /* MockUserSettingsManager.swift */; };
+		864DA5162C21303500AB8D71 /* UserDataStoreManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864DA5152C21303500AB8D71 /* UserDataStoreManagerProtocol.swift */; };
+		864DA5182C21307B00AB8D71 /* MockUserDataStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864DA5172C21307B00AB8D71 /* MockUserDataStoreManager.swift */; };
 		865407F02C1152540034055A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 865407EF2C1152540034055A /* FirebaseAuth */; };
 		865407F22C1152540034055A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F12C1152540034055A /* FirebaseFirestore */; };
 		865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F32C1152540034055A /* FirebaseFirestoreSwift */; };
@@ -120,6 +124,10 @@
 		863F20D62C15756800186A4C /* BookmarkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkViewModel.swift; sourceTree = "<group>"; };
 		864CCE2F2C1B9141006D2B5B /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		864CCE322C1BA4F7006D2B5B /* UserSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsManager.swift; sourceTree = "<group>"; };
+		864DA5112C20DBE400AB8D71 /* UserDataStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataStoreManager.swift; sourceTree = "<group>"; };
+		864DA5132C212F6F00AB8D71 /* MockUserSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserSettingsManager.swift; sourceTree = "<group>"; };
+		864DA5152C21303500AB8D71 /* UserDataStoreManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataStoreManagerProtocol.swift; sourceTree = "<group>"; };
+		864DA5172C21307B00AB8D71 /* MockUserDataStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserDataStoreManager.swift; sourceTree = "<group>"; };
 		8654082F2C1195FF0034055A /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		865408312C11C9280034055A /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		865408342C129B800034055A /* AccountProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProtocol.swift; sourceTree = "<group>"; };
@@ -302,8 +310,19 @@
 			children = (
 				864CCE322C1BA4F7006D2B5B /* UserSettingsManager.swift */,
 				8621FA582C1BCCDC00E677D6 /* UserSettingsManagerProtocol.swift */,
+				864DA5132C212F6F00AB8D71 /* MockUserSettingsManager.swift */,
 			);
 			path = UserSettings;
+			sourceTree = "<group>";
+		};
+		864DA5102C20DBD100AB8D71 /* UserDataStore */ = {
+			isa = PBXGroup;
+			children = (
+				864DA5112C20DBE400AB8D71 /* UserDataStoreManager.swift */,
+				864DA5152C21303500AB8D71 /* UserDataStoreManagerProtocol.swift */,
+				864DA5172C21307B00AB8D71 /* MockUserDataStoreManager.swift */,
+			);
+			path = UserDataStore;
 			sourceTree = "<group>";
 		};
 		8654082E2C1195530034055A /* Managers */ = {
@@ -315,6 +334,7 @@
 				865C0CF02C1933A000A091E4 /* Bookmark */,
 				863F1CF42C1A5D1100EBF185 /* Term */,
 				864CCE312C1BA49F006D2B5B /* UserSettings */,
+				864DA5102C20DBD100AB8D71 /* UserDataStore */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -642,6 +662,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86119B0C2C0FD8F90067DC64 /* AppDelegate.swift in Sources */,
+				864DA5182C21307B00AB8D71 /* MockUserDataStoreManager.swift in Sources */,
 				86EDFECF2C1FAA09002F7F5E /* ArticleCategory.swift in Sources */,
 				86027CF92C184320006CD41B /* MockArticleManager.swift in Sources */,
 				863F1CF82C1A5D9400EBF185 /* Term.swift in Sources */,
@@ -660,6 +681,7 @@
 				869161C02C16CDD100454D12 /* AccountInfoConfirmingView.swift in Sources */,
 				864CCE332C1BA4F7006D2B5B /* UserSettingsManager.swift in Sources */,
 				86E7D4C02C12EEF900F56485 /* AuthError.swift in Sources */,
+				864DA5142C212F6F00AB8D71 /* MockUserSettingsManager.swift in Sources */,
 				863F1CF62C1A5D2300EBF185 /* TermManager.swift in Sources */,
 				86748B4F2C106248004312AB /* PushNotificationSettingsView.swift in Sources */,
 				864CCE302C1B9141006D2B5B /* UserSettings.swift in Sources */,
@@ -685,8 +707,10 @@
 				869161BA2C166DA700454D12 /* DebugView.swift in Sources */,
 				86748B382C106107004312AB /* DrawerContentView.swift in Sources */,
 				8621FA592C1BCCDC00E677D6 /* UserSettingsManagerProtocol.swift in Sources */,
+				864DA5122C20DBE400AB8D71 /* UserDataStoreManager.swift in Sources */,
 				868B12512C13B9DC0000F5D6 /* SignInViewModel.swift in Sources */,
 				86119AFF2C0FD8090067DC64 /* ContentView.swift in Sources */,
+				864DA5162C21303500AB8D71 /* UserDataStoreManagerProtocol.swift in Sources */,
 				869161BC2C16A81400454D12 /* DrawerViewModel.swift in Sources */,
 				863F1CF32C1A553300EBF185 /* TermViewModel.swift in Sources */,
 				865C0CF62C196A3000A091E4 /* UserAccount.swift in Sources */,

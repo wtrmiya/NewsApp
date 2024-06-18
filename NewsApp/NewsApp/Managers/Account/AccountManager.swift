@@ -40,9 +40,7 @@ extension AccountManager: AccountProtocol {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
             try await updateDisplayName(user: result.user, displayName: displayName)
-            guard let user = UserAccount(user: result.user) else { return }
-            self.user = user
-            try await createUserDataToFirestore(user: result.user)
+            self.user = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
         } catch {
             if let error = error as? AuthErrorCode {
                 let errorMessage: String
@@ -69,8 +67,8 @@ extension AccountManager: AccountProtocol {
     func signIn(email: String, password: String) async throws {
         do {
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
-            guard let user = UserAccount(user: result.user) else { return }
-            self.user = user
+            guard let displayName = result.user.displayName else { return }
+            self.user = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
         } catch {
             if let error = error as? AuthErrorCode {
                 let errorMessage: String
@@ -121,11 +119,7 @@ extension AccountManager: AccountProtocol {
         try await request.commitChanges()
     }
     
-    private func createUserDataToFirestore(user: User) async throws {
-        let firestoreDB = Firestore.firestore()
-        try await firestoreDB.collection("users").addDocument(data: [
-            "uid": user.uid,
-            "displayName": user.displayName ?? "no display name"
-        ])
+    func setDocumentIdToCurrentUser(documentId: String) {
+        self.user?.setDocumentId(documentId: documentId)
     }
 }

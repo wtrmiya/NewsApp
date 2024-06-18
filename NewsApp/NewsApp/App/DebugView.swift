@@ -13,6 +13,10 @@ struct DebugView: View {
     private let displayName: String = "testuser"
     
     @State private var isSignedIn: Bool = AccountManager.shared.isSignedIn
+    
+    @EnvironmentObject private var appDC: AppDependencyContainer
+    private let signUpViewModel = SignUpViewModel()
+    private let signInViewModel = SignInViewModel()
 
     var body: some View {
         Form {
@@ -66,29 +70,16 @@ struct DebugView: View {
     }
     
     private func signUp() async {
-        do {
-            try await AccountManager.shared.signUp(
-                email: email,
-                password: password,
-                displayName: displayName
-            )
-            guard let user = AccountManager.shared.user
-            else { return }
-            try await UserSettingsManager.shared.registerDefaultUserSettings(uid: user.uid)
-        } catch {
-            print(error)
-        }
+        signUpViewModel.email = email
+        signUpViewModel.password = password
+        signUpViewModel.displayName = displayName
+        await signUpViewModel.signUp()
     }
     
     private func signIn() async {
-        do {
-            try await AccountManager.shared.signIn(email: email, password: password)
-            guard let user = AccountManager.shared.user
-            else { return }
-            try await UserSettingsManager.shared.getCurrentUserSettings(uid: user.uid)
-        } catch {
-            print(error)
-        }
+        signInViewModel.email = email
+        signInViewModel.password = password
+        await signInViewModel.signIn()
     }
 }
 
