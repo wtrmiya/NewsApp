@@ -12,20 +12,26 @@ import FirebaseFirestoreSwift
 final class UserDataStoreManager {
     static let shared = UserDataStoreManager()
     private init() {}
+    
+    private let firestoreDB = Firestore.firestore()
+}
+
+private extension UserDataStoreManager {
+    var usersCollectionRef: CollectionReference {
+        return firestoreDB.collection("users")
+    }
 }
 
 extension UserDataStoreManager {
     func createUserDataStore(user: UserAccount) async throws {
-        let firestoreDB = Firestore.firestore()
-        try await firestoreDB.collection("users").addDocument(data: [
+        try await usersCollectionRef.addDocument(data: [
             "uid": user.uid,
             "displayName": user.displayName
         ])
     }
     
     func getUserDataStoreDocumentId(user: UserAccount) async throws -> String {
-        let firestoreDB = Firestore.firestore()
-        guard let userDocumentId = try await firestoreDB.collection("users")
+        guard let userDocumentId = try await usersCollectionRef
             .whereField("uid", isEqualTo: user.uid)
             .getDocuments()
             .documents.first?.documentID
