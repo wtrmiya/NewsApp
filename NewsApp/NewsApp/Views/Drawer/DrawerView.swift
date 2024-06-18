@@ -43,6 +43,7 @@ struct DrawerView: View {
                             closeDrawer()
                         }, label: {
                             Image(systemName: "multiply")
+                                .foregroundStyle(.black)
                         })
                         .padding()
                     }
