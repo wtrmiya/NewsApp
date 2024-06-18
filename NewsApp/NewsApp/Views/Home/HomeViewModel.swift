@@ -16,14 +16,17 @@ final class HomeViewModel: ObservableObject {
     let articleManager: ArticleManagerProtocol
     let bookmarkManager: BookmarkManagerProtocol
     let accountManager: AccountProtocol
+    let userDataStoreManager: UserDataStoreManager
     
     init(articleManager: ArticleManagerProtocol = ArticleManager.shared,
          bookmarkManager: BookmarkManagerProtocol = BookmarkManager.shared,
-         accountManager: AccountProtocol = AccountManager.shared
+         accountManager: AccountProtocol = AccountManager.shared,
+         userDataSoreManager: UserDataStoreManager = UserDataStoreManager.shared
     ) {
         self.articleManager = articleManager
         self.bookmarkManager = bookmarkManager
         self.accountManager = accountManager
+        self.userDataStoreManager = userDataSoreManager
     }
     
     @MainActor
@@ -73,17 +76,22 @@ final class HomeViewModel: ObservableObject {
               let toggledArticleIndex = index
         else { return }
         
-        guard let currentUser = accountManager.user else {
-            return
-        }
+        guard let tempUser = accountManager.user else { return }
         
         do {
+            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
+            let currentUser = UserAccount(
+                uid: tempUser.uid,
+                email: tempUser.email,
+                displayName: tempUser.displayName,
+                documentId: userDocumentId
+            )
             self.articles[toggledArticleIndex] = toggledArticle
             
             if toggledArticle.bookmarked {
                 guard let updatedArticle = try await bookmarkManager.addBookmark(
                     article: toggledArticle,
-                    uid: currentUser.uid
+                    user: currentUser
                 )
                 else {
                     return

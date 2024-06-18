@@ -15,19 +15,17 @@ final class BookmarkManager {
 }
 
 extension BookmarkManager: BookmarkManagerProtocol {
-    func addBookmark(article: Article, uid: String) async throws -> Article? {
-        guard article.bookmarked else { return nil }
-        
-        let firestoreDB = Firestore.firestore()
-        guard let userDocumentID = try await firestoreDB.collection("users")
-            .whereField("uid", isEqualTo: uid)
-            .getDocuments()
-            .documents.first?.documentID
-        else {
+    func addBookmark(article: Article, user: UserAccount) async throws -> Article? {
+        guard let userDocumentId = user.documentId else {
+            return nil
+        }
+        guard article.bookmarked else {
             return nil
         }
         
-        let docRef = try await firestoreDB.collection("users").document(userDocumentID)
+        let firestoreDB = Firestore.firestore()
+        
+        let docRef = try await firestoreDB.collection("users").document(userDocumentId)
             .collection("bookmarks").addDocument(data: article.toDictionary())
         let updatedArticle = article.updateBookmarkedData(documentId: docRef.documentID)
         return updatedArticle

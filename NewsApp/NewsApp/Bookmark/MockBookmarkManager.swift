@@ -8,7 +8,8 @@
 import Foundation
 
 final class MockBookmarkManager: BookmarkManagerProtocol {
-    func addBookmark(article: Article, uid: String) async throws -> Article? {
+    func addBookmark(article: Article, user: UserAccount) async throws -> Article? {
+        guard user.documentId != nil else { return nil }
         guard article.bookmarked else { return nil }
         let updatedArticle = article.updateBookmarkedData(documentId: UUID().uuidString)
         return updatedArticle
