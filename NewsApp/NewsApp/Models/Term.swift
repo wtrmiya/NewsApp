@@ -16,6 +16,17 @@ struct Term: Decodable {
 }
 
 extension Term {
+    var formattedEffectiveDateDescription: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ja_JP")
+        dateFormatter.dateFormat = "yyyy年MM月dd日"
+        return dateFormatter.string(from: effectiveDate)
+    }
+    
+    var escapeRemovedBody: String {
+        return body.replacing(/\\n/, with: "\n")
+    }
+    
     static func fromSnapshot(snapshot: QueryDocumentSnapshot) -> Term? {
         let dictionary = snapshot.data()
         guard let title = dictionary["title"] as? String,
