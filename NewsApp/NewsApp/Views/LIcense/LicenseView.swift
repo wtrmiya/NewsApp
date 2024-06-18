@@ -14,14 +14,14 @@ struct LicenseView: View {
     var body: some View {
         NavigationStack {
             LicenseListView()
-            .navigationTitle("License")
+            .navigationTitle("ライセンス")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         isShowing = false
                     }, label: {
-                        Text("Dismiss")
+                        Text("閉じる")
                     })
                 }
             }
