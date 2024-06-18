@@ -24,6 +24,7 @@
 		862F1D642C18D4C60013DE91 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 862F1D632C18D4C60013DE91 /* Article.swift */; };
 		862F1D672C18D5270013DE91 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 862F1D662C18D5270013DE91 /* NetworkError.swift */; };
 		862F1D692C18D5530013DE91 /* ArticleManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 862F1D682C18D5530013DE91 /* ArticleManagerProtocol.swift */; };
+		8630D37C2C2160BB006E1854 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8630D37B2C2160BB006E1854 /* MarkdownUI */; };
 		863F1CEF2C1A3D3900EBF185 /* BookmarkViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F1CEE2C1A3D3900EBF185 /* BookmarkViewModelTests.swift */; };
 		863F1CF12C1A4A5D00EBF185 /* DrawerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F1CF02C1A4A5D00EBF185 /* DrawerViewModelTests.swift */; };
 		863F1CF32C1A553300EBF185 /* TermViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F1CF22C1A553300EBF185 /* TermViewModel.swift */; };
@@ -173,6 +174,7 @@
 				865407F22C1152540034055A /* FirebaseFirestore in Frameworks */,
 				863F1D012C1A792B00EBF185 /* LicenseList in Frameworks */,
 				865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */,
+				8630D37C2C2160BB006E1854 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,6 +530,7 @@
 				865407F12C1152540034055A /* FirebaseFirestore */,
 				865407F32C1152540034055A /* FirebaseFirestoreSwift */,
 				863F1D002C1A792B00EBF185 /* LicenseList */,
+				8630D37B2C2160BB006E1854 /* MarkdownUI */,
 			);
 			productName = NewsApp;
 			productReference = 86119AF92C0FD8090067DC64 /* NewsApp.app */;
@@ -582,6 +585,7 @@
 			packageReferences = (
 				865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */,
+				8630D37A2C2160BB006E1854 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 			);
 			productRefGroup = 86119AFA2C0FD8090067DC64 /* Products */;
 			projectDirPath = "";
@@ -1437,6 +1441,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8630D37A2C2160BB006E1854 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.1;
+			};
+		};
 		863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/cybozu/LicenseList";
@@ -1456,6 +1468,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8630D37B2C2160BB006E1854 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8630D37A2C2160BB006E1854 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
+		};
 		863F1D002C1A792B00EBF185 /* LicenseList */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */;
