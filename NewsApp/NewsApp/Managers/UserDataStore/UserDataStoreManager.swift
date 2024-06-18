@@ -22,7 +22,7 @@ private extension UserDataStoreManager {
     }
 }
 
-extension UserDataStoreManager {
+extension UserDataStoreManager: UserDataStoreManagerProtocol {
     func createUserDataStore(user: UserAccount) async throws {
         try await usersCollectionRef.addDocument(data: [
             "uid": user.uid,

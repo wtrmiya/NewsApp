@@ -16,11 +16,11 @@ final class SignInViewModel: ObservableObject {
     
     private let accountManager: AccountProtocol
     private let userSettingsManager: UserSettingsManagerProtocol
-    private let userDataStoreManager: UserDataStoreManager
+    private let userDataStoreManager: UserDataStoreManagerProtocol
 
     init(accountManager: AccountProtocol = AccountManager.shared,
          userSettingsManager: UserSettingsManagerProtocol = UserSettingsManager.shared,
-         userDataStoreManager: UserDataStoreManager = UserDataStoreManager.shared
+         userDataStoreManager: UserDataStoreManagerProtocol = UserDataStoreManager.shared
     ) {
         self.accountManager = accountManager
         self.userSettingsManager = userSettingsManager

@@ -12,7 +12,12 @@ final class SignUpViewModelTests: XCTestCase {
     @MainActor
     func test_問題なくサインインを実行できた場合エラーメッセージが生成されないこと() {
         let expectation1 = XCTestExpectation()
-        let sut = SignUpViewModel(accountManager: MockAccountManager())
+        let sut = SignUpViewModel(
+            accountManager: MockAccountManager(),
+            userSettingsManager: MockUserSettingsManager(),
+            userDataStoreManager: MockUserDataStoreManager()
+        )
+        
         sut.email = "hello@example.com"
         sut.password = "password"
         sut.displayName = "testuser"
@@ -31,7 +36,11 @@ final class SignUpViewModelTests: XCTestCase {
     @MainActor
     func test_Emailの形式が誤っていればその旨のエラーメッセージを生成する() {
         let expectation = XCTestExpectation()
-        let sut = SignUpViewModel(accountManager: MockAccountManager())
+        let sut = SignUpViewModel(
+            accountManager: MockAccountManager(),
+            userSettingsManager: MockUserSettingsManager(),
+            userDataStoreManager: MockUserDataStoreManager()
+        )
         sut.email = "hello"
         sut.password = "password"
         sut.displayName = "testuser"
@@ -79,7 +88,11 @@ final class SignUpViewModelTests: XCTestCase {
     @MainActor
     func test_既に登録されているEmailを登録しようとした場合にその旨のエラーメッセージを生成する() {
         let expectation1 = XCTestExpectation()
-        let sut = SignUpViewModel(accountManager: MockAccountManager())
+        let sut = SignUpViewModel(
+            accountManager: MockAccountManager(),
+            userSettingsManager: MockUserSettingsManager(),
+            userDataStoreManager: MockUserDataStoreManager()
+        )
         sut.email = "hello@example.com"
         sut.password = "password"
         sut.displayName = "testuser1"

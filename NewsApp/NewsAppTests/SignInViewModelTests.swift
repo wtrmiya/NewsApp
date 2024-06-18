@@ -12,7 +12,13 @@ final class SignInViewModelTests: XCTestCase {
     @MainActor
     func test_問題なくサインインを実行できた場合エラーメッセージが生成されないこと() {
         let accountManager = MockAccountManager()
-        let sut = SignInViewModel(accountManager: accountManager)
+        let userSettingsManager = MockUserSettingsManager()
+        let userDataStoreManager = MockUserDataStoreManager()
+        let sut = SignInViewModel(
+            accountManager: accountManager,
+            userSettingsManager: userSettingsManager,
+            userDataStoreManager: userDataStoreManager
+        )
         
         // ダミーユーザ情報
         let email = "hello@example.com"
@@ -64,8 +70,14 @@ final class SignInViewModelTests: XCTestCase {
     @MainActor
     func test_Emailの形式が誤っていればその旨のエラーメッセージを生成する() {
         let accountManager = MockAccountManager()
-        let sut = SignInViewModel(accountManager: accountManager)
-        
+        let userSettingsManager = MockUserSettingsManager()
+        let userDataStoreManager = MockUserDataStoreManager()
+        let sut = SignInViewModel(
+            accountManager: accountManager,
+            userSettingsManager: userSettingsManager,
+            userDataStoreManager: userDataStoreManager
+        )
+
         // ダミーユーザ情報
         let email = "hello@example.com"
         let password = "password"
@@ -116,8 +128,14 @@ final class SignInViewModelTests: XCTestCase {
     @MainActor
     func test_Emailが未登録であればその旨のエラーメッセージを生成する() {
         let accountManager = MockAccountManager()
-        let sut = SignInViewModel(accountManager: accountManager)
-        
+        let userSettingsManager = MockUserSettingsManager()
+        let userDataStoreManager = MockUserDataStoreManager()
+        let sut = SignInViewModel(
+            accountManager: accountManager,
+            userSettingsManager: userSettingsManager,
+            userDataStoreManager: userDataStoreManager
+        )
+
         // ダミーユーザ情報
         let email = "hello@example.com"
         let password = "password"
@@ -168,8 +186,14 @@ final class SignInViewModelTests: XCTestCase {
     @MainActor
     func test_パスワードが誤っていればその旨のエラーメッセージを生成する() {
         let accountManager = MockAccountManager()
-        let sut = SignInViewModel(accountManager: accountManager)
-        
+        let userSettingsManager = MockUserSettingsManager()
+        let userDataStoreManager = MockUserDataStoreManager()
+        let sut = SignInViewModel(
+            accountManager: accountManager,
+            userSettingsManager: userSettingsManager,
+            userDataStoreManager: userDataStoreManager
+        )
+
         // ダミーユーザ情報
         let email = "hello@example.com"
         let password = "password"

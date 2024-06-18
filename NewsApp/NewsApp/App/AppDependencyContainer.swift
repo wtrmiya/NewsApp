@@ -51,7 +51,8 @@ final class AppDependencyContainer: ObservableObject {
         return HomeViewModel(
             articleManager: ArticleManager.shared,
             bookmarkManager: BookmarkManager.shared,
-            accountManager: sharedAccountManager
+            accountManager: sharedAccountManager,
+            userDataSoreManager: UserDataStoreManager.shared
         )
     }
     
@@ -62,7 +63,8 @@ final class AppDependencyContainer: ObservableObject {
     func makeBookmarkViewModel() -> BookmarkViewModel {
         return BookmarkViewModel(
             accountManager: sharedAccountManager,
-            bookmarkManager: BookmarkManager.shared
+            bookmarkManager: BookmarkManager.shared,
+            userDataStoreManager: UserDataStoreManager.shared
         )
     }
     

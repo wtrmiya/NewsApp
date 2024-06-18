@@ -12,7 +12,12 @@ final class HomeViewModelTests: XCTestCase {
     @MainActor
     func test_記事を取得すること() {
         let expectation = XCTestExpectation()
-        let sut = HomeViewModel(articleManager: MockArticleManagerVarid())
+        let sut = HomeViewModel(
+            articleManager: MockArticleManagerVarid(),
+            bookmarkManager: MockBookmarkManager(),
+            accountManager: MockAccountManager(),
+            userDataSoreManager: MockUserDataStoreManager()
+        )
         Task {
             await sut.populateDefaultArticles()
             expectation.fulfill()
@@ -26,7 +31,12 @@ final class HomeViewModelTests: XCTestCase {
     @MainActor
     func test_APIキー誤りの例外が発生した場合その旨のエラーメッセージが生成されること() {
         let expectation = XCTestExpectation()
-        let sut = HomeViewModel(articleManager: MockArticleManagerInvalidAPIKey())
+        let sut = HomeViewModel(
+            articleManager: MockArticleManagerInvalidAPIKey(),
+            bookmarkManager: MockBookmarkManager(),
+            accountManager: MockAccountManager(),
+            userDataSoreManager: MockUserDataStoreManager()
+        )
         Task {
             await sut.populateDefaultArticles()
             expectation.fulfill()
@@ -64,7 +74,12 @@ final class HomeViewModelTests: XCTestCase {
     @MainActor
     func test_想定していない例外が発生した場合その旨のエラーメッセージが生成されること() {
         let expectation = XCTestExpectation()
-        let sut = HomeViewModel(articleManager: MockArticleManagerOtherError())
+        let sut = HomeViewModel(
+            articleManager: MockArticleManagerOtherError(),
+            bookmarkManager: MockBookmarkManager(),
+            accountManager: MockAccountManager(),
+            userDataSoreManager: MockUserDataStoreManager()
+        )
         Task {
             await sut.populateDefaultArticles()
             expectation.fulfill()
@@ -87,9 +102,10 @@ final class HomeViewModelTests: XCTestCase {
         let sut = HomeViewModel(
             articleManager: MockArticleManagerVarid(),
             bookmarkManager: MockBookmarkManager(),
-            accountManager: MockAccountManager()
+            accountManager: MockAccountManager(),
+            userDataSoreManager: MockUserDataStoreManager()
         )
-        
+
         // ダミーユーザ作成
         let email = "hello@example.com"
         let password = "password"
@@ -138,9 +154,10 @@ final class HomeViewModelTests: XCTestCase {
         let sut = HomeViewModel(
             articleManager: MockArticleManagerVarid(),
             bookmarkManager: MockBookmarkManager(),
-            accountManager: MockAccountManager()
+            accountManager: MockAccountManager(),
+            userDataSoreManager: MockUserDataStoreManager()
         )
-        
+
         // ダミーユーザ作成
         let email = "hello@example.com"
         let password = "password"
