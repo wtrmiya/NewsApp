@@ -71,7 +71,7 @@ final class BookmarkViewModel: ObservableObject {
             )
             
             let bookmarksToDelete = indexSet.compactMap { articles[$0] }
-            try await bookmarkManager.deleteBookmarks(articles: bookmarksToDelete, uid: currentUser.uid)
+            try await bookmarkManager.deleteBookmarks(articles: bookmarksToDelete, user: currentUser)
             let updatedBookmarkedArticles = try await bookmarkManager.getBookmarks(user: currentUser)
             self.articles = updatedBookmarkedArticles
         } catch {

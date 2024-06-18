@@ -46,15 +46,11 @@ extension BookmarkManager: BookmarkManagerProtocol {
         return updatedArticle
     }
     
-    func deleteBookmarks(articles: [Article], uid: String) async throws {
+    func deleteBookmarks(articles: [Article], user: UserAccount) async throws {
+        guard let userDocumentId = user.documentId else { return }
         let firestoreDB = Firestore.firestore()
-        guard let userDocumentID = try await firestoreDB.collection("users")
-            .whereField("uid", isEqualTo: uid)
-            .getDocuments()
-            .documents.first?.documentID
-        else { return }
         
-        let collectionRef = firestoreDB.collection("users").document(userDocumentID)
+        let collectionRef = firestoreDB.collection("users").document(userDocumentId)
             .collection("bookmarks")
         
         let batch = firestoreDB.batch()
