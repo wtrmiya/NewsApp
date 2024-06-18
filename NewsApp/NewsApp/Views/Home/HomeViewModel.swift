@@ -101,7 +101,7 @@ final class HomeViewModel: ObservableObject {
             } else {
                 guard let updatedArticle = try await bookmarkManager.deleteBookmark(
                     article: toggledArticle,
-                    uid: currentUser.uid
+                    user: currentUser
                 )
                 else {
                     return

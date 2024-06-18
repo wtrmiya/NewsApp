@@ -31,20 +31,15 @@ extension BookmarkManager: BookmarkManagerProtocol {
         return updatedArticle
     }
     
-    func deleteBookmark(article: Article, uid: String) async throws -> Article? {
+    func deleteBookmark(article: Article, user: UserAccount) async throws -> Article? {
+        guard let userDocumentId = user.documentId else { return nil }
         guard !article.bookmarked else { return nil }
         
         let firestoreDB = Firestore.firestore()
-        guard let userDocumentID = try await firestoreDB.collection("users")
-            .whereField("uid", isEqualTo: uid)
-            .getDocuments()
-            .documents.first?.documentID
-        else { return nil }
-        
         guard let bookmarkDocumentId = article.documentId
         else { return nil }
         
-        let docRef = firestoreDB.collection("users").document(userDocumentID)
+        let docRef = firestoreDB.collection("users").document(userDocumentId)
             .collection("bookmarks").document(bookmarkDocumentId)
         try await docRef.delete()
         let updatedArticle = article.updateBookmarkedData(documentId: nil)
