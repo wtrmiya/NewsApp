@@ -25,87 +25,101 @@ struct DrawerContentView: View {
         self._isShowing = isShowing
         self.drawerViewModel = drawerViewModel
     }
+    
+    private var isSignedIn: Bool {
+        drawerViewModel.sidnedInUser != nil
+    }
 
     var body: some View {
         VStack {
             if let user = drawerViewModel.sidnedInUser {
-                HStack {
-                    Text(user.displayName)
+                VStack {
                     Spacer()
+                        .frame(height: 50)
+                    HStack {
+                        Image(systemName: "person")
+                        Text(user.displayName)
+                        Spacer()
+                    }
                 }
             } else {
-                HStack {
+                VStack {
+                    Spacer()
+                        .frame(height: 50)
                     Button(action: {
                         isShowingSignUpView = true
                     }, label: {
-                        Text("Sign Up")
+                        Text("サインアップ")
+                            .foregroundStyle(.white)
+                            .frame(width: 150, height: 50)
+                            .background(.blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                     })
                     Button(action: {
                         isShowingSignInView = true
                     }, label: {
-                        Text("Sign In")
+                        Text("サインイン")
+                            .foregroundStyle(.blue)
+                            .frame(width: 150, height: 50)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            }
                     })
                 }
             }
             
-            Spacer()
-                .frame(height: 50)
-            Divider()
-            Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-            }, label: {
-                HStack {
-                    Text("Bookmark")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-            })
-            Divider()
             Spacer()
             Divider()
             Button(action: {
                 isShowingSettingsView = true
             }, label: {
                 HStack {
-                    Text("Settings")
+                    Text("設定")
                     Spacer()
                     Image(systemName: "chevron.right")
                 }
+                .foregroundStyle(.black)
             })
             Divider()
             Button(action: {
                 isShowingTermView = true
             }, label: {
                 HStack {
-                    Text("Terms")
+                    Text("利用規約")
                     Spacer()
                     Image(systemName: "chevron.right")
                 }
+                .foregroundStyle(.black)
             })
             Divider()
             Button(action: {
                 isShowingLicenseListView = true
             }, label: {
                 HStack {
-                    Text("Licenses")
+                    Text("ライセンス")
                     Spacer()
                     Image(systemName: "chevron.right")
                 }
+                .foregroundStyle(.black)
             })
             Divider()
             Spacer()
                 .frame(height: 50)
-            Divider()
             Button(action: {
                 isShowingSignOutAlert = true
             }, label: {
-                HStack {
-                    Text("Sign Out")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
+                Text("サインアウト")
+                    .foregroundStyle(isSignedIn ? .blue : .gray)
+                    .frame(width: 150, height: 50)
+                    .background(isSignedIn ? .white : .gray.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(isSignedIn ? Color.blue : .gray.opacity(0.1), lineWidth: 1)
+                    }
             })
-            Divider()
+            .disabled(!isSignedIn)
         }
         .padding()
         .fullScreenCover(isPresented: $isShowingSettingsView) {
