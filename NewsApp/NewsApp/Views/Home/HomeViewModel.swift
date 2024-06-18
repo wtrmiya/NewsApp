@@ -46,8 +46,15 @@ final class HomeViewModel: ObservableObject {
             var downloadedArticles = try await articleManager.getArticles(category: category)
             
             // ログインしていれば、ブックマーク状態を反映する
-            if let currentUser = accountManager.user {
-                let bookmarkedArticles = try await bookmarkManager.getBookmarks(uid: currentUser.uid)
+            if let tempUser = accountManager.user {
+                let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
+                let currentUser = UserAccount(
+                    uid: tempUser.uid,
+                    email: tempUser.email,
+                    displayName: tempUser.displayName,
+                    documentId: userDocumentId
+                )
+                let bookmarkedArticles = try await bookmarkManager.getBookmarks(user: currentUser)
                 
                 for bookmaredArticle in bookmarkedArticles {
                     // swiftlint:disable:next line_length

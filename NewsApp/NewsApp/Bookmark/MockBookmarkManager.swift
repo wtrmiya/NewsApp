@@ -26,7 +26,8 @@ final class MockBookmarkManager: BookmarkManagerProtocol {
     func deleteBookmarks(articles: [Article], uid: String) async throws {
     }
     
-    func getBookmarks(uid: String) async throws -> [Article] {
+    func getBookmarks(user: UserAccount) async throws -> [Article] {
+        guard user.documentId != nil else { return [] }
         return [
             Article(
                 source: ArticleSource(name: "Example.com"),

@@ -67,15 +67,11 @@ extension BookmarkManager: BookmarkManagerProtocol {
         try await batch.commit()
     }
     
-    func getBookmarks(uid: String) async throws -> [Article] {
+    func getBookmarks(user: UserAccount) async throws -> [Article] {
+        guard let userDocumentId = user.documentId else { return [] }
         let firestoreDB = Firestore.firestore()
-        guard let userDocumentID = try await firestoreDB.collection("users")
-            .whereField("uid", isEqualTo: uid)
-            .getDocuments()
-            .documents.first?.documentID
-        else { return [] }
         
-        let snapshot = try await firestoreDB.collection("users").document(userDocumentID)
+        let snapshot = try await firestoreDB.collection("users").document(userDocumentId)
             .collection("bookmarks").getDocuments()
         
         let bookmarks = snapshot.documents.compactMap { snapshot in
