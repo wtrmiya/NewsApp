@@ -29,21 +29,28 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
     }
     
     func createDefaultUserSettings(user: UserAccount) async throws {
+        guard let userDocumentId = user.documentId else { return }
         let firestoreDB = Firestore.firestore()
         var defaultSettings = UserSettings.defaultSettings(uid: user.uid)
         let defaultSettingsDict = defaultSettings.toDictionary()
-        let docRef = try await firestoreDB.collection("user_settings").addDocument(data: defaultSettingsDict)
+        
+        let userDocRef = firestoreDB.collection("users").document(userDocumentId)
+        let docRef = try await userDocRef.collection("user_settings").addDocument(data: defaultSettingsDict)
         defaultSettings.setDocumentId(documentId: docRef.documentID)
         self.userSettings = defaultSettings
     }
 
-    func getCurrentUserSettings(user: UserAccount) async throws {
+    func fetchCurrentUserSettings(user: UserAccount) async throws {
+        guard let userDocumentId = user.documentId else {
+            return
+        }
         let firestoreDB = Firestore.firestore()
-        guard let snapshot = try await firestoreDB.collection("user_settings")
+        let userDocRef = firestoreDB.collection("users").document(userDocumentId)
+        
+        guard let snapshot = try await userDocRef.collection("user_settings")
             .whereField("uid", isEqualTo: user.uid)
             .getDocuments().documents.first
         else {
-            print("\(#function) #1")
             return
         }
         
@@ -51,14 +58,13 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
         self.userSettings = currentUserSettings
     }
     
-    func updateUserSettings(by updatedUserSettings: UserSettings) async throws {
+    func updateUserSettings(by updatedUserSettings: UserSettings, user: UserAccount) async throws {
+        guard let userDocumentId = user.documentId else { return }
+        guard let userSettingsDocumentId = updatedUserSettings.documentId else { return }
         let firestoreDB = Firestore.firestore()
-        guard let userSettingsDocumentID = try await firestoreDB.collection("user_settings")
-            .whereField("uid", isEqualTo: updatedUserSettings.uid)
-            .getDocuments().documents.first?.documentID
-        else { return }
+        let userDocRef = firestoreDB.collection("users").document(userDocumentId)
         
-        let docRef = firestoreDB.collection("user_settings").document(userSettingsDocumentID)
+        let docRef = userDocRef.collection("user_settings").document(userSettingsDocumentId)
         try await docRef.updateData(updatedUserSettings.toDictionary())
     }
     

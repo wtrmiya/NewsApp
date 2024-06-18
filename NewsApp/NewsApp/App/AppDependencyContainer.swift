@@ -16,10 +16,20 @@ final class AppDependencyContainer: ObservableObject {
     init() {
         let accountManager = AccountManager.shared
         let userSettingsManager = UserSettingsManager.shared
-        if let user = accountManager.user {
+        if let tempUser = accountManager.user {
             Task {
                 do {
-                    try await userSettingsManager.getCurrentUserSettings(user: user)
+                    // この時点でユーザのDocumentIdが不明。
+                    // UserDataStoreから取得する必要がある。
+                    let userDataStoreDocumentId = try await UserDataStoreManager.shared
+                        .getUserDataStoreDocumentId(user: tempUser)
+                    let user = UserAccount(
+                        uid: tempUser.uid,
+                        email: tempUser.email,
+                        displayName: tempUser.displayName,
+                        documentId: userDataStoreDocumentId
+                    )
+                    try await userSettingsManager.fetchCurrentUserSettings(user: user)
                 } catch {
                     print(error)
                 }

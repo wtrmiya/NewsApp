@@ -34,7 +34,7 @@ final class SignInViewModel: ObservableObject {
             let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
             accountManager.setDocumentIdToCurrentUser(documentId: userDocumentId)
             guard let user = accountManager.user else { return }
-            try await userSettingsManager.getCurrentUserSettings(user: user)
+            try await userSettingsManager.fetchCurrentUserSettings(user: user)
         } catch {
             if let error = error as? AuthError {
                 switch error {
