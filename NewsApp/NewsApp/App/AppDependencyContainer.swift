@@ -162,4 +162,15 @@ final class AppDependencyContainer: ObservableObject {
     func makeAccountSettingsViewModel() -> AccountSettingsViewModel {
         return sharedAccountSettingsViewModel
     }
+    
+    func makeSearchView(isShowing: Binding<Bool>) -> SearchView {
+        return SearchView(
+            isShowing: isShowing,
+            searchViewModel: makeSearchViewModel()
+        )
+    }
+    
+    func makeSearchViewModel() -> SearchViewModel {
+        return SearchViewModel()
+    }
 }

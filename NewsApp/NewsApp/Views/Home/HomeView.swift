@@ -13,6 +13,7 @@ struct HomeView: View {
     @State private var isShowingErrorAlert: Bool = false
 
     @ObservedObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
     init(homeViewModel: HomeViewModel) {
         self.homeViewModel = homeViewModel
@@ -83,14 +84,16 @@ struct HomeView: View {
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(width: 300, height: 200)
                                         }
-                                        HStack {
-                                            Spacer()
-                                            Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
-                                                .onTapGesture {
-                                                    Task {
-                                                        await bookmarkTapped(article: article)
+                                        if homeViewModel.isSignedIn {
+                                            HStack {
+                                                Spacer()
+                                                Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
+                                                    .onTapGesture {
+                                                        Task {
+                                                            await bookmarkTapped(article: article)
+                                                        }
                                                     }
-                                                }
+                                            }
                                         }
                                         
                                         Text(article.title)
@@ -130,7 +133,7 @@ struct HomeView: View {
             DrawerView(isShowing: $isShowingDrawer)
         }
         .fullScreenCover(isPresented: $isShowingSearchView, content: {
-            SearchView(isShowing: $isShowingSearchView)
+            appDependencyContainer.makeSearchView(isShowing: $isShowingSearchView)
         })
         .task {
             await homeViewModel.populateDefaultArticles()
