@@ -30,6 +30,10 @@ final class SearchViewModel: ObservableObject {
         self.bookmarkManager = bookmarkManager
     }
     
+    var isSignedIn: Bool {
+        accountManager.isSignedIn
+    }
+    
     @MainActor
     func fetchArticle(searchText: String) async {
         do {

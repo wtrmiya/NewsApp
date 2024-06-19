@@ -86,14 +86,16 @@ struct SearchView: View {
                                             .aspectRatio(contentMode: .fit)
                                             .frame(width: 300, height: 200)
                                     }
-                                    HStack {
-                                        Spacer()
-                                        Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
-                                            .onTapGesture {
-                                                Task {
-                                                    await bookmarkTapped(article: article)
+                                    if searchViewModel.isSignedIn {
+                                        HStack {
+                                            Spacer()
+                                            Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
+                                                .onTapGesture {
+                                                    Task {
+                                                        await bookmarkTapped(article: article)
+                                                    }
                                                 }
-                                            }
+                                        }
                                     }
                                     
                                     Text(article.title)

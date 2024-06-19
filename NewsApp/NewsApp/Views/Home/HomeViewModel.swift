@@ -29,6 +29,10 @@ final class HomeViewModel: ObservableObject {
         self.userDataStoreManager = userDataSoreManager
     }
     
+    var isSignedIn: Bool {
+        accountManager.isSignedIn
+    }
+    
     @MainActor
     func populateDefaultArticles() async {
         await populateArticles(of: .general)
