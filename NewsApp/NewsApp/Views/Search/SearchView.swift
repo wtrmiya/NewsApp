@@ -45,6 +45,15 @@ struct SearchView: View {
                     })
                 }
                 .padding()
+                if !searchViewModel.searchResultWord.isEmpty {
+                    HStack {
+                        Text("検索ワード: \(searchViewModel.searchResultWord)")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        Spacer()
+                    }
+                    .padding()
+                }
                 if searchViewModel.searchResultArticles.isEmpty {
                     Spacer()
                     Text("検索結果がありません")
@@ -99,6 +108,7 @@ struct SearchView: View {
                         }
                     }
                     .listStyle(.plain)
+                    .scrollDismissesKeyboard(.immediately)
                 }
             }
             .navigationTitle("記事検索")
@@ -117,6 +127,7 @@ struct SearchView: View {
     
     private func fetchArticle() async {
         await searchViewModel.fetchArticle(searchText: inputText)
+        inputText = ""
     }
     
     private func bookmarkTapped(article: Article) async {

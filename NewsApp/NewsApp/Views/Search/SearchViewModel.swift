@@ -9,7 +9,8 @@ import Foundation
 
 final class SearchViewModel: ObservableObject {
     @Published var searchResultArticles: [Article] = []
-    
+    @Published var searchResultWord: String = ""
+
     @Published var errorMessage: String?
     
     private let articleManager: ArticleManagerProtocol
@@ -55,6 +56,7 @@ final class SearchViewModel: ObservableObject {
             }
 
             self.searchResultArticles = downloadedArticles
+            self.searchResultWord = searchText
         } catch {
             if let error = error as? NetworkError {
                 self.errorMessage = error.rawValue
