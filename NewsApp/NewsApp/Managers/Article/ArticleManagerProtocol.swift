@@ -8,5 +8,6 @@
 import Foundation
 
 protocol ArticleManagerProtocol {
-    func getArticles(category: ArticleCategory) async throws -> [Article]
+    func getArticlesByCategory(category: ArticleCategory) async throws -> [Article]
+    func getArticlesBySearchText(text: String) async throws -> [Article]
 }

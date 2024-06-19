@@ -13,6 +13,7 @@ struct HomeView: View {
     @State private var isShowingErrorAlert: Bool = false
 
     @ObservedObject private var homeViewModel: HomeViewModel
+    @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
     init(homeViewModel: HomeViewModel) {
         self.homeViewModel = homeViewModel
@@ -130,7 +131,7 @@ struct HomeView: View {
             DrawerView(isShowing: $isShowingDrawer)
         }
         .fullScreenCover(isPresented: $isShowingSearchView, content: {
-            SearchView(isShowing: $isShowingSearchView)
+            appDependencyContainer.makeSearchView(isShowing: $isShowingSearchView)
         })
         .task {
             await homeViewModel.populateDefaultArticles()

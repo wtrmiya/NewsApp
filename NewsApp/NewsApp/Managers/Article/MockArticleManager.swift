@@ -8,7 +8,7 @@
 import Foundation
 
 final class MockArticleManagerVarid: ArticleManagerProtocol {
-    func getArticles(category: ArticleCategory) async throws -> [Article] {
+    func getArticlesByCategory(category: ArticleCategory) async throws -> [Article] {
         return [
             Article(
                 source: ArticleSource(name: "Example.com"),
@@ -36,22 +36,38 @@ final class MockArticleManagerVarid: ArticleManagerProtocol {
             )
         ]
     }
+    
+    func getArticlesBySearchText(text: String) async throws -> [Article] {
+        return []
+    }
 }
 
 final class MockArticleManagerInvalidAPIKey: ArticleManagerProtocol {
-    func getArticles(category: ArticleCategory) async throws -> [Article] {
+    func getArticlesByCategory(category: ArticleCategory) async throws -> [Article] {
         throw NetworkError.invalidAPIKey
+    }
+    
+    func getArticlesBySearchText(text: String) async throws -> [Article] {
+        return []
     }
 }
 
 final class MockArticleManagerInvalidResponse: ArticleManagerProtocol {
-    func getArticles(category: ArticleCategory) async throws -> [Article] {
+    func getArticlesByCategory(category: ArticleCategory) async throws -> [Article] {
         throw NetworkError.invalidResponse
+    }
+    
+    func getArticlesBySearchText(text: String) async throws -> [Article] {
+        return []
     }
 }
 
 final class MockArticleManagerOtherError: ArticleManagerProtocol {
-    func getArticles(category: ArticleCategory) async throws -> [Article] {
+    func getArticlesByCategory(category: ArticleCategory) async throws -> [Article] {
         throw AuthError.unknownError(errorMessage: "Unknown")
+    }
+    
+    func getArticlesBySearchText(text: String) async throws -> [Article] {
+        return []
     }
 }

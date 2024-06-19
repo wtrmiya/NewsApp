@@ -1,49 +1,38 @@
 //
-//  HomeViewModel.swift
+//  SearchViewModel.swift
 //  NewsApp
 //
-//  Created by Wataru Miyakoshi on 2024/06/11.
+//  Created by Wataru Miyakoshi on 2024/06/19.
 //
 
 import Foundation
 
-final class HomeViewModel: ObservableObject {
-    @Published var articles: [Article] = []
-    @Published var selectedCategory: ArticleCategory = .general
+final class SearchViewModel: ObservableObject {
+    @Published var searchResultArticles: [Article] = []
     
     @Published var errorMessage: String?
     
-    let articleManager: ArticleManagerProtocol
-    let bookmarkManager: BookmarkManagerProtocol
-    let accountManager: AccountProtocol
-    let userDataStoreManager: UserDataStoreManagerProtocol
-    
-    init(articleManager: ArticleManagerProtocol = ArticleManager.shared,
-         bookmarkManager: BookmarkManagerProtocol = BookmarkManager.shared,
-         accountManager: AccountProtocol = AccountManager.shared,
-         userDataSoreManager: UserDataStoreManagerProtocol = UserDataStoreManager.shared
+    private let articleManager: ArticleManagerProtocol
+    private let accountManager: AccountProtocol
+    private let userDataStoreManager: UserDataStoreManagerProtocol
+    private let bookmarkManager: BookmarkManagerProtocol
+
+    init(
+        articleManager: ArticleManagerProtocol = ArticleManager.shared,
+        accountManager: AccountProtocol = AccountManager.shared,
+        userDataStoreManager: UserDataStoreManagerProtocol = UserDataStoreManager.shared,
+        bookmarkManager: BookmarkManagerProtocol = BookmarkManager.shared
     ) {
         self.articleManager = articleManager
-        self.bookmarkManager = bookmarkManager
         self.accountManager = accountManager
-        self.userDataStoreManager = userDataSoreManager
+        self.userDataStoreManager = userDataStoreManager
+        self.bookmarkManager = bookmarkManager
     }
     
     @MainActor
-    func populateDefaultArticles() async {
-        await populateArticles(of: .general)
-    }
-    
-    @MainActor
-    func populateArticlesOfCurrentCategory() async {
-        await populateArticles(of: self.selectedCategory)
-    }
-    
-    @MainActor
-    func populateArticles(of category: ArticleCategory) async {
+    func fetchArticle(searchText: String) async {
         do {
-            selectedCategory = category
-            var downloadedArticles = try await articleManager.getArticlesByCategory(category: category)
+            var downloadedArticles = try await articleManager.getArticlesBySearchText(text: searchText)
             
             // ログインしていれば、ブックマーク状態を反映する
             if let tempUser = accountManager.user {
@@ -65,7 +54,7 @@ final class HomeViewModel: ObservableObject {
                 }
             }
 
-            self.articles = downloadedArticles
+            self.searchResultArticles = downloadedArticles
         } catch {
             if let error = error as? NetworkError {
                 self.errorMessage = error.rawValue
@@ -93,7 +82,7 @@ final class HomeViewModel: ObservableObject {
                 displayName: tempUser.displayName,
                 documentId: userDocumentId
             )
-            self.articles[toggledArticleIndex] = toggledArticle
+            self.searchResultArticles[toggledArticleIndex] = toggledArticle
             
             if toggledArticle.bookmarked {
                 guard let updatedArticle = try await bookmarkManager.addBookmark(
@@ -104,7 +93,7 @@ final class HomeViewModel: ObservableObject {
                     return
                 }
                 
-                articles[toggledArticleIndex] = updatedArticle
+                searchResultArticles[toggledArticleIndex] = updatedArticle
             } else {
                 guard let updatedArticle = try await bookmarkManager.deleteBookmark(
                     article: toggledArticle,
@@ -113,7 +102,7 @@ final class HomeViewModel: ObservableObject {
                 else {
                     return
                 }
-                articles[toggledArticleIndex] = updatedArticle
+                searchResultArticles[toggledArticleIndex] = updatedArticle
             }
         } catch {
             errorMessage = error.localizedDescription
@@ -123,7 +112,7 @@ final class HomeViewModel: ObservableObject {
     private func toggledArticleAndIndexOnArticles(articleToToggle: Article) -> (Article?, Int?) {
         var toggledArticle: Article?
         var toggledArticleIndex: Int?
-        for (index, article) in articles.enumerated() where article.id == articleToToggle.id {
+        for (index, article) in searchResultArticles.enumerated() where article.id == articleToToggle.id {
             toggledArticle = article.bookmarkToggled
             toggledArticleIndex = index
             break
