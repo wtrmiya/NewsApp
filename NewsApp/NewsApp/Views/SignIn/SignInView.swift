@@ -8,35 +8,56 @@
 import SwiftUI
 
 struct SignInView: View {
-    @StateObject private var signInViewModel: SignInViewModel = SignInViewModel()
+    enum Field: Hashable {
+        case email
+        case password
+    }
+    
     @State private var isShowingAlert: Bool = false
-    @Environment(\.dismiss) private var dismiss
+    @FocusState private var focusField: Field?
+    
+    @Binding var isShowing: Bool
+    @ObservedObject private var signInViewModel: SignInViewModel
+    
+    init(isShowing: Binding<Bool>, signInViewModel: SignInViewModel) {
+        self._isShowing = isShowing
+        self.signInViewModel = signInViewModel
+    }
 
     var body: some View {
         ZStack(alignment: .top) {
-            Text("Sign Up")
+            Text("サインイン")
             VStack(alignment: .leading) {
                 HStack {
                     Spacer()
                     Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                        isShowing = false
                     }, label: {
-                        Text("Cancel")
+                        Text("閉じる")
                     })
                 }
+                Spacer()
+                    .frame(height: 30)
 
                 VStack {
                     VStack(alignment: .leading) {
-                        Text("Email")
-                        TextField("Input email", text: $signInViewModel.email)
+                        Text("Emailアドレス")
+                        TextField("Emailアドレスを入力してください", text: $signInViewModel.email)
                             .textFieldStyle(.roundedBorder)
+                            .focused($focusField, equals: .email)
                     }
+                    Spacer()
+                        .frame(height: 20)
                     VStack(alignment: .leading) {
-                        Text("Password")
-                        TextField("Input password", text: $signInViewModel.password)
+                        Text("パスワード")
+                        TextField("パスワードを入力してください", text: $signInViewModel.password)
                             .textFieldStyle(.roundedBorder)
+                            .focused($focusField, equals: .password)
                     }
                 }
+                
+                Spacer()
+                    .frame(height: 30)
 
                 HStack {
                     Spacer()
@@ -45,7 +66,11 @@ struct SignInView: View {
                             await signIn()
                         }
                     }, label: {
-                        Text("Sign In")
+                        Text("サインイン")
+                            .foregroundStyle(.white)
+                            .frame(width: 150, height: 50)
+                            .background(.blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                     })
                     Spacer()
                 }
@@ -53,10 +78,13 @@ struct SignInView: View {
                 Spacer()
             }
         }
+        .onAppear {
+            focusField = .email
+        }
         .padding()
         .alert("Error", isPresented: $isShowingAlert, actions: {
             Button(action: {
-                dismiss()
+                isShowing = false
             }, label: {
                 Text("OK")
             })
@@ -78,5 +106,6 @@ struct SignInView: View {
 }
 
 #Preview {
-    SignInView()
+    let appDC = AppDependencyContainer()
+    return appDC.makeSignInView(isShowing: .constant(true))
 }

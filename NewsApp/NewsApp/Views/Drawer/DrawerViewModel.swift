@@ -6,12 +6,23 @@
 //
 
 import Foundation
+import UserNotifications
 
 final class DrawerViewModel: ObservableObject {
+    @Published var signedInUser: UserAccount?
+    
     private let accountManager: AccountProtocol
     
     init(accountManager: AccountProtocol = AccountManager.shared) {
         self.accountManager = accountManager
+        
+        NotificationCenter.default
+            .addObserver(
+                self,
+                selector: #selector(userStateChanged),
+                name: Notification.Name.signInStateChanged,
+                object: nil
+            )
     }
     
     var sidnedInUser: UserAccount? {
@@ -23,6 +34,14 @@ final class DrawerViewModel: ObservableObject {
             try accountManager.signOut()
         } catch {
             print(error)
+        }
+    }
+    
+    @objc func userStateChanged() {
+        Task {
+            await MainActor.run {
+                signedInUser = accountManager.user
+            }
         }
     }
 }

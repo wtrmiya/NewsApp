@@ -7,7 +7,6 @@
 
 import Foundation
 
-@MainActor
 final class SignInViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
@@ -27,6 +26,7 @@ final class SignInViewModel: ObservableObject {
         self.userDataStoreManager = userDataStoreManager
     }
 
+    @MainActor
     func signIn() async {
         do {
             try await accountManager.signIn(email: email, password: password)

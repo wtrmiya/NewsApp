@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -167,6 +167,20 @@
 		86EDFECE2C1FAA09002F7F5E /* ArticleCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8644C3E12C23E64A00943FB5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Notification+Extensions.swift",
+			);
+			target = 86119AF82C0FD8090067DC64 /* NewsApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		8644C3DD2C23E5DD00943FB5 /* Notification */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (8644C3E12C23E64A00943FB5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Notification; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		86119AF62C0FD8090067DC64 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -233,6 +247,7 @@
 				862F1D622C18D4A80013DE91 /* Models */,
 				8654082E2C1195530034055A /* Managers */,
 				86748B2F2C10607E004312AB /* Views */,
+				8644C3DD2C23E5DD00943FB5 /* Notification */,
 				86119B002C0FD80A0067DC64 /* Assets.xcassets */,
 				86119B162C0FDBB60067DC64 /* Development.xcconfig */,
 				86119B172C0FDBBE0067DC64 /* Production.xcconfig */,
