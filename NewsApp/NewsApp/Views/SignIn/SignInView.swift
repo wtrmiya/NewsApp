@@ -8,9 +8,15 @@
 import SwiftUI
 
 struct SignInView: View {
-    @StateObject private var signInViewModel: SignInViewModel = SignInViewModel()
     @State private var isShowingAlert: Bool = false
-    @Environment(\.dismiss) private var dismiss
+    
+    @Binding var isShowing: Bool
+    @ObservedObject private var signInViewModel: SignInViewModel
+    
+    init(isShowing: Binding<Bool>, signInViewModel: SignInViewModel) {
+        self._isShowing = isShowing
+        self.signInViewModel = signInViewModel
+    }
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -56,7 +62,7 @@ struct SignInView: View {
         .padding()
         .alert("Error", isPresented: $isShowingAlert, actions: {
             Button(action: {
-                dismiss()
+                isShowing = false
             }, label: {
                 Text("OK")
             })
@@ -78,5 +84,6 @@ struct SignInView: View {
 }
 
 #Preview {
-    SignInView()
+    let appDC = AppDependencyContainer()
+    return appDC.makeSignInView(isShowing: .constant(true))
 }

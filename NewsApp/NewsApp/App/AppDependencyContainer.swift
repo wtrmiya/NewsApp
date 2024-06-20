@@ -173,4 +173,19 @@ final class AppDependencyContainer: ObservableObject {
     func makeSearchViewModel() -> SearchViewModel {
         return SearchViewModel()
     }
+    
+    func makeSignInView(isShowing: Binding<Bool>) -> SignInView {
+        return SignInView(
+            isShowing: isShowing,
+            signInViewModel: makeSignInViewModel()
+        )
+    }
+    
+    func makeSignInViewModel() -> SignInViewModel {
+        return SignInViewModel(
+            accountManager: sharedAccountManager,
+            userSettingsManager: sharedUserSettingsManager,
+            userDataStoreManager: UserDataStoreManager.shared
+        )
+    }
 }

@@ -111,24 +111,34 @@ struct BookmarkView: View {
 }
 
 struct SuggestSignInView: View {
+    @State private var isShowingSignInView: Bool = false
+    @State private var isShowingSignUpView: Bool = false
+    @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
+    
     var body: some View {
         VStack {
             Text("該当の機能はサインイン後に使用可能です")
             Spacer()
                 .frame(height: 20)
             Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                isShowingSignInView = true
             }, label: {
                 Text("サインイン")
             })
             Spacer()
                 .frame(height: 20)
             Button(action: {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                isShowingSignUpView = true
             }, label: {
                 Text("新規登録")
             })
         }
         .background(.white)
+        .fullScreenCover(isPresented: $isShowingSignUpView) {
+            SignUpView()
+        }
+        .fullScreenCover(isPresented: $isShowingSignInView) {
+            appDependencyContainer.makeSignInView(isShowing: $isShowingSignInView)
+        }
     }
 }

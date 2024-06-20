@@ -135,7 +135,7 @@ struct DrawerContentView: View {
             SignUpView()
         }
         .fullScreenCover(isPresented: $isShowingSignInView) {
-            SignInView()
+            appDependencyContainer.makeSignInView(isShowing: $isShowingSignInView)
         }
         .alert("現在サインイン中です\nサインアウトしますか", isPresented: $isShowingSignOutAlert) {
             Button(role: .cancel, action: {
