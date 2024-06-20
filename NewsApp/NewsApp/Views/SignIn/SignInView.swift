@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct SignInView: View {
+    enum Field: Hashable {
+        case email
+        case password
+    }
+    
     @State private var isShowingAlert: Bool = false
+    @FocusState private var focusField: Field?
     
     @Binding var isShowing: Bool
     @ObservedObject private var signInViewModel: SignInViewModel
@@ -38,6 +44,7 @@ struct SignInView: View {
                         Text("Emailアドレス")
                         TextField("Emailアドレスを入力してください", text: $signInViewModel.email)
                             .textFieldStyle(.roundedBorder)
+                            .focused($focusField, equals: .email)
                     }
                     Spacer()
                         .frame(height: 20)
@@ -45,6 +52,7 @@ struct SignInView: View {
                         Text("パスワード")
                         TextField("パスワードを入力してください", text: $signInViewModel.password)
                             .textFieldStyle(.roundedBorder)
+                            .focused($focusField, equals: .password)
                     }
                 }
                 
@@ -69,6 +77,9 @@ struct SignInView: View {
 
                 Spacer()
             }
+        }
+        .onAppear {
+            focusField = .email
         }
         .padding()
         .alert("Error", isPresented: $isShowingAlert, actions: {

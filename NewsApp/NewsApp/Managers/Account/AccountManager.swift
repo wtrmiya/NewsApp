@@ -9,10 +9,30 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import UserNotifications
 
 final class AccountManager {
     static let shared = AccountManager()
     private init() {
+        if authStateHander == nil {
+            authStateHander = Auth.auth().addStateDidChangeListener({ _, user in
+                if let user {
+                    guard let email = user.email,
+                          let displayName = user.displayName
+                    else { return }
+                    
+                    self.user = UserAccount(
+                        uid: user.uid,
+                        email: email,
+                        displayName: displayName
+                    )
+                } else {
+                    self.user = nil
+                }
+            })
+        }
+        
+        /*
         guard let user = Auth.auth().currentUser,
               let email = user.email,
               let displayName = user.displayName
@@ -22,9 +42,19 @@ final class AccountManager {
             email: email,
             displayName: displayName
         )
+         */
     }
     
-    var user: UserAccount?
+    private var authStateHander: AuthStateDidChangeListenerHandle?
+    
+    var user: UserAccount? {
+        didSet {
+            NotificationCenter.default.post(
+                name: Notification.Name.signInStateChanged,
+                object: nil
+            )
+        }
+    }
 }
 
 extension AccountManager: AccountProtocol {
