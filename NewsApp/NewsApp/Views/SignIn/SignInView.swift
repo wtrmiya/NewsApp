@@ -20,7 +20,7 @@ struct SignInView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            Text("Sign Up")
+            Text("サインイン")
             VStack(alignment: .leading) {
                 HStack {
                     Spacer()
@@ -30,19 +30,26 @@ struct SignInView: View {
                         Text("閉じる")
                     })
                 }
+                Spacer()
+                    .frame(height: 30)
 
                 VStack {
                     VStack(alignment: .leading) {
-                        Text("Email")
-                        TextField("Input email", text: $signInViewModel.email)
+                        Text("Emailアドレス")
+                        TextField("Emailアドレスを入力してください", text: $signInViewModel.email)
                             .textFieldStyle(.roundedBorder)
                     }
+                    Spacer()
+                        .frame(height: 20)
                     VStack(alignment: .leading) {
-                        Text("Password")
-                        TextField("Input password", text: $signInViewModel.password)
+                        Text("パスワード")
+                        TextField("パスワードを入力してください", text: $signInViewModel.password)
                             .textFieldStyle(.roundedBorder)
                     }
                 }
+                
+                Spacer()
+                    .frame(height: 30)
 
                 HStack {
                     Spacer()
@@ -51,7 +58,11 @@ struct SignInView: View {
                             await signIn()
                         }
                     }, label: {
-                        Text("Sign In")
+                        Text("サインイン")
+                            .foregroundStyle(.white)
+                            .frame(width: 150, height: 50)
+                            .background(.blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                     })
                     Spacer()
                 }
