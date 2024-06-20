@@ -25,9 +25,9 @@ struct SignInView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                        isShowing = false
                     }, label: {
-                        Text("Cancel")
+                        Text("閉じる")
                     })
                 }
 
