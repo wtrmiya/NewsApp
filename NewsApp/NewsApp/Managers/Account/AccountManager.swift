@@ -31,29 +31,28 @@ final class AccountManager {
                 }
             })
         }
-        
-        /*
-        guard let user = Auth.auth().currentUser,
-              let email = user.email,
-              let displayName = user.displayName
-        else { return }
-        self.user = UserAccount(
-            uid: user.uid,
-            email: email,
-            displayName: displayName
-        )
-         */
     }
     
     private var authStateHander: AuthStateDidChangeListenerHandle?
     
     var user: UserAccount? {
         didSet {
-            NotificationCenter.default.post(
-                name: Notification.Name.signInStateChanged,
-                object: nil
-            )
+            print("\(#file): \(#function): user didSet: \(user)")
+            if oldValue == nil && user != nil {
+                postNotification()
+            } else if oldValue != nil && user == nil {
+                postNotification()
+            }
         }
+    }
+    
+    private func postNotification() {
+        print("\(#file): \(#function)")
+        NotificationCenter.default.post(
+            name: Notification.Name.signInStateChanged,
+            object: nil,
+            userInfo: ["user": user as Any]
+        )
     }
 }
 

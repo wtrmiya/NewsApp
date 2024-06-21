@@ -6,11 +6,9 @@
 //
 
 import Foundation
-import UserNotifications
 
 final class BookmarkViewModel: ObservableObject {
     @Published var articles: [Article] = []
-    @Published var isSignedIn: Bool = false
 
     @Published var errorMessage: String?
     
@@ -25,21 +23,7 @@ final class BookmarkViewModel: ObservableObject {
         self.accountManager = accountManager
         self.bookmarkManager = bookmarkManager
         self.userDataStoreManager = userDataStoreManager
-        
-        NotificationCenter.default
-            .addObserver(
-                self,
-                selector: #selector(userStateChanged),
-                name: Notification.Name.signInStateChanged,
-                object: nil
-            )
     }
-    
-    /*
-    var isSignedIn: Bool {
-        accountManager.isSignedIn
-    }
-     */
     
     @MainActor
     func populateBookmarkedArticles() async {
@@ -91,14 +75,6 @@ final class BookmarkViewModel: ObservableObject {
                 self.errorMessage = error.rawValue
             } else {
                 self.errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
-            }
-        }
-    }
-    
-    @objc func userStateChanged() {
-        Task {
-            await MainActor.run {
-                self.isSignedIn = accountManager.user != nil
             }
         }
     }

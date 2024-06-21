@@ -12,12 +12,12 @@ struct DebugView: View {
     private let password: String = "testuser"
     private let displayName: String = "testuser"
     
-    @State private var isSignedIn: Bool = AccountManager.shared.isSignedIn
+    @ObservedObject private var authViewModel: AuthViewModel
     
-    @EnvironmentObject private var appDC: AppDependencyContainer
-    private let signUpViewModel = SignUpViewModel()
-    private let signInViewModel = SignInViewModel()
-
+    init(authViewModel: AuthViewModel) {
+        self.authViewModel = authViewModel
+    }
+    
     var body: some View {
         Form {
             Section {
@@ -44,25 +44,19 @@ struct DebugView: View {
             }, label: {
                 Text("Sign In")
             })
-            .disabled(isSignedIn)
+            .disabled(authViewModel.signedInUser != nil)
             
             Button(action: {
-                Task {
-                    do {
-                        try AccountManager.shared.signOut()
-                    } catch {
-                        print(error)
-                    }
-                }
+                authViewModel.signOut()
             }, label: {
                 Text("Sign Out")
             })
-            .disabled(!isSignedIn)
+            .disabled(authViewModel.signedInUser == nil)
         }
     }
     
     private var isSignedInString: String {
-        if isSignedIn {
+        if authViewModel.signedInUser != nil {
             return "サインイン中"
         } else {
             return "サインアウト中"
@@ -70,19 +64,20 @@ struct DebugView: View {
     }
     
     private func signUp() async {
-        signUpViewModel.email = email
-        signUpViewModel.password = password
-        signUpViewModel.displayName = displayName
-        await signUpViewModel.signUp()
+        authViewModel.email = email
+        authViewModel.password = password
+        authViewModel.displayName = displayName
+        await authViewModel.signUp()
     }
     
     private func signIn() async {
-        signInViewModel.email = email
-        signInViewModel.password = password
-        await signInViewModel.signIn()
+        authViewModel.email = email
+        authViewModel.password = password
+        await authViewModel.signIn()
     }
 }
 
 #Preview {
-    DebugView()
+    let appDC = AppDependencyContainer()
+    return appDC.makeDebugView()
 }

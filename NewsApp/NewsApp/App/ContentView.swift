@@ -20,7 +20,7 @@ struct ContentView: View {
                     Label("Bookmark", systemImage: "bookmark.fill")
                 }
             #if DEBUG
-            DebugView()
+            appDependencyContainer.makeDebugView()
                 .tabItem {
                     Label("Debug", systemImage: "gear")
                 }

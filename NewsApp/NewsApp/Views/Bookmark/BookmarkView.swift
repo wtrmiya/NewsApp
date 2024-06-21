@@ -13,9 +13,11 @@ struct BookmarkView: View {
     @State private var isShowingDrawer: Bool = false
     
     @ObservedObject private var bookmarkViewModel: BookmarkViewModel
-    
-    init(bookmarkViewModel: BookmarkViewModel) {
+    @ObservedObject private var authViewModel: AuthViewModel
+
+    init(bookmarkViewModel: BookmarkViewModel, authViewModel: AuthViewModel) {
         self.bookmarkViewModel = bookmarkViewModel
+        self.authViewModel = authViewModel
     }
 
     var body: some View {
@@ -87,7 +89,7 @@ struct BookmarkView: View {
             
             DrawerView(isShowing: $isShowingDrawer)
 
-            if !bookmarkViewModel.isSignedIn {
+            if authViewModel.signedInUser == nil {
                 ZStack {
                     Color.gray.opacity(0.7)
                     
