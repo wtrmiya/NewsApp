@@ -107,13 +107,11 @@ struct SignInView: View {
             })
         })
         .onReceive(authViewModel.$signedInUser, perform: { value in
-            print("\(#file): \(#function): value: \(value)")
             if value != nil {
                 isShowingSignInCompletionAlert = true
             }
         })
         .onReceive(authViewModel.$didSignedInConfirmed, perform: { didConfirmed in
-            print("\(#file): \(#function): didConfirmed: \(didConfirmed)")
             if didConfirmed {
                 isShowing = false
             }

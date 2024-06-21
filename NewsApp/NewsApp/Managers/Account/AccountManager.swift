@@ -37,7 +37,6 @@ final class AccountManager {
     
     var user: UserAccount? {
         didSet {
-            print("\(#file): \(#function): user didSet: \(user)")
             if oldValue == nil && user != nil {
                 postNotification()
             } else if oldValue != nil && user == nil {
@@ -47,7 +46,6 @@ final class AccountManager {
     }
     
     private func postNotification() {
-        print("\(#file): \(#function)")
         NotificationCenter.default.post(
             name: Notification.Name.signInStateChanged,
             object: nil,

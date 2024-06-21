@@ -15,11 +15,7 @@ final class AuthViewModel: ObservableObject {
     @Published var passwordRepeated: String = ""
     
     @Published var didSignedInConfirmed: Bool = false
-    @Published var signedInUser: UserAccount? {
-        didSet {
-            print("\(#file): \(#function): signedInUser: \(signedInUser)")
-        }
-    }
+    @Published var signedInUser: UserAccount?
 
     @Published var errorMessage: String?
 
@@ -101,7 +97,6 @@ final class AuthViewModel: ObservableObject {
     }
     
     @objc func userStateChanged(notification: Notification) {
-        print("\(#file): \(#function)")
         let user = notification.userInfo?["user"] as? UserAccount
         Task {
             await MainActor.run {
