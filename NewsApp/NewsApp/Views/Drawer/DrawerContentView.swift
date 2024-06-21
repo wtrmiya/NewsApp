@@ -131,7 +131,7 @@ struct DrawerContentView: View {
             LicenseView(isShowing: $isShowingLicenseListView)
         }
         .fullScreenCover(isPresented: $isShowingSignUpView) {
-            SignUpView()
+            appDependencyContainer.makeSignUpView(isShowing: $isShowingSignUpView)
         }
         .fullScreenCover(isPresented: $isShowingSignInView) {
             appDependencyContainer.makeSignInView(isShowing: $isShowingSignInView)

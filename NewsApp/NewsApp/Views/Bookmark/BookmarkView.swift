@@ -138,12 +138,12 @@ struct SuggestSignInView: View {
             Button(action: {
                 isShowingSignUpView = true
             }, label: {
-                Text("新規登録")
+                Text("サインアップ")
             })
         }
         .background(.white)
         .fullScreenCover(isPresented: $isShowingSignUpView) {
-            SignUpView()
+            appDependencyContainer.makeSignUpView(isShowing: $isShowingSignUpView)
         }
         .fullScreenCover(isPresented: $isShowingSignInView) {
             appDependencyContainer.makeSignInView(isShowing: $isShowingSignInView)

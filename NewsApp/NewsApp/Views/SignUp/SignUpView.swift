@@ -8,45 +8,75 @@
 import SwiftUI
 
 struct SignUpView: View {
-    @StateObject private var signUpViewModel = SignUpViewModel()
+    enum Field: Hashable {
+        case displayName
+        case email
+        case password
+        case passwordRepeated
+    }
+    
     @State private var isShowingAlert: Bool = false
-    @Environment(\.dismiss) private var dismiss
+    @Binding var isShowing: Bool
+    @FocusState private var focusField: Field?
+
+    @ObservedObject private var authViewModel: AuthViewModel
+
+    init(isShowing: Binding<Bool>, authViewModel: AuthViewModel) {
+        self._isShowing = isShowing
+        self.authViewModel = authViewModel
+    }
     
     var body: some View {
         ZStack(alignment: .top) {
-            Text("Sign Up")
+            Text("サインアップ")
             VStack(alignment: .leading) {
                 HStack {
                     Spacer()
                     Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                        isShowing = false
                     }, label: {
-                        Text("Cancel")
+                        Text("閉じる")
                     })
                 }
+                
+                Spacer()
+                    .frame(height: 30)
 
                 VStack {
                     VStack(alignment: .leading) {
-                        Text("Display Name")
-                        TextField("Input display name", text: $signUpViewModel.displayName)
+                        Text("表示名")
+                        TextField("表示名を入力してください", text: $authViewModel.displayName)
                             .textFieldStyle(.roundedBorder)
+                            .focused($focusField, equals: .displayName)
                     }
+                    Spacer()
+                        .frame(height: 20)
                     VStack(alignment: .leading) {
-                        Text("Email")
-                        TextField("Input email", text: $signUpViewModel.email)
+                        Text("Emailアドレス")
+                        TextField("Emailアドレスを入力してください", text: $authViewModel.email)
                             .textFieldStyle(.roundedBorder)
+                            .focused($focusField, equals: .email)
                     }
+                    Spacer()
+                        .frame(height: 20)
                     VStack(alignment: .leading) {
-                        Text("Password")
-                        TextField("Input password", text: $signUpViewModel.password)
+                        Text("パスワード")
+                        TextField("パスワードを入力してください", text: $authViewModel.password)
                             .textFieldStyle(.roundedBorder)
+                            .focused($focusField, equals: .password)
                     }
+                    Spacer()
+                        .frame(height: 20)
                     VStack(alignment: .leading) {
-                        Text("Confirm Password")
-                        TextField("Confirm password", text: $signUpViewModel.passwordRepeated)
+                        Text("確認用パスワード")
+                        TextField("パスワードを再度入力してください", text: $authViewModel.passwordRepeated)
                             .textFieldStyle(.roundedBorder)
+                            .focused($focusField, equals: .passwordRepeated)
                     }
                 }
+                
+                Spacer()
+                    .frame(height: 20)
 
                 Text("全ての項目に情報を入力してください")
 
@@ -57,7 +87,11 @@ struct SignUpView: View {
                             await signUp()
                         }
                     }, label: {
-                        Text("Create User")
+                        Text("サインアップ")
+                            .foregroundStyle(.white)
+                            .frame(width: 150, height: 50)
+                            .background(.blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                     })
                     Spacer()
                 }
@@ -66,29 +100,38 @@ struct SignUpView: View {
             }
         }
         .padding()
+        .onAppear {
+            focusField = .displayName
+        }
         .alert("Error", isPresented: $isShowingAlert, actions: {
             Button(action: {
-                dismiss()
+                isShowingAlert = false
             }, label: {
                 Text("OK")
             })
         }, message: {
-            if let errorMessage = signUpViewModel.errorMessage {
+            if let errorMessage = authViewModel.errorMessage {
                 Text(errorMessage)
             }
         })
-        .onReceive(signUpViewModel.$errorMessage, perform: { _ in
-            if signUpViewModel.errorMessage != nil {
+        .onReceive(authViewModel.$errorMessage, perform: { _ in
+            if authViewModel.errorMessage != nil {
                 isShowingAlert = true
+            }
+        })
+        .onReceive(authViewModel.$signedInUser, perform: { value in
+            if value != nil {
+                isShowing = false
             }
         })
     }
     
     private func signUp() async {
-        await signUpViewModel.signUp()
+        await authViewModel.signUp()
     }
 }
 
 #Preview {
-    SignUpView()
+    let appDC = AppDependencyContainer()
+    return appDC.makeSignUpView(isShowing: .constant(true))
 }
