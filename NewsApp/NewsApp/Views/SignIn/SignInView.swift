@@ -14,14 +14,15 @@ struct SignInView: View {
     }
     
     @State private var isShowingAlert: Bool = false
+    @State private var isShowingSignInCompletionAlert: Bool = false
     @FocusState private var focusField: Field?
     
     @Binding var isShowing: Bool
-    @ObservedObject private var signInViewModel: SignInViewModel
+    @ObservedObject private var authViewModel: AuthViewModel
     
-    init(isShowing: Binding<Bool>, signInViewModel: SignInViewModel) {
+    init(isShowing: Binding<Bool>, authViewModel: AuthViewModel) {
         self._isShowing = isShowing
-        self.signInViewModel = signInViewModel
+        self.authViewModel = authViewModel
     }
 
     var body: some View {
@@ -42,7 +43,7 @@ struct SignInView: View {
                 VStack {
                     VStack(alignment: .leading) {
                         Text("Emailアドレス")
-                        TextField("Emailアドレスを入力してください", text: $signInViewModel.email)
+                        TextField("Emailアドレスを入力してください", text: $authViewModel.email)
                             .textFieldStyle(.roundedBorder)
                             .focused($focusField, equals: .email)
                     }
@@ -50,7 +51,7 @@ struct SignInView: View {
                         .frame(height: 20)
                     VStack(alignment: .leading) {
                         Text("パスワード")
-                        TextField("パスワードを入力してください", text: $signInViewModel.password)
+                        TextField("パスワードを入力してください", text: $authViewModel.password)
                             .textFieldStyle(.roundedBorder)
                             .focused($focusField, equals: .password)
                     }
@@ -89,19 +90,36 @@ struct SignInView: View {
                 Text("OK")
             })
         }, message: {
-            if let errorMessage = signInViewModel.errorMessage {
+            if let errorMessage = authViewModel.errorMessage {
                 Text(errorMessage)
             }
         })
-        .onReceive(signInViewModel.$errorMessage, perform: { _ in
-            if signInViewModel.errorMessage != nil {
+        .onReceive(authViewModel.$errorMessage, perform: { _ in
+            if authViewModel.errorMessage != nil {
                 isShowingAlert = true
+            }
+        })
+        .alert("サインインしました", isPresented: $isShowingSignInCompletionAlert, actions: {
+            Button(action: {
+                authViewModel.confirmSignedIn()
+            }, label: {
+                Text("OK")
+            })
+        })
+        .onReceive(authViewModel.$signedInUser, perform: { value in
+            if value != nil {
+                isShowingSignInCompletionAlert = true
+            }
+        })
+        .onReceive(authViewModel.$didSignedInConfirmed, perform: { didConfirmed in
+            if didConfirmed {
+                isShowing = false
             }
         })
     }
     
     private func signIn() async {
-        await signInViewModel.signIn()
+        await authViewModel.signIn()
     }
 }
 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserAccount {
+struct UserAccount: Hashable {
     private(set) var uid: String
     private(set) var email: String
     private(set) var displayName: String

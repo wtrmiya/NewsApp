@@ -12,10 +12,16 @@ final class AppDependencyContainer: ObservableObject {
     private let sharedAccountManager: AccountProtocol
     private let sharedUserSettingsManager: UserSettingsManagerProtocol
     private let sharedAccountSettingsViewModel: AccountSettingsViewModel
+    private let sharedAuthViewModel: AuthViewModel
     
     init() {
         let accountManager = AccountManager.shared
         let userSettingsManager = UserSettingsManager.shared
+        self.sharedAccountManager = accountManager
+        self.sharedUserSettingsManager = userSettingsManager
+        self.sharedAccountSettingsViewModel = AccountSettingsViewModel(
+            accountManager: sharedAccountManager
+        )
         if let tempUser = accountManager.user {
             Task {
                 do {
@@ -36,15 +42,18 @@ final class AppDependencyContainer: ObservableObject {
             }
         }
         
-        self.sharedAccountManager = accountManager
-        self.sharedUserSettingsManager = userSettingsManager
-        self.sharedAccountSettingsViewModel = AccountSettingsViewModel(
-            accountManager: sharedAccountManager
+        self.sharedAuthViewModel = AuthViewModel(
+            accountManager: sharedAccountManager,
+            userSettingsManager: sharedUserSettingsManager,
+            userDataStoreManager: UserDataStoreManager.shared
         )
     }
     
     func makeHomeView() -> HomeView {
-        return HomeView(homeViewModel: makeHomeViewModel())
+        return HomeView(
+            homeViewModel: makeHomeViewModel(),
+            authViewModel: sharedAuthViewModel
+        )
     }
     
     func makeHomeViewModel() -> HomeViewModel {
@@ -57,7 +66,10 @@ final class AppDependencyContainer: ObservableObject {
     }
     
     func makeBookmarkView() -> BookmarkView {
-        return BookmarkView(bookmarkViewModel: makeBookmarkViewModel())
+        return BookmarkView(
+            bookmarkViewModel: makeBookmarkViewModel(),
+            authViewModel: sharedAuthViewModel
+        )
     }
     
     func makeBookmarkViewModel() -> BookmarkViewModel {
@@ -71,12 +83,8 @@ final class AppDependencyContainer: ObservableObject {
     func makeDrawerContentView(isShowing: Binding<Bool>) -> DrawerContentView {
         return DrawerContentView(
             isShowing: isShowing,
-            drawerViewModel: makeDrawerViewModel()
+            authViewModel: sharedAuthViewModel
         )
-    }
-    
-    func makeDrawerViewModel() -> DrawerViewModel {
-        return DrawerViewModel(accountManager: sharedAccountManager)
     }
     
     func makeTermView(isShowing: Binding<Bool>) -> TermView {
@@ -177,15 +185,15 @@ final class AppDependencyContainer: ObservableObject {
     func makeSignInView(isShowing: Binding<Bool>) -> SignInView {
         return SignInView(
             isShowing: isShowing,
-            signInViewModel: makeSignInViewModel()
+            authViewModel: sharedAuthViewModel
         )
     }
     
-    func makeSignInViewModel() -> SignInViewModel {
-        return SignInViewModel(
-            accountManager: sharedAccountManager,
-            userSettingsManager: sharedUserSettingsManager,
-            userDataStoreManager: UserDataStoreManager.shared
-        )
+    func makeAuthViewModel() -> AuthViewModel {
+        return sharedAuthViewModel
+    }
+    
+    func makeDebugView() -> DebugView {
+        return DebugView(authViewModel: sharedAuthViewModel)
     }
 }

@@ -15,24 +15,24 @@ struct DrawerContentView: View {
     @State private var isShowingSignInView: Bool = false
     @State private var isShowingSignOutAlert: Bool = false
 
-    @ObservedObject private var drawerViewModel: DrawerViewModel
+    @ObservedObject private var authViewModel: AuthViewModel
     
     @Binding var isShowing: Bool
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
-    init(isShowing: Binding<Bool>, drawerViewModel: DrawerViewModel) {
+    init(isShowing: Binding<Bool>, authViewModel: AuthViewModel) {
         self._isShowing = isShowing
-        self.drawerViewModel = drawerViewModel
+        self.authViewModel = authViewModel
     }
     
     private var isSignedIn: Bool {
-        drawerViewModel.sidnedInUser != nil
+        authViewModel.signedInUser != nil
     }
 
     var body: some View {
         VStack {
-            if let user = drawerViewModel.sidnedInUser {
+            if let user = authViewModel.signedInUser {
                 VStack {
                     Spacer()
                         .frame(height: 50)
@@ -145,7 +145,7 @@ struct DrawerContentView: View {
                 Text("Cancel")
             })
             Button(action: {
-                drawerViewModel.signOut()
+                authViewModel.signOut()
             }, label: {
                 Text("Sign Out")
             })
