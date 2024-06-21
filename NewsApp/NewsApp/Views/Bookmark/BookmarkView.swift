@@ -89,7 +89,7 @@ struct BookmarkView: View {
             
             DrawerView(isShowing: $isShowingDrawer)
 
-            if authViewModel.signedInUser == nil {
+            if !authViewModel.didSignedInConfirmed {
                 ZStack {
                     Color.gray.opacity(0.7)
                     

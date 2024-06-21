@@ -14,6 +14,7 @@ final class AuthViewModel: ObservableObject {
     @Published var password: String = ""
     @Published var passwordRepeated: String = ""
     
+    @Published var didSignedInConfirmed: Bool = false
     @Published var signedInUser: UserAccount? {
         didSet {
             print("\(#file): \(#function): signedInUser: \(signedInUser)")
@@ -93,6 +94,7 @@ final class AuthViewModel: ObservableObject {
     func signOut() {
         do {
             try accountManager.signOut()
+            didSignedInConfirmed = false
         } catch {
             print(error)
         }
@@ -106,5 +108,9 @@ final class AuthViewModel: ObservableObject {
                 self.signedInUser = user
             }
         }
+    }
+    
+    func confirmSignedIn() {
+        didSignedInConfirmed = true
     }
 }
