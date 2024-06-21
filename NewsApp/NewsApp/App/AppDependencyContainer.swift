@@ -189,6 +189,13 @@ final class AppDependencyContainer: ObservableObject {
         )
     }
     
+    func makeSignUpView(isShowing: Binding<Bool>) -> SignUpView {
+        return SignUpView(
+            isShowing: isShowing,
+            authViewModel: sharedAuthViewModel
+        )
+    }
+
     func makeAuthViewModel() -> AuthViewModel {
         return sharedAuthViewModel
     }
