@@ -18,7 +18,6 @@ struct DrawerContentView: View {
     @ObservedObject private var authViewModel: AuthViewModel
     
     @Binding var isShowing: Bool
-    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
     init(isShowing: Binding<Bool>, authViewModel: AuthViewModel) {
@@ -140,14 +139,13 @@ struct DrawerContentView: View {
         .alert("現在サインイン中です\nサインアウトしますか", isPresented: $isShowingSignOutAlert) {
             Button(role: .cancel, action: {
                 isShowing = false
-                dismiss()
             }, label: {
-                Text("Cancel")
+                Text("キャンセル")
             })
             Button(action: {
                 authViewModel.signOut()
             }, label: {
-                Text("Sign Out")
+                Text("サインアウト")
             })
         }
     }
