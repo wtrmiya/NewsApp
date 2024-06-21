@@ -113,4 +113,10 @@ final class AuthViewModel: ObservableObject {
     func confirmSignedIn() {
         didSignedInConfirmed = true
     }
+    
+    func applySignInState() {
+        if accountManager.user != nil {
+            didSignedInConfirmed = true
+        }
+    }
 }

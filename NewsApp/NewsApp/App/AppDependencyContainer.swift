@@ -17,6 +17,11 @@ final class AppDependencyContainer: ObservableObject {
     init() {
         let accountManager = AccountManager.shared
         let userSettingsManager = UserSettingsManager.shared
+        self.sharedAccountManager = accountManager
+        self.sharedUserSettingsManager = userSettingsManager
+        self.sharedAccountSettingsViewModel = AccountSettingsViewModel(
+            accountManager: sharedAccountManager
+        )
         if let tempUser = accountManager.user {
             Task {
                 do {
@@ -37,11 +42,6 @@ final class AppDependencyContainer: ObservableObject {
             }
         }
         
-        self.sharedAccountManager = accountManager
-        self.sharedUserSettingsManager = userSettingsManager
-        self.sharedAccountSettingsViewModel = AccountSettingsViewModel(
-            accountManager: sharedAccountManager
-        )
         self.sharedAuthViewModel = AuthViewModel(
             accountManager: sharedAccountManager,
             userSettingsManager: sharedUserSettingsManager,
@@ -50,7 +50,10 @@ final class AppDependencyContainer: ObservableObject {
     }
     
     func makeHomeView() -> HomeView {
-        return HomeView(homeViewModel: makeHomeViewModel())
+        return HomeView(
+            homeViewModel: makeHomeViewModel(),
+            authViewModel: sharedAuthViewModel
+        )
     }
     
     func makeHomeViewModel() -> HomeViewModel {

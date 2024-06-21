@@ -13,10 +13,12 @@ struct HomeView: View {
     @State private var isShowingErrorAlert: Bool = false
 
     @ObservedObject private var homeViewModel: HomeViewModel
+    @ObservedObject private var authViewModel: AuthViewModel
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
-    init(homeViewModel: HomeViewModel) {
+    init(homeViewModel: HomeViewModel, authViewModel: AuthViewModel) {
         self.homeViewModel = homeViewModel
+        self.authViewModel = authViewModel
     }
     
     var body: some View {
@@ -84,7 +86,7 @@ struct HomeView: View {
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(width: 300, height: 200)
                                         }
-                                        if homeViewModel.isSignedIn {
+                                        if authViewModel.signedInUser != nil {
                                             HStack {
                                                 Spacer()
                                                 Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
@@ -115,6 +117,7 @@ struct HomeView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button(action: {
+                            print("\(#file): \(#function): menu tapped")
                             isShowingDrawer = true
                         }, label: {
                             Image(systemName: "list.bullet")
@@ -155,6 +158,11 @@ struct HomeView: View {
         .onReceive(homeViewModel.$errorMessage, perform: { newValue in
             if newValue != nil {
                 isShowingErrorAlert = true
+            }
+        })
+        .onReceive(authViewModel.$signedInUser, perform: { user in
+            if user == nil {
+                isShowingDrawer = false
             }
         })
     }

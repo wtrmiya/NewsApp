@@ -98,8 +98,14 @@ struct BookmarkView: View {
             }
         }
         .task {
+            authViewModel.applySignInState()
             await bookmarkViewModel.populateBookmarkedArticles()
         }
+        .onReceive(authViewModel.$signedInUser, perform: { user in
+            if user == nil {
+                isShowingDrawer = false
+            }
+        })
     }
     
     private func deleteBookmarks(indexSet: IndexSet) async {
