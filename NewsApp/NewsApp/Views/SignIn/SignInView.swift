@@ -14,7 +14,6 @@ struct SignInView: View {
     }
     
     @State private var isShowingAlert: Bool = false
-    @State private var isShowingSignInCompletionAlert: Bool = false
     @FocusState private var focusField: Field?
     
     @Binding var isShowing: Bool
@@ -99,20 +98,8 @@ struct SignInView: View {
                 isShowingAlert = true
             }
         })
-        .alert("サインインしました", isPresented: $isShowingSignInCompletionAlert, actions: {
-            Button(action: {
-                authViewModel.confirmSignedIn()
-            }, label: {
-                Text("OK")
-            })
-        })
         .onReceive(authViewModel.$signedInUser, perform: { value in
             if value != nil {
-                isShowingSignInCompletionAlert = true
-            }
-        })
-        .onReceive(authViewModel.$didSignedInConfirmed, perform: { didConfirmed in
-            if didConfirmed {
                 isShowing = false
             }
         })

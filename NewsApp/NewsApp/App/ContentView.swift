@@ -9,6 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
+    @ObservedObject private var authViewModel: AuthViewModel
+    @Environment(\.displayToast) private var displayToast
+    
+    init(authViewModel: AuthViewModel) {
+        self.authViewModel = authViewModel
+    }
+    
     var body: some View {
         TabView {
             appDependencyContainer.makeHomeView()
@@ -26,9 +33,17 @@ struct ContentView: View {
                 }
             #endif
         }
+        .onReceive(authViewModel.$signedInUser, perform: { user in
+            if user != nil {
+                displayToast?("サインインしました")
+            } else {
+                displayToast?("サインアウトしました")
+            }
+        })
     }
 }
 
 #Preview {
-    ContentView()
+    let appDC = AppDependencyContainer()
+    return appDC.makeContentView()
 }

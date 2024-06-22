@@ -144,6 +144,7 @@ struct DrawerContentView: View {
             })
             Button(action: {
                 authViewModel.signOut()
+                isShowing = false
             }, label: {
                 Text("サインアウト")
             })

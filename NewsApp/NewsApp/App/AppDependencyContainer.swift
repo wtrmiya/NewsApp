@@ -49,6 +49,12 @@ final class AppDependencyContainer: ObservableObject {
         )
     }
     
+    func makeContentView() -> ContentView {
+        ContentView(
+            authViewModel: sharedAuthViewModel
+        )
+    }
+    
     func makeHomeView() -> HomeView {
         return HomeView(
             homeViewModel: makeHomeViewModel(),

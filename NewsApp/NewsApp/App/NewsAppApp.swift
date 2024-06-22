@@ -12,11 +12,13 @@ struct NewsAppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     @StateObject private var appDependencyContainer: AppDependencyContainer = AppDependencyContainer()
+    @StateObject private var toastHandler: ToastHandler = ToastHandler()
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            appDependencyContainer.makeContentView()
                 .environmentObject(appDependencyContainer)
+                .displayToast(handledBy: toastHandler)
         }
     }
 }
