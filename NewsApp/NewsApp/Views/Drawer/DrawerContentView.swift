@@ -19,6 +19,7 @@ struct DrawerContentView: View {
     
     @Binding var isShowing: Bool
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
+    @Environment(\.displayToast) private var displayToast
     
     init(isShowing: Binding<Bool>, authViewModel: AuthViewModel) {
         self._isShowing = isShowing
@@ -148,6 +149,11 @@ struct DrawerContentView: View {
                 Text("サインアウト")
             })
         }
+        .onReceive(authViewModel.$signedInUser, perform: { user in
+            if user == nil {
+                displayToast?("SIGNOUT")
+            }
+        })
     }
 }
 
