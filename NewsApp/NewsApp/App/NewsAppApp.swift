@@ -16,7 +16,7 @@ struct NewsAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            appDependencyContainer.makeContentView()
                 .environmentObject(appDependencyContainer)
                 .displayToast(handledBy: toastHandler)
         }

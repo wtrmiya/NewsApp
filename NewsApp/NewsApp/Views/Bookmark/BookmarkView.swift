@@ -89,7 +89,7 @@ struct BookmarkView: View {
             
             DrawerView(isShowing: $isShowingDrawer)
 
-            if !authViewModel.didSignedInConfirmed {
+            if authViewModel.signedInUser == nil {
                 ZStack {
                     Color.gray.opacity(0.7)
                     
@@ -98,7 +98,6 @@ struct BookmarkView: View {
             }
         }
         .task {
-            authViewModel.applySignInState()
             await bookmarkViewModel.populateBookmarkedArticles()
         }
         .onReceive(authViewModel.$signedInUser, perform: { user in

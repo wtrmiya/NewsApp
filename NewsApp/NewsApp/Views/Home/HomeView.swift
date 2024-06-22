@@ -15,7 +15,7 @@ struct HomeView: View {
     @ObservedObject private var homeViewModel: HomeViewModel
     @ObservedObject private var authViewModel: AuthViewModel
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
-    
+
     init(homeViewModel: HomeViewModel, authViewModel: AuthViewModel) {
         self.homeViewModel = homeViewModel
         self.authViewModel = authViewModel
@@ -158,11 +158,6 @@ struct HomeView: View {
         .onReceive(homeViewModel.$errorMessage, perform: { newValue in
             if newValue != nil {
                 isShowingErrorAlert = true
-            }
-        })
-        .onReceive(authViewModel.$signedInUser, perform: { user in
-            if user == nil {
-                isShowingDrawer = false
             }
         })
     }
