@@ -7,7 +7,6 @@
 
 import Foundation
 
-@MainActor
 final class HomeViewModel: ObservableObject {
     @Published var articles: [Article] = []
     @Published var selectedCategory: ArticleCategory = .general
@@ -34,14 +33,17 @@ final class HomeViewModel: ObservableObject {
         accountManager.isSignedIn
     }
     
+    @MainActor
     func populateDefaultArticles() async {
         await populateArticles(of: .general)
     }
     
+    @MainActor
     func populateArticlesOfCurrentCategory() async {
         await populateArticles(of: self.selectedCategory)
     }
     
+    @MainActor
     func populateArticles(of category: ArticleCategory) async {
         do {
             selectedCategory = category
