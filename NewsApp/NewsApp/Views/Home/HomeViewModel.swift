@@ -10,7 +10,7 @@ import Foundation
 final class HomeViewModel: ObservableObject {
     @Published var articles: [Article] = []
     @Published var selectedCategory: ArticleCategory = .general
-    
+
     @Published var errorMessage: String?
     
     let articleManager: ArticleManagerProtocol
@@ -79,7 +79,6 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     func toggleBookmark(on articleToToggle: Article) async {
         let (article, index) = toggledArticleAndIndexOnArticles(articleToToggle: articleToToggle)
         

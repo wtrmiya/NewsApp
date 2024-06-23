@@ -8,17 +8,23 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 final class AppDependencyContainer: ObservableObject {
     private let sharedAccountManager: AccountProtocol
     private let sharedUserSettingsManager: UserSettingsManagerProtocol
+    private let sharedArticleManger: ArticleManagerProtocol
     private let sharedAccountSettingsViewModel: AccountSettingsViewModel
     private let sharedAuthViewModel: AuthViewModel
-    
+    private let sharedHomeViewModel: HomeViewModel
+
     init() {
         let accountManager = AccountManager.shared
         let userSettingsManager = UserSettingsManager.shared
+        let articleManager = ArticleManager.shared
         self.sharedAccountManager = accountManager
         self.sharedUserSettingsManager = userSettingsManager
+        self.sharedArticleManger = articleManager
+        
         self.sharedAccountSettingsViewModel = AccountSettingsViewModel(
             accountManager: sharedAccountManager
         )
@@ -47,27 +53,25 @@ final class AppDependencyContainer: ObservableObject {
             userSettingsManager: sharedUserSettingsManager,
             userDataStoreManager: UserDataStoreManager.shared
         )
+        
+        self.sharedHomeViewModel = HomeViewModel(
+            articleManager: sharedArticleManger,
+            bookmarkManager: BookmarkManager.shared,
+            accountManager: sharedAccountManager,
+            userDataSoreManager: UserDataStoreManager.shared
+        )
     }
     
     func makeContentView() -> ContentView {
-        ContentView(
+        return ContentView(
             authViewModel: sharedAuthViewModel
         )
     }
     
     func makeHomeView() -> HomeView {
         return HomeView(
-            homeViewModel: makeHomeViewModel(),
+            homeViewModel: sharedHomeViewModel,
             authViewModel: sharedAuthViewModel
-        )
-    }
-    
-    func makeHomeViewModel() -> HomeViewModel {
-        return HomeViewModel(
-            articleManager: ArticleManager.shared,
-            bookmarkManager: BookmarkManager.shared,
-            accountManager: sharedAccountManager,
-            userDataSoreManager: UserDataStoreManager.shared
         )
     }
     

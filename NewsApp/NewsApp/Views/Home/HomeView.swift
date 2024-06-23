@@ -117,7 +117,6 @@ struct HomeView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button(action: {
-                            print("\(#file): \(#function): menu tapped")
                             isShowingDrawer = true
                         }, label: {
                             Image(systemName: "list.bullet")
@@ -168,6 +167,6 @@ struct HomeView: View {
 }
 
 #Preview {
-    let appDependencyContainer = AppDependencyContainer()
-    return appDependencyContainer.makeHomeView()
+    let appDC = AppDependencyContainer()
+    return appDC.makeHomeView()
 }
