@@ -7,10 +7,11 @@
 
 import Foundation
 
+@MainActor
 final class HomeViewModel: ObservableObject {
     @Published var articles: [Article] = []
     @Published var selectedCategory: ArticleCategory = .general
-    
+
     @Published var errorMessage: String?
     
     let articleManager: ArticleManagerProtocol
@@ -33,17 +34,14 @@ final class HomeViewModel: ObservableObject {
         accountManager.isSignedIn
     }
     
-    @MainActor
     func populateDefaultArticles() async {
         await populateArticles(of: .general)
     }
     
-    @MainActor
     func populateArticlesOfCurrentCategory() async {
         await populateArticles(of: self.selectedCategory)
     }
     
-    @MainActor
     func populateArticles(of category: ArticleCategory) async {
         do {
             selectedCategory = category
@@ -79,7 +77,6 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     func toggleBookmark(on articleToToggle: Article) async {
         let (article, index) = toggledArticleAndIndexOnArticles(articleToToggle: articleToToggle)
         

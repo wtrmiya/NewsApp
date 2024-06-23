@@ -9,11 +9,41 @@ import Foundation
 
 final class ArticleManager {
     static let shared = ArticleManager()
-    private init() {}
+    private init() {
+        Task {
+            do {
+                try await fetchDefaultArticles()
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    private var articles: [ArticleCategory: [Article]] = [:]
+}
+
+private extension ArticleManager {
+    private func fetchDefaultArticles() async throws {
+        do {
+            articles[.general] = try await getArticlesByCategory(category: .general)
+        } catch {
+            print(error)
+        }
+    }
 }
 
 extension ArticleManager: ArticleManagerProtocol {
     func getArticlesByCategory(category: ArticleCategory) async throws -> [Article] {
+        guard let specifiedCategoryArticles = articles[category]
+        else {
+            return []
+        }
+        
+        guard specifiedCategoryArticles.isEmpty
+        else {
+            return specifiedCategoryArticles
+        }
+        
         guard let apiKey = APIKeyManager.shared.apiKey(for: "API_KEY_NewsAPI")
         else {
             throw NetworkError.invalidAPIKey
@@ -59,6 +89,7 @@ extension ArticleManager: ArticleManagerProtocol {
             }
             
             let articleResponse = try JSONDecoder().decode(ArticleResponse.self, from: data)
+            
             return articleResponse.articles
         } catch {
             throw error
