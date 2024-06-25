@@ -31,6 +31,18 @@ final class AccountManager {
                 }
             })
         }
+        
+        if let currentUser = Auth.auth().currentUser {
+            guard let email = currentUser.email,
+                  let displayName = currentUser.displayName
+            else { return }
+            
+            self.user = UserAccount(
+                uid: currentUser.uid,
+                email: email,
+                displayName: displayName
+            )
+        }
     }
     
     private var authStateHander: AuthStateDidChangeListenerHandle?

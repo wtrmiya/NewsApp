@@ -42,6 +42,11 @@ final class AppDependencyContainer: ObservableObject {
                         documentId: userDataStoreDocumentId
                     )
                     try await userSettingsManager.fetchCurrentUserSettings(user: user)
+                    let currentUserSettings = userSettingsManager.currentUserSettings
+                    try await PushNotificationManager.shared
+                        .applyPushNotificaionSettings(
+                            userSettings: currentUserSettings
+                        )
                 } catch {
                     print(error)
                 }
