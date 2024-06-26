@@ -55,7 +55,12 @@ final class HomeViewModelTests: XCTestCase {
     @MainActor
     func test_レスポンス200以外が返却されてきた場合その旨のエラーメッセージが生成されること() {
         let expectation = XCTestExpectation()
-        let sut = HomeViewModel(articleManager: MockArticleManagerInvalidResponse())
+        let sut = HomeViewModel(
+            articleManager: MockArticleManagerInvalidResponse(),
+            bookmarkManager: MockBookmarkManager(),
+            accountManager: MockAccountManager(),
+            userDataSoreManager: MockUserDataStoreManager()
+        )
         Task {
             await sut.populateDefaultArticles()
             expectation.fulfill()

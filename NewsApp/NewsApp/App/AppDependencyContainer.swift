@@ -16,37 +16,16 @@ final class AppDependencyContainer: ObservableObject {
     private let sharedAccountSettingsViewModel: AccountSettingsViewModel
     private let sharedAuthViewModel: AuthViewModel
     private let sharedHomeViewModel: HomeViewModel
+    private let sharedSettingsViewModel: SettingsViewModel
 
     init() {
-        let accountManager = AccountManager.shared
-        let userSettingsManager = UserSettingsManager.shared
-        let articleManager = ArticleManager.shared
-        self.sharedAccountManager = accountManager
-        self.sharedUserSettingsManager = userSettingsManager
-        self.sharedArticleManger = articleManager
+        self.sharedAccountManager = AccountManager.shared
+        self.sharedUserSettingsManager = UserSettingsManager.shared
+        self.sharedArticleManger = ArticleManager.shared
         
         self.sharedAccountSettingsViewModel = AccountSettingsViewModel(
             accountManager: sharedAccountManager
         )
-        if let tempUser = accountManager.user {
-            Task {
-                do {
-                    // この時点でユーザのDocumentIdが不明。
-                    // UserDataStoreから取得する必要がある。
-                    let userDataStoreDocumentId = try await UserDataStoreManager.shared
-                        .getUserDataStoreDocumentId(user: tempUser)
-                    let user = UserAccount(
-                        uid: tempUser.uid,
-                        email: tempUser.email,
-                        displayName: tempUser.displayName,
-                        documentId: userDataStoreDocumentId
-                    )
-                    try await userSettingsManager.fetchCurrentUserSettings(user: user)
-                } catch {
-                    print(error)
-                }
-            }
-        }
         
         self.sharedAuthViewModel = AuthViewModel(
             accountManager: sharedAccountManager,
@@ -59,6 +38,11 @@ final class AppDependencyContainer: ObservableObject {
             bookmarkManager: BookmarkManager.shared,
             accountManager: sharedAccountManager,
             userDataSoreManager: UserDataStoreManager.shared
+        )
+        
+        self.sharedSettingsViewModel = SettingsViewModel(
+            accountManager: sharedAccountManager,
+            userSettingsManager: sharedUserSettingsManager
         )
     }
     
@@ -137,10 +121,7 @@ final class AppDependencyContainer: ObservableObject {
     }
 
     func makeSettingsViewModel() -> SettingsViewModel {
-        return SettingsViewModel(
-            accountManager: sharedAccountManager,
-            userSettingsManager: sharedUserSettingsManager
-        )
+        return sharedSettingsViewModel
     }
     
     func makeAccountSettingsView(isShowing: Binding<Bool>) -> AccountSettingsView {
@@ -189,7 +170,12 @@ final class AppDependencyContainer: ObservableObject {
     }
     
     func makeSearchViewModel() -> SearchViewModel {
-        return SearchViewModel()
+        return SearchViewModel(
+            articleManager: sharedArticleManger,
+            accountManager: sharedAccountManager,
+            userDataStoreManager: UserDataStoreManager.shared,
+            bookmarkManager: BookmarkManager.shared
+        )
     }
     
     func makeSignInView(isShowing: Binding<Bool>) -> SignInView {

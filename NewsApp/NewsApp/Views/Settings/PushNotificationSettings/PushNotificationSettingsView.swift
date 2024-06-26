@@ -10,7 +10,7 @@ import SwiftUI
 struct PushNotificationSettingsView: View {
     @Binding var isShowing: Bool
     @ObservedObject private var settingsViewModel: SettingsViewModel
-    
+
     init(isShowing: Binding<Bool>, settingsViewModel: SettingsViewModel) {
         self._isShowing = isShowing
         self.settingsViewModel = settingsViewModel
@@ -32,9 +32,6 @@ struct PushNotificationSettingsView: View {
                     Text("Dismiss")
                 })
             }
-        }
-        .task {
-            await settingsViewModel.populateUserSettings()
         }
     }
 }

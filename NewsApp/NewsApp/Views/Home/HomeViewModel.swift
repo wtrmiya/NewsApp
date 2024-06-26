@@ -18,10 +18,10 @@ final class HomeViewModel: ObservableObject {
     let accountManager: AccountProtocol
     let userDataStoreManager: UserDataStoreManagerProtocol
     
-    init(articleManager: ArticleManagerProtocol = ArticleManager.shared,
-         bookmarkManager: BookmarkManagerProtocol = BookmarkManager.shared,
-         accountManager: AccountProtocol = AccountManager.shared,
-         userDataSoreManager: UserDataStoreManagerProtocol = UserDataStoreManager.shared
+    init(articleManager: ArticleManagerProtocol,
+         bookmarkManager: BookmarkManagerProtocol,
+         accountManager: AccountProtocol,
+         userDataSoreManager: UserDataStoreManagerProtocol
     ) {
         self.articleManager = articleManager
         self.bookmarkManager = bookmarkManager

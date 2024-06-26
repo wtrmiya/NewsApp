@@ -20,9 +20,9 @@ final class SignUpViewModel: ObservableObject {
     private let userSettingsManager: UserSettingsManagerProtocol
     private let userDataStoreManager: UserDataStoreManagerProtocol
 
-    init(accountManager: AccountProtocol = AccountManager.shared,
-         userSettingsManager: UserSettingsManagerProtocol = UserSettingsManager.shared,
-         userDataStoreManager: UserDataStoreManagerProtocol = UserDataStoreManager.shared
+    init(accountManager: AccountProtocol,
+         userSettingsManager: UserSettingsManagerProtocol,
+         userDataStoreManager: UserDataStoreManagerProtocol
     ) {
         self.accountManager = accountManager
         self.userSettingsManager = userSettingsManager

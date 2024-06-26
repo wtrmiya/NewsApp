@@ -15,7 +15,10 @@ final class AccountManager {
     static let shared = AccountManager()
     private init() {
         if authStateHander == nil {
-            authStateHander = Auth.auth().addStateDidChangeListener({ _, user in
+            authStateHander = Auth.auth().addStateDidChangeListener({ [weak self] _, user in
+                print("\(#function): Listener called")
+                guard let self else { return }
+                
                 if let user {
                     guard let email = user.email,
                           let displayName = user.displayName

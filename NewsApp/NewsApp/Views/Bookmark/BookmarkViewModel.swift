@@ -16,9 +16,9 @@ final class BookmarkViewModel: ObservableObject {
     let bookmarkManager: BookmarkManagerProtocol
     let userDataStoreManager: UserDataStoreManagerProtocol
 
-    init(accountManager: AccountProtocol = AccountManager.shared,
-         bookmarkManager: BookmarkManagerProtocol = BookmarkManager.shared,
-         userDataStoreManager: UserDataStoreManagerProtocol = UserDataStoreManager.shared
+    init(accountManager: AccountProtocol,
+         bookmarkManager: BookmarkManagerProtocol,
+         userDataStoreManager: UserDataStoreManagerProtocol
     ) {
         self.accountManager = accountManager
         self.bookmarkManager = bookmarkManager
