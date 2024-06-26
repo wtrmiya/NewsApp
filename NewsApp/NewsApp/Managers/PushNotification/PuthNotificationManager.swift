@@ -19,22 +19,41 @@ extension PushNotificationManager {
         try await UNUserNotificationCenter.current().requestAuthorization(options: options)
     }
     
-    func cancelSchedule() {
+    func setupPushNotifications() async throws {
+        for value in NotificationValue.allCases {
+            try await scheduleNotification(notificationValue: value)
+        }
+    }
+    
+    func cancelAllScheduledPushNotifications() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
     
     func applyPushNotificaionSettings(userSettings: UserSettings) async throws {
+        var pushIds: [String] = []
+        
         if userSettings.pushMorningEnabled {
             try await scheduleNotification(notificationValue: .morning)
+        } else {
+            pushIds.append(NotificationValue.morning.rawValue)
         }
         
         if userSettings.pushAfternoonEnabled {
             try await scheduleNotification(notificationValue: .afternoon)
+        } else {
+            pushIds.append(NotificationValue.afternoon.rawValue)
         }
         
         if userSettings.pushEveningEnabled {
             try await scheduleNotification(notificationValue: .evening)
+        } else {
+            pushIds.append(NotificationValue.evening.rawValue)
+        }
+        
+        if !pushIds.isEmpty {
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: pushIds)
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: pushIds)
         }
     }
     
@@ -53,7 +72,7 @@ extension PushNotificationManager {
         let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
         
         let request = UNNotificationRequest(
-            identifier: UUID().uuidString,
+            identifier: notificationValue.rawValue,
             content: content,
             trigger: trigger
         )
@@ -63,7 +82,7 @@ extension PushNotificationManager {
 }
 
 extension PushNotificationManager {
-    enum NotificationValue {
+    enum NotificationValue: String, CaseIterable {
         case morning
         case afternoon
         case evening
@@ -111,5 +130,26 @@ extension PushNotificationManager {
                 return 0
             }
         }
+        
+        /*
+        var hour: Int {
+            switch self {
+            case .morning, .afternoon, .evening:
+                return 14
+            }
+        }
+        
+        var minute: Int {
+            let min: Int = 0
+            switch self {
+            case .morning:
+                return min
+            case .afternoon:
+                return min + 2
+            case .evening:
+                return min + 4
+            }
+        }
+         */
     }
 }

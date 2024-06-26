@@ -18,16 +18,14 @@ final class AppDependencyContainer: ObservableObject {
     private let sharedHomeViewModel: HomeViewModel
 
     init() {
-        let accountManager = AccountManager.shared
-        let userSettingsManager = UserSettingsManager.shared
-        let articleManager = ArticleManager.shared
-        self.sharedAccountManager = accountManager
-        self.sharedUserSettingsManager = userSettingsManager
-        self.sharedArticleManger = articleManager
+        self.sharedAccountManager = AccountManager.shared
+        self.sharedUserSettingsManager = UserSettingsManager.shared
+        self.sharedArticleManger = ArticleManager.shared
         
         self.sharedAccountSettingsViewModel = AccountSettingsViewModel(
             accountManager: sharedAccountManager
         )
+        /*
         if let tempUser = accountManager.user {
             Task {
                 do {
@@ -42,16 +40,12 @@ final class AppDependencyContainer: ObservableObject {
                         documentId: userDataStoreDocumentId
                     )
                     try await userSettingsManager.fetchCurrentUserSettings(user: user)
-                    let currentUserSettings = userSettingsManager.currentUserSettings
-                    try await PushNotificationManager.shared
-                        .applyPushNotificaionSettings(
-                            userSettings: currentUserSettings
-                        )
                 } catch {
                     print(error)
                 }
             }
         }
+         */
         
         self.sharedAuthViewModel = AuthViewModel(
             accountManager: sharedAccountManager,
@@ -194,7 +188,12 @@ final class AppDependencyContainer: ObservableObject {
     }
     
     func makeSearchViewModel() -> SearchViewModel {
-        return SearchViewModel()
+        return SearchViewModel(
+            articleManager: sharedArticleManger,
+            accountManager: sharedAccountManager,
+            userDataStoreManager: UserDataStoreManager.shared,
+            bookmarkManager: BookmarkManager.shared
+        )
     }
     
     func makeSignInView(isShowing: Binding<Bool>) -> SignInView {

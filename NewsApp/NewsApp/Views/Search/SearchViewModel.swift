@@ -19,10 +19,10 @@ final class SearchViewModel: ObservableObject {
     private let bookmarkManager: BookmarkManagerProtocol
 
     init(
-        articleManager: ArticleManagerProtocol = ArticleManager.shared,
-        accountManager: AccountProtocol = AccountManager.shared,
-        userDataStoreManager: UserDataStoreManagerProtocol = UserDataStoreManager.shared,
-        bookmarkManager: BookmarkManagerProtocol = BookmarkManager.shared
+        articleManager: ArticleManagerProtocol,
+        accountManager: AccountProtocol,
+        userDataStoreManager: UserDataStoreManagerProtocol,
+        bookmarkManager: BookmarkManagerProtocol
     ) {
         self.articleManager = articleManager
         self.accountManager = accountManager

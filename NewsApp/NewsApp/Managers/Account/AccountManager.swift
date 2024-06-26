@@ -15,7 +15,9 @@ final class AccountManager {
     static let shared = AccountManager()
     private init() {
         if authStateHander == nil {
-            authStateHander = Auth.auth().addStateDidChangeListener({ _, user in
+            authStateHander = Auth.auth().addStateDidChangeListener({ [weak self] _, user in
+                guard let self else { return }
+                
                 if let user {
                     guard let email = user.email,
                           let displayName = user.displayName
@@ -30,18 +32,6 @@ final class AccountManager {
                     self.user = nil
                 }
             })
-        }
-        
-        if let currentUser = Auth.auth().currentUser {
-            guard let email = currentUser.email,
-                  let displayName = currentUser.displayName
-            else { return }
-            
-            self.user = UserAccount(
-                uid: currentUser.uid,
-                email: email,
-                displayName: displayName
-            )
         }
     }
     

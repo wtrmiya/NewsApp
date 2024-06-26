@@ -8,14 +8,20 @@
 import Foundation
 
 final class SettingsViewModel: ObservableObject {
-    @Published var userSettings: UserSettings = UserSettings.defaultSettingsWithDummyUID()
+    @Published var userSettings: UserSettings = UserSettings.defaultSettingsWithDummyUID() {
+        didSet {
+            Task {
+                await updateUserSettings()
+            }
+        }
+    }
     
     private let accountManager: AccountProtocol
     private let userSettingsManager: UserSettingsManagerProtocol
     
     init(
-        accountManager: AccountProtocol = AccountManager.shared,
-        userSettingsManager: UserSettingsManagerProtocol = UserSettingsManager.shared
+        accountManager: AccountProtocol,
+        userSettingsManager: UserSettingsManagerProtocol
     ) {
         self.accountManager = accountManager
         self.userSettingsManager = userSettingsManager
@@ -28,6 +34,16 @@ final class SettingsViewModel: ObservableObject {
             else { return }
             try await userSettingsManager.fetchCurrentUserSettings(user: user)
             self.userSettings = userSettingsManager.currentUserSettings
+        } catch {
+            print(error)
+        }
+    }
+    
+    private func updateUserSettings() async {
+        do {
+            guard let user = accountManager.user
+            else { return }
+            try await userSettingsManager.updateUserSettings(by: self.userSettings, user: user)
         } catch {
             print(error)
         }
