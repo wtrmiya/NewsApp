@@ -6,18 +6,19 @@
 //
 
 import Foundation
+import Combine
 
 final class SettingsViewModel: ObservableObject {
     @Published var userSettings: UserSettings = UserSettings.defaultSettingsWithDummyUID() {
         didSet {
-            Task {
-                await updateUserSettings()
-            }
+            print("SettingsViewModel: userSettings: \(userSettings)")
         }
     }
     
     private let accountManager: AccountProtocol
     private let userSettingsManager: UserSettingsManagerProtocol
+    
+    private var allCancellables = Set<AnyCancellable>()
     
     init(
         accountManager: AccountProtocol,
@@ -25,6 +26,8 @@ final class SettingsViewModel: ObservableObject {
     ) {
         self.accountManager = accountManager
         self.userSettingsManager = userSettingsManager
+        
+        bindUserSettings()
     }
     
     @MainActor
@@ -39,11 +42,43 @@ final class SettingsViewModel: ObservableObject {
         }
     }
     
-    private func updateUserSettings() async {
+    private func bindUserSettings() {
+        $userSettings
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newSettings in
+                guard let self else { return }
+                Task {
+                    await self.updatePushSettings(
+                        morning: newSettings.pushMorningEnabled,
+                        afternoon: newSettings.pushAfternoonEnabled,
+                        evening: newSettings.pushEveningEnabled
+                    )
+                }
+            }
+            .store(in: &allCancellables)
+    }
+    
+    private func updatePushSettings(morning: Bool, afternoon: Bool, evening: Bool) async {
+        print("morning: \(morning), afternoon: \(afternoon), evening: \(evening)")
         do {
             guard let user = accountManager.user
             else { return }
-            try await userSettingsManager.updateUserSettings(by: self.userSettings, user: user)
+            let currentSettings = self.userSettings
+            let newSettings = UserSettings(
+                uid: currentSettings.uid,
+                pushMorningEnabled: morning,
+                pushAfternoonEnabled: afternoon,
+                pushEveningEnabled: evening,
+                letterSize: currentSettings.letterSize,
+                letterWeight: currentSettings.letterWeight,
+                darkMode: currentSettings.darkMode,
+                createdAt: currentSettings.createdAt,
+                updatedAt: Date(),
+                documentId: user.documentId
+            )
+            
+            try await userSettingsManager.updateUserSettings(by: newSettings, user: user)
         } catch {
             print(error)
         }

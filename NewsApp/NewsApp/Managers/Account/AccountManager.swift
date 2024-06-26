@@ -16,6 +16,7 @@ final class AccountManager {
     private init() {
         if authStateHander == nil {
             authStateHander = Auth.auth().addStateDidChangeListener({ [weak self] _, user in
+                print("\(#function): Listener called")
                 guard let self else { return }
                 
                 if let user {

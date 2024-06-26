@@ -14,7 +14,7 @@ final class UserSettingsManager {
     private init() {}
     private var userSettings: UserSettings? {
         didSet {
-            print(userSettings.debugDescription)
+            print("userSettings.debugDescription: \(userSettings.debugDescription)")
         }
     }
     
@@ -67,8 +67,12 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
     }
     
     func updateUserSettings(by updatedUserSettings: UserSettings, user: UserAccount) async throws {
-        guard let userDocumentId = user.documentId else { return }
-        guard let userSettingsDocumentId = updatedUserSettings.documentId else { return }
+        guard let userDocumentId = user.documentId else {
+            return
+        }
+        guard let userSettingsDocumentId = updatedUserSettings.documentId else {
+            return
+        }
         
         let userSettingsCollectionRef = getUserSettingsCollectionReference(userDocumentId: userDocumentId)
         let docRef = userSettingsCollectionRef.document(userSettingsDocumentId)
