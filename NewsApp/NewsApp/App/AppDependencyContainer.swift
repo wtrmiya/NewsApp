@@ -13,6 +13,7 @@ final class AppDependencyContainer: ObservableObject {
     private let sharedAccountManager: AccountProtocol
     private let sharedUserSettingsManager: UserSettingsManagerProtocol
     private let sharedArticleManger: ArticleManagerProtocol
+    private let sharedAppStateManager: AppStateManager
     private let sharedAccountSettingsViewModel: AccountSettingsViewModel
     private let sharedAuthViewModel: AuthViewModel
     private let sharedHomeViewModel: HomeViewModel
@@ -22,6 +23,7 @@ final class AppDependencyContainer: ObservableObject {
         self.sharedAccountManager = AccountManager.shared
         self.sharedUserSettingsManager = UserSettingsManager.shared
         self.sharedArticleManger = ArticleManager.shared
+        self.sharedAppStateManager = AppStateManager.shared
         
         self.sharedAccountSettingsViewModel = AccountSettingsViewModel(
             accountManager: sharedAccountManager
@@ -42,7 +44,8 @@ final class AppDependencyContainer: ObservableObject {
         
         self.sharedSettingsViewModel = SettingsViewModel(
             accountManager: sharedAccountManager,
-            userSettingsManager: sharedUserSettingsManager
+            userSettingsManager: sharedUserSettingsManager,
+            appStateManager: sharedAppStateManager
         )
     }
     

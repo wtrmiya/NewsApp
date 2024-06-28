@@ -11,7 +11,7 @@ protocol AccountProtocol: AnyObject {
     func signUp(email: String, password: String, displayName: String) async throws
     func signIn(email: String, password: String) async throws
     func signOut() throws
-    func setDocumentIdToCurrentUser(documentId: String)
+    func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String)
     
     var isSignedIn: Bool { get }
     var user: UserAccount? { get set }

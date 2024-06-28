@@ -45,7 +45,7 @@ final class AuthViewModel: ObservableObject {
             try await accountManager.signIn(email: email, password: password)
             guard let tempUser = accountManager.user else { return }
             let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
-            accountManager.setDocumentIdToCurrentUser(documentId: userDocumentId)
+            accountManager.setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: userDocumentId)
             guard let user = accountManager.user else { return }
             try await userSettingsManager.fetchCurrentUserSettings(user: user)
         } catch {
@@ -69,7 +69,7 @@ final class AuthViewModel: ObservableObject {
             guard let tempUser = accountManager.user else { return }
             try await userDataStoreManager.createUserDataStore(user: tempUser)
             let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
-            accountManager.setDocumentIdToCurrentUser(documentId: userDocumentId)
+            accountManager.setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: userDocumentId)
             guard let user = accountManager.user else { return }
             try await userSettingsManager.createDefaultUserSettings(user: user)
         } catch {

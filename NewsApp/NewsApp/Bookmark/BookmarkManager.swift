@@ -17,8 +17,8 @@ final class BookmarkManager {
 }
 
 private extension BookmarkManager {
-    func getBookmarksCollectionReference(userDocumentId: String) -> CollectionReference {
-        let userDocRef = firestoreDB.collection("users").document(userDocumentId)
+    func getBookmarksCollectionReference(userDataStoreDocumentId: String) -> CollectionReference {
+        let userDocRef = firestoreDB.collection("users").document(userDataStoreDocumentId)
         let bookmarksCollectionRef = userDocRef.collection("bookmarks")
         return bookmarksCollectionRef
     }
@@ -26,27 +26,27 @@ private extension BookmarkManager {
 
 extension BookmarkManager: BookmarkManagerProtocol {
     func addBookmark(article: Article, user: UserAccount) async throws -> Article? {
-        guard let userDocumentId = user.documentId else {
+        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else {
             return nil
         }
         guard article.bookmarked else {
             return nil
         }
         
-        let bookmarksCollectionRef = getBookmarksCollectionReference(userDocumentId: userDocumentId)
+        let bookmarksCollectionRef = getBookmarksCollectionReference(userDataStoreDocumentId: userDataStoreDocumentId)
         let docRef = try await bookmarksCollectionRef.addDocument(data: article.toDictionary())
         let updatedArticle = article.updateBookmarkedData(documentId: docRef.documentID)
         return updatedArticle
     }
     
     func deleteBookmark(article: Article, user: UserAccount) async throws -> Article? {
-        guard let userDocumentId = user.documentId else { return nil }
+        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else { return nil }
         guard !article.bookmarked else { return nil }
         
         guard let bookmarkDocumentId = article.documentId
         else { return nil }
         
-        let bookmarksCollectionRef = getBookmarksCollectionReference(userDocumentId: userDocumentId)
+        let bookmarksCollectionRef = getBookmarksCollectionReference(userDataStoreDocumentId: userDataStoreDocumentId)
 
         let docRef = bookmarksCollectionRef.document(bookmarkDocumentId)
         try await docRef.delete()
@@ -55,9 +55,9 @@ extension BookmarkManager: BookmarkManagerProtocol {
     }
     
     func deleteBookmarks(articles: [Article], user: UserAccount) async throws {
-        guard let userDocumentId = user.documentId else { return }
+        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else { return }
         
-        let bookmarksCollectionRef = getBookmarksCollectionReference(userDocumentId: userDocumentId)
+        let bookmarksCollectionRef = getBookmarksCollectionReference(userDataStoreDocumentId: userDataStoreDocumentId)
 
         let batch = firestoreDB.batch()
         for articleToDelete in articles {
@@ -70,9 +70,9 @@ extension BookmarkManager: BookmarkManagerProtocol {
     }
     
     func getBookmarks(user: UserAccount) async throws -> [Article] {
-        guard let userDocumentId = user.documentId else { return [] }
+        guard let userDocumentId = user.userDataStoreDocumentId else { return [] }
         
-        let bookmarksCollectionRef = getBookmarksCollectionReference(userDocumentId: userDocumentId)
+        let bookmarksCollectionRef = getBookmarksCollectionReference(userDataStoreDocumentId: userDocumentId)
 
         let snapshot = try await bookmarksCollectionRef.getDocuments()
         

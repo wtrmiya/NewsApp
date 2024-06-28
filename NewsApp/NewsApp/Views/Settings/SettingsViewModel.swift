@@ -7,31 +7,49 @@
 
 import Foundation
 import Combine
+import UserNotifications
 
 final class SettingsViewModel: ObservableObject {
     @Published var userSettings: UserSettings = UserSettings.defaultSettingsWithDummyUID() {
         didSet {
-            print("SettingsViewModel: userSettings: \(userSettings)")
+            print("SettingsViewModel: didSet userSettings: \(userSettings)")
+            if appStateManager.appState == .launching {
+                appStateManager.appState = .launched
+            }
         }
     }
     
     private let accountManager: AccountProtocol
     private let userSettingsManager: UserSettingsManagerProtocol
-    
+    private let appStateManager: AppStateManager
+
     private var allCancellables = Set<AnyCancellable>()
     
     init(
         accountManager: AccountProtocol,
-        userSettingsManager: UserSettingsManagerProtocol
+        userSettingsManager: UserSettingsManagerProtocol,
+        appStateManager: AppStateManager
     ) {
         self.accountManager = accountManager
         self.userSettingsManager = userSettingsManager
+        self.appStateManager = appStateManager
         
+        print("\(#function): NotificationCenter")
+        
+        NotificationCenter.default
+            .addObserver(
+                self,
+                selector: #selector(userSettingsChanged),
+                name: Notification.Name.userSettingsChanged,
+                object: nil
+            )
+
         bindUserSettings()
     }
     
     @MainActor
     func populateUserSettings() async {
+        print("populateUserSettings")
         do {
             guard let user = accountManager.user
             else { return }
@@ -44,11 +62,16 @@ final class SettingsViewModel: ObservableObject {
     
     private func bindUserSettings() {
         $userSettings
-            .dropFirst()
             .receive(on: DispatchQueue.main)
+            .filter({ [weak self] _ in
+                guard let self else { return false }
+                return appStateManager.appState == .launched
+            })
+            .dropFirst()
             .sink { [weak self] newSettings in
                 guard let self else { return }
                 Task {
+                    print("updatePushSetings")
                     await self.updatePushSettings(
                         morning: newSettings.pushMorningEnabled,
                         afternoon: newSettings.pushAfternoonEnabled,
@@ -61,9 +84,17 @@ final class SettingsViewModel: ObservableObject {
     
     private func updatePushSettings(morning: Bool, afternoon: Bool, evening: Bool) async {
         print("morning: \(morning), afternoon: \(afternoon), evening: \(evening)")
+        guard self.userSettings.userSettingsDocumentId != nil
+        else {
+            print("\(#file): \(#function): userSettings.userSettingsDocumentId is nil")
+            return
+        }
         do {
             guard let user = accountManager.user
-            else { return }
+            else {
+                print("\(#file): \(#function): accountManager.user is nil")
+                return
+            }
             let currentSettings = self.userSettings
             let newSettings = UserSettings(
                 uid: currentSettings.uid,
@@ -75,12 +106,29 @@ final class SettingsViewModel: ObservableObject {
                 darkMode: currentSettings.darkMode,
                 createdAt: currentSettings.createdAt,
                 updatedAt: Date(),
-                documentId: user.documentId
+                userSettingsDocumentId: currentSettings.userSettingsDocumentId
             )
             
             try await userSettingsManager.updateUserSettings(by: newSettings, user: user)
         } catch {
             print(error)
+        }
+    }
+    
+    @objc func userSettingsChanged(notification: Notification) {
+        guard appStateManager.appState == .launching else {
+            print("\(#function) userSettings changed but now not launching")
+            return
+        }
+        guard let userSettings = notification.userInfo?["user_settings"] as? UserSettings else {
+            print("\(#function) route #2")
+            return
+        }
+        Task {
+            await MainActor.run {
+                print("\(#function) route #3")
+                self.userSettings = userSettings
+            }
         }
     }
 }

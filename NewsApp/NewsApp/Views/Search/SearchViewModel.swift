@@ -46,7 +46,7 @@ final class SearchViewModel: ObservableObject {
                     uid: tempUser.uid,
                     email: tempUser.email,
                     displayName: tempUser.displayName,
-                    documentId: userDocumentId
+                    userDataStoreDocumentId: userDocumentId
                 )
                 let bookmarkedArticles = try await bookmarkManager.getBookmarks(user: currentUser)
                 
@@ -86,7 +86,7 @@ final class SearchViewModel: ObservableObject {
                 uid: tempUser.uid,
                 email: tempUser.email,
                 displayName: tempUser.displayName,
-                documentId: userDocumentId
+                userDataStoreDocumentId: userDocumentId
             )
             self.searchResultArticles[toggledArticleIndex] = toggledArticle
             

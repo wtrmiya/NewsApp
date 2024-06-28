@@ -79,9 +79,11 @@ struct SettingsView: View {
                 }
             }
         }
+        /*
         .task {
             await settingsViewModel.populateUserSettings()
         }
+         */
     }
 }
 

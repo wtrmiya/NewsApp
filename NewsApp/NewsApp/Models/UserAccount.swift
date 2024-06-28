@@ -11,9 +11,9 @@ struct UserAccount: Hashable {
     private(set) var uid: String
     private(set) var email: String
     private(set) var displayName: String
-    private(set) var documentId: String?
+    private(set) var userDataStoreDocumentId: String?
     
-    mutating func setDocumentId(documentId: String) {
-        self.documentId = documentId
+    mutating func setUserDataStoreDocumentId(userDataStoreDocumentId: String) {
+        self.userDataStoreDocumentId = userDataStoreDocumentId
     }
 }

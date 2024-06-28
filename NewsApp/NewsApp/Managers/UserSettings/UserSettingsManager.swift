@@ -14,16 +14,28 @@ final class UserSettingsManager {
     private init() {}
     private var userSettings: UserSettings? {
         didSet {
-            print("userSettings.debugDescription: \(userSettings.debugDescription)")
+            if oldValue == nil && userSettings != nil {
+                postNotification()
+            } else if oldValue != nil && userSettings == nil {
+                postNotification()
+            }
         }
     }
     
+    private func postNotification() {
+        NotificationCenter.default.post(
+            name: Notification.Name.userSettingsChanged,
+            object: nil,
+            userInfo: ["user_settings": userSettings as Any]
+        )
+    }
+
     private let firestoreDB = Firestore.firestore()
 }
 
 private extension UserSettingsManager {
-    func getUserSettingsCollectionReference(userDocumentId: String) -> CollectionReference {
-        let userDocRef = firestoreDB.collection("users").document(userDocumentId)
+    func getUserSettingsCollectionReference(userDataStoreDocumentId: String) -> CollectionReference {
+        let userDocRef = firestoreDB.collection("users").document(userDataStoreDocumentId)
         let userSettingsCollectionRef = userDocRef.collection("user_settings")
         return userSettingsCollectionRef
     }
@@ -39,22 +51,26 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
     }
     
     func createDefaultUserSettings(user: UserAccount) async throws {
-        guard let userDocumentId = user.documentId else { return }
+        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else { return }
         var defaultSettings = UserSettings.defaultSettings(uid: user.uid)
         let defaultSettingsDict = defaultSettings.toDictionary()
         
-        let userSettingsCollectionRef = getUserSettingsCollectionReference(userDocumentId: userDocumentId)
+        let userSettingsCollectionRef = getUserSettingsCollectionReference(
+            userDataStoreDocumentId: userDataStoreDocumentId
+        )
         let docRef = try await userSettingsCollectionRef.addDocument(data: defaultSettingsDict)
-        defaultSettings.setDocumentId(documentId: docRef.documentID)
+        defaultSettings.setSettingsDocumentId(userSettingsDocumentId: docRef.documentID)
         self.userSettings = defaultSettings
     }
 
     func fetchCurrentUserSettings(user: UserAccount) async throws {
-        guard let userDocumentId = user.documentId else {
+        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else {
             return
         }
         
-        let userSettingsCollectionRef = getUserSettingsCollectionReference(userDocumentId: userDocumentId)
+        let userSettingsCollectionRef = getUserSettingsCollectionReference(
+            userDataStoreDocumentId: userDataStoreDocumentId
+        )
         guard let snapshot = try await userSettingsCollectionRef
             .whereField("uid", isEqualTo: user.uid)
             .getDocuments().documents.first
@@ -67,14 +83,16 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
     }
     
     func updateUserSettings(by updatedUserSettings: UserSettings, user: UserAccount) async throws {
-        guard let userDocumentId = user.documentId else {
+        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else {
             return
         }
-        guard let userSettingsDocumentId = updatedUserSettings.documentId else {
+        guard let userSettingsDocumentId = updatedUserSettings.userSettingsDocumentId else {
             return
         }
         
-        let userSettingsCollectionRef = getUserSettingsCollectionReference(userDocumentId: userDocumentId)
+        let userSettingsCollectionRef = getUserSettingsCollectionReference(
+            userDataStoreDocumentId: userDataStoreDocumentId
+        )
         let docRef = userSettingsCollectionRef.document(userSettingsDocumentId)
         try await docRef.updateData(updatedUserSettings.toDictionary())
     }

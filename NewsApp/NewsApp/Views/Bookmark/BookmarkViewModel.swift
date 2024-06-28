@@ -37,7 +37,7 @@ final class BookmarkViewModel: ObservableObject {
                 uid: tempUser.uid,
                 email: tempUser.email,
                 displayName: tempUser.displayName,
-                documentId: userDocumentId
+                userDataStoreDocumentId: userDocumentId
             )
 
             let bookmarkedArticles = try await bookmarkManager.getBookmarks(user: currentUser)
@@ -63,7 +63,7 @@ final class BookmarkViewModel: ObservableObject {
                 uid: tempUser.uid,
                 email: tempUser.email,
                 displayName: tempUser.displayName,
-                documentId: userDocumentId
+                userDataStoreDocumentId: userDocumentId
             )
             
             let bookmarksToDelete = indexSet.compactMap { articles[$0] }
