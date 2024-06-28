@@ -13,6 +13,7 @@ final class AppDependencyContainer: ObservableObject {
     private let sharedAccountManager: AccountProtocol
     private let sharedUserSettingsManager: UserSettingsManagerProtocol
     private let sharedArticleManger: ArticleManagerProtocol
+    private let sharedAppStateManager: AppStateManager
     private let sharedAccountSettingsViewModel: AccountSettingsViewModel
     private let sharedAuthViewModel: AuthViewModel
     private let sharedHomeViewModel: HomeViewModel
@@ -22,6 +23,7 @@ final class AppDependencyContainer: ObservableObject {
         self.sharedAccountManager = AccountManager.shared
         self.sharedUserSettingsManager = UserSettingsManager.shared
         self.sharedArticleManger = ArticleManager.shared
+        self.sharedAppStateManager = AppStateManager.shared
         
         self.sharedAccountSettingsViewModel = AccountSettingsViewModel(
             accountManager: sharedAccountManager
@@ -30,7 +32,8 @@ final class AppDependencyContainer: ObservableObject {
         self.sharedAuthViewModel = AuthViewModel(
             accountManager: sharedAccountManager,
             userSettingsManager: sharedUserSettingsManager,
-            userDataStoreManager: UserDataStoreManager.shared
+            userDataStoreManager: UserDataStoreManager.shared,
+            pushNotificationManager: PushNotificationManager.shared
         )
         
         self.sharedHomeViewModel = HomeViewModel(
@@ -42,7 +45,9 @@ final class AppDependencyContainer: ObservableObject {
         
         self.sharedSettingsViewModel = SettingsViewModel(
             accountManager: sharedAccountManager,
-            userSettingsManager: sharedUserSettingsManager
+            userSettingsManager: sharedUserSettingsManager,
+            appStateManager: sharedAppStateManager,
+            pushNotificationManager: PushNotificationManager.shared
         )
     }
     
@@ -95,7 +100,8 @@ final class AppDependencyContainer: ObservableObject {
     func makeSettingsView(isShowing: Binding<Bool>) -> SettingsView {
         return SettingsView(
             isShowing: isShowing,
-            settingsViewModel: makeSettingsViewModel()
+            settingsViewModel: makeSettingsViewModel(),
+            authViewModel: sharedAuthViewModel
         )
     }
     

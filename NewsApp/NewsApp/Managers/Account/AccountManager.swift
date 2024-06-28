@@ -149,7 +149,7 @@ extension AccountManager: AccountProtocol {
         try await request.commitChanges()
     }
     
-    func setDocumentIdToCurrentUser(documentId: String) {
-        self.user?.setDocumentId(documentId: documentId)
+    func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String) {
+        self.user?.setUserDataStoreDocumentId(userDataStoreDocumentId: userDataStoreDocumentId)
     }
 }

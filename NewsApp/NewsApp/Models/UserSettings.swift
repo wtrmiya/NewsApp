@@ -18,12 +18,12 @@ struct UserSettings {
     var darkMode: Int
     let createdAt: Date
     var updatedAt: Date
-    var documentId: String?
+    var userSettingsDocumentId: String?
 }
 
 extension UserSettings {
-    mutating func setDocumentId(documentId: String) {
-        self.documentId = documentId
+    mutating func setSettingsDocumentId(userSettingsDocumentId: String) {
+        self.userSettingsDocumentId = userSettingsDocumentId
     }
     
     static func defaultSettings(uid: String) -> UserSettings {
@@ -133,7 +133,7 @@ extension UserSettings {
             return nil
         }
         
-        let documentId = snapshot.documentID
+        let userSettingsDocumentId = snapshot.documentID
 
         return UserSettings(
             uid: uid,
@@ -145,7 +145,7 @@ extension UserSettings {
             darkMode: darkMode,
             createdAt: createdAt,
             updatedAt: updatedAt,
-            documentId: documentId
+            userSettingsDocumentId: userSettingsDocumentId
         )
     }
 }

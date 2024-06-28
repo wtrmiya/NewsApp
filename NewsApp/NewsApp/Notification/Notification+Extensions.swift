@@ -10,4 +10,5 @@ import UserNotifications
 
 extension Notification.Name {
     static let signInStateChanged = Notification.Name("notification_name_signin_state_changed")
+    static let userSettingsChanged = Notification.Name("notification_name_user_settings_changed")
 }

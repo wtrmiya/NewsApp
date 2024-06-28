@@ -56,7 +56,7 @@ final class HomeViewModel: ObservableObject {
                     uid: tempUser.uid,
                     email: tempUser.email,
                     displayName: tempUser.displayName,
-                    documentId: userDocumentId
+                    userDataStoreDocumentId: userDocumentId
                 )
                 let bookmarkedArticles = try await bookmarkManager.getBookmarks(user: currentUser)
                 
@@ -94,7 +94,7 @@ final class HomeViewModel: ObservableObject {
                 uid: tempUser.uid,
                 email: tempUser.email,
                 displayName: tempUser.displayName,
-                documentId: userDocumentId
+                userDataStoreDocumentId: userDocumentId
             )
             self.articles[toggledArticleIndex] = toggledArticle
             

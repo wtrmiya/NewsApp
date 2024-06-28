@@ -21,15 +21,18 @@ final class AuthViewModel: ObservableObject {
     private let accountManager: AccountProtocol
     private let userSettingsManager: UserSettingsManagerProtocol
     private let userDataStoreManager: UserDataStoreManagerProtocol
-    
+    private let pushNotificationManager: PushNotificationManager
+
     init(accountManager: AccountProtocol,
          userSettingsManager: UserSettingsManagerProtocol,
-         userDataStoreManager: UserDataStoreManagerProtocol
+         userDataStoreManager: UserDataStoreManagerProtocol,
+         pushNotificationManager: PushNotificationManager
     ) {
         self.accountManager = accountManager
         self.userSettingsManager = userSettingsManager
         self.userDataStoreManager = userDataStoreManager
-        
+        self.pushNotificationManager = pushNotificationManager
+
         NotificationCenter.default
             .addObserver(
                 self,
@@ -44,8 +47,8 @@ final class AuthViewModel: ObservableObject {
         do {
             try await accountManager.signIn(email: email, password: password)
             guard let tempUser = accountManager.user else { return }
-            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
-            accountManager.setDocumentIdToCurrentUser(documentId: userDocumentId)
+            let userDataStoreDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
+            accountManager.setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: userDataStoreDocumentId)
             guard let user = accountManager.user else { return }
             try await userSettingsManager.fetchCurrentUserSettings(user: user)
         } catch {
@@ -69,7 +72,7 @@ final class AuthViewModel: ObservableObject {
             guard let tempUser = accountManager.user else { return }
             try await userDataStoreManager.createUserDataStore(user: tempUser)
             let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
-            accountManager.setDocumentIdToCurrentUser(documentId: userDocumentId)
+            accountManager.setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: userDocumentId)
             guard let user = accountManager.user else { return }
             try await userSettingsManager.createDefaultUserSettings(user: user)
         } catch {
@@ -88,6 +91,7 @@ final class AuthViewModel: ObservableObject {
     
     func signOut() {
         do {
+            pushNotificationManager.cancelAllScheduledPushNotifications()
             try accountManager.signOut()
         } catch {
             print(error)
