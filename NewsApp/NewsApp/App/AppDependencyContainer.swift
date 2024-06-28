@@ -45,7 +45,8 @@ final class AppDependencyContainer: ObservableObject {
         self.sharedSettingsViewModel = SettingsViewModel(
             accountManager: sharedAccountManager,
             userSettingsManager: sharedUserSettingsManager,
-            appStateManager: sharedAppStateManager
+            appStateManager: sharedAppStateManager,
+            pushNotificationManager: PushNotificationManager.shared
         )
     }
     

@@ -22,17 +22,20 @@ final class SettingsViewModel: ObservableObject {
     private let accountManager: AccountProtocol
     private let userSettingsManager: UserSettingsManagerProtocol
     private let appStateManager: AppStateManager
+    private let pushNotificationManager: PushNotificationManager
 
     private var allCancellables = Set<AnyCancellable>()
     
     init(
         accountManager: AccountProtocol,
         userSettingsManager: UserSettingsManagerProtocol,
-        appStateManager: AppStateManager
+        appStateManager: AppStateManager,
+        pushNotificationManager: PushNotificationManager
     ) {
         self.accountManager = accountManager
         self.userSettingsManager = userSettingsManager
         self.appStateManager = appStateManager
+        self.pushNotificationManager = pushNotificationManager
         
         print("\(#function): NotificationCenter")
         
@@ -108,7 +111,7 @@ final class SettingsViewModel: ObservableObject {
                 updatedAt: Date(),
                 userSettingsDocumentId: currentSettings.userSettingsDocumentId
             )
-            
+            try await pushNotificationManager.applyPushNotificaionSettings(userSettings: newSettings)
             try await userSettingsManager.updateUserSettings(by: newSettings, user: user)
         } catch {
             print(error)

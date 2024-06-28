@@ -131,25 +131,23 @@ extension PushNotificationManager {
             }
         }
         
-        /*
-        var hour: Int {
-            switch self {
-            case .morning, .afternoon, .evening:
-                return 14
-            }
-        }
-        
-        var minute: Int {
-            let min: Int = 0
-            switch self {
-            case .morning:
-                return min
-            case .afternoon:
-                return min + 2
-            case .evening:
-                return min + 4
-            }
-        }
-         */
+//        var hour: Int {
+//            switch self {
+//            case .morning, .afternoon, .evening:
+//                return 9
+//            }
+//        }
+//        
+//        var minute: Int {
+//            let min: Int = 50
+//            switch self {
+//            case .morning:
+//                return min
+//            case .afternoon:
+//                return min + 1
+//            case .evening:
+//                return min + 2
+//            }
+//        }
     }
 }
