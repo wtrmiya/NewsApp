@@ -11,10 +11,16 @@ struct SettingsView: View {
     @Binding var isShowing: Bool
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     @ObservedObject private var settingsViewModel: SettingsViewModel
-    
-    init(isShowing: Binding<Bool>, settingsViewModel: SettingsViewModel) {
+    @ObservedObject private var authViewModel: AuthViewModel
+
+    init(
+        isShowing: Binding<Bool>,
+        settingsViewModel: SettingsViewModel,
+        authViewModel: AuthViewModel
+    ) {
         self._isShowing = isShowing
         self.settingsViewModel = settingsViewModel
+        self.authViewModel = authViewModel
     }
     
     var body: some View {
@@ -32,7 +38,7 @@ struct SettingsView: View {
                     }
                 } header: {
                     Text("PUSH")
-                }
+                }.disabled(authViewModel.signedInUser == nil)
                 Section {
                     NavigationLink {
                         appDependencyContainer.makeLetterSizeSettingsView(isShowing: $isShowing)
@@ -79,11 +85,6 @@ struct SettingsView: View {
                 }
             }
         }
-        /*
-        .task {
-            await settingsViewModel.populateUserSettings()
-        }
-         */
     }
 }
 

@@ -32,7 +32,8 @@ final class AppDependencyContainer: ObservableObject {
         self.sharedAuthViewModel = AuthViewModel(
             accountManager: sharedAccountManager,
             userSettingsManager: sharedUserSettingsManager,
-            userDataStoreManager: UserDataStoreManager.shared
+            userDataStoreManager: UserDataStoreManager.shared,
+            pushNotificationManager: PushNotificationManager.shared
         )
         
         self.sharedHomeViewModel = HomeViewModel(
@@ -99,7 +100,8 @@ final class AppDependencyContainer: ObservableObject {
     func makeSettingsView(isShowing: Binding<Bool>) -> SettingsView {
         return SettingsView(
             isShowing: isShowing,
-            settingsViewModel: makeSettingsViewModel()
+            settingsViewModel: makeSettingsViewModel(),
+            authViewModel: sharedAuthViewModel
         )
     }
     

@@ -41,11 +41,11 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
                             userDataStoreDocumentId: userDataStoreDocumentId
                         )
                 } else {
-                    AppStateManager.shared.appState = .launched
+                    AppStateManager.shared.appState = .launchedSignedOut
                 }
             } catch {
                 print(error)
-                AppStateManager.shared.appState = .launched
+                AppStateManager.shared.appState = .launchedSignedOut
             }
         }
 

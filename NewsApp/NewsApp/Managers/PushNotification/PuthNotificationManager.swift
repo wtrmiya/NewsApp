@@ -134,12 +134,12 @@ extension PushNotificationManager {
 //        var hour: Int {
 //            switch self {
 //            case .morning, .afternoon, .evening:
-//                return 9
+//                return 11
 //            }
 //        }
 //        
 //        var minute: Int {
-//            let min: Int = 50
+//            let min: Int = 57
 //            switch self {
 //            case .morning:
 //                return min

@@ -9,7 +9,8 @@ import Foundation
 
 enum AppState {
     case launching
-    case launched
+    case launchedSignedIn
+    case launchedSignedOut
 }
 
 final class AppStateManager {

@@ -12,9 +12,12 @@ import UserNotifications
 final class SettingsViewModel: ObservableObject {
     @Published var userSettings: UserSettings = UserSettings.defaultSettingsWithDummyUID() {
         didSet {
-            print("SettingsViewModel: didSet userSettings: \(userSettings)")
             if appStateManager.appState == .launching {
-                appStateManager.appState = .launched
+                if accountManager.user != nil {
+                    appStateManager.appState = .launchedSignedIn
+                } else {
+                    appStateManager.appState = .launchedSignedOut
+                }
             }
         }
     }
@@ -46,7 +49,7 @@ final class SettingsViewModel: ObservableObject {
                 name: Notification.Name.userSettingsChanged,
                 object: nil
             )
-
+        
         bindUserSettings()
     }
     
@@ -68,7 +71,7 @@ final class SettingsViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .filter({ [weak self] _ in
                 guard let self else { return false }
-                return appStateManager.appState == .launched
+                return appStateManager.appState != .launching
             })
             .dropFirst()
             .sink { [weak self] newSettings in
@@ -112,17 +115,16 @@ final class SettingsViewModel: ObservableObject {
                 userSettingsDocumentId: currentSettings.userSettingsDocumentId
             )
             try await pushNotificationManager.applyPushNotificaionSettings(userSettings: newSettings)
-            try await userSettingsManager.updateUserSettings(by: newSettings, user: user)
+            
+            if AppStateManager.shared.appState == .launchedSignedIn {
+                try await userSettingsManager.updateUserSettings(by: newSettings, user: user)
+            }
         } catch {
             print(error)
         }
     }
     
     @objc func userSettingsChanged(notification: Notification) {
-        guard appStateManager.appState == .launching else {
-            print("\(#function) userSettings changed but now not launching")
-            return
-        }
         guard let userSettings = notification.userInfo?["user_settings"] as? UserSettings else {
             print("\(#function) route #2")
             return
