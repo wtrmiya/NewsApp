@@ -14,6 +14,11 @@ struct ContentView: View {
     
     init(authViewModel: AuthViewModel) {
         self.authViewModel = authViewModel
+        
+        let appearance = UITabBarAppearance()
+        appearance.shadowColor = .clear
+        appearance.backgroundColor = UIColor.surfacePrimary
+        UITabBar.appearance().standardAppearance = appearance
     }
     
     var body: some View {
