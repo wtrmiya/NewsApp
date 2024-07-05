@@ -1,5 +1,5 @@
 //
-//  ArticleListView.swift
+//  ArticleView.swift
 //  NewsApp
 //
 //  Created by Wataru Miyakoshi on 2024/07/06.
@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-struct ArticleListView: View {
-    private var articles: [Article]
-    private var signedInUser: UserAccount?
-    private var bookmarkTapAction: (Article) async -> Void
+struct ArticleView: View {
+    private var article: Article
+    private var isSignedIn: Bool
+    private var bookmarkTapAction: ((Article) async -> Void)?
+    private var proxy: GeometryProxy
     
     @Environment(\.selectedViewItem) private var selectedViewItem: Binding<SelectedViewItem>?
     var currentViewItem: SelectedViewItem {
@@ -21,28 +22,17 @@ struct ArticleListView: View {
         }
     }
     
-    init(articles: [Article], signedInUser: UserAccount? = nil, bookmarkTapAction: @escaping (Article) async -> Void) {
-        self.articles = articles
-        self.signedInUser = signedInUser
+    init(article: Article,
+         isSignedIn: Bool,
+         bookmarkTapAction: @escaping (Article) async -> Void,
+         proxy: GeometryProxy ) {
+        self.article = article
+        self.isSignedIn = isSignedIn
         self.bookmarkTapAction = bookmarkTapAction
+        self.proxy = proxy
     }
     
     var body: some View {
-        GeometryReader { proxy in
-            ScrollView(.vertical) {
-                LazyVStack(spacing: 0) {
-                    ForEach(articles) { article in
-                        articleView(article: article, proxy: proxy)
-                            .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
-                        articleBorderView(proxy: proxy)
-                    }
-                }
-            }
-            .background(.surfacePrimary)
-        }
-    }
-    
-    func articleView(article: Article, proxy: GeometryProxy) -> some View {
         Link(destination: URL(string: article.url)!) {
             VStack(spacing: 16) {
                 HStack {
@@ -73,7 +63,7 @@ struct ArticleListView: View {
     
     @ViewBuilder
     func bookmarkView(article: Article) -> some View {
-        if signedInUser != nil {
+        if isSignedIn {
             ZStack {
                 Circle()
                     .stroke(Color.thinLine, lineWidth: 1)
@@ -83,8 +73,10 @@ struct ArticleListView: View {
                     .foregroundStyle(.bodySecondary)
             }
             .onTapGesture {
-                Task {
-                    await bookmarkTapAction(article)
+                if let bookmarkTapAction {
+                    Task {
+                        await bookmarkTapAction(article)
+                    }
                 }
             }
         }

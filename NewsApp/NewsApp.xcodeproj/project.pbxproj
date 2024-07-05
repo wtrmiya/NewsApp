@@ -189,7 +189,7 @@
 		86E0725A2C3890BC006F9392 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ArticleListView.swift,
+				ArticleView.swift,
 			);
 			target = 86119AF82C0FD8090067DC64 /* NewsApp */;
 		};

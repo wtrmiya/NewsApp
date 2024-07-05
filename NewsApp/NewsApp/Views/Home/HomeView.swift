@@ -137,11 +137,7 @@ private extension HomeView {
         if homeViewModel.articles.isEmpty {
             emptyArticlesView
         } else {
-            ArticleListView(
-                articles: homeViewModel.articles,
-                signedInUser: authViewModel.signedInUser,
-                bookmarkTapAction: bookmarkTapped(article:)
-            )
+            articleListView()
         }
     }
     
@@ -150,6 +146,32 @@ private extension HomeView {
         Spacer()
         Text("該当するカテゴリの記事が存在しません。")
         Spacer()
+    }
+    
+    func articleListView() -> some View {
+        GeometryReader { proxy in
+            ScrollView(.vertical) {
+                LazyVStack(spacing: 0) {
+                    ForEach(homeViewModel.articles) { article in
+                        ArticleView(
+                            article: article,
+                            isSignedIn: authViewModel.signedInUser != nil,
+                            bookmarkTapAction: bookmarkTapped(article:),
+                            proxy: proxy
+                        )
+                            .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
+                        articleBorderView(proxy: proxy)
+                    }
+                }
+            }
+            .background(.surfacePrimary)
+        }
+    }
+    
+    private func articleBorderView(proxy: GeometryProxy) -> some View {
+        Rectangle()
+            .fill(Color.thickLine)
+            .frame(width: proxy.size.width, height: 8)
     }
 }
 
