@@ -12,6 +12,15 @@ struct ArticleListView: View {
     private var signedInUser: UserAccount?
     private var bookmarkTapAction: (Article) async -> Void
     
+    @Environment(\.selectedViewItem) private var selectedViewItem: Binding<SelectedViewItem>?
+    var currentViewItem: SelectedViewItem {
+        if let currentViewItem = selectedViewItem?.wrappedValue {
+            return currentViewItem
+        } else {
+            return .home
+        }
+    }
+    
     init(articles: [Article], signedInUser: UserAccount? = nil, bookmarkTapAction: @escaping (Article) async -> Void) {
         self.articles = articles
         self.signedInUser = signedInUser
@@ -40,7 +49,9 @@ struct ArticleListView: View {
                     articleSourceView(article: article)
                     Spacer()
                     publishedDateView(article: article)
-                    bookmarkView(article: article)
+                    if currentViewItem == .home {
+                        bookmarkView(article: article)
+                    }
                 }
                 articleImageView(article: article, proxy: proxy)
                 articleBodyView(article: article)

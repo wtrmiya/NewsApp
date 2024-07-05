@@ -11,6 +11,7 @@ struct ContentView: View {
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     @ObservedObject private var authViewModel: AuthViewModel
     @Environment(\.displayToast) private var displayToast
+    @State private var selectedTab: SelectedViewItem = .home
     
     init(authViewModel: AuthViewModel) {
         self.authViewModel = authViewModel
@@ -22,15 +23,17 @@ struct ContentView: View {
     }
     
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             appDependencyContainer.makeHomeView()
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
                 }
+                .tag(SelectedViewItem.home)
             appDependencyContainer.makeBookmarkView()
                 .tabItem {
                     Label("Bookmark", systemImage: "bookmark.fill")
                 }
+                .tag(SelectedViewItem.bookmark)
             #if DEBUG
             appDependencyContainer.makeDebugView()
                 .tabItem {
@@ -38,6 +41,7 @@ struct ContentView: View {
                 }
             #endif
         }
+        .environment(\.selectedViewItem, $selectedTab)
         .onReceive(authViewModel.$signedInUser, perform: { user in
             if user != nil {
                 displayToast?("サインインしました")
