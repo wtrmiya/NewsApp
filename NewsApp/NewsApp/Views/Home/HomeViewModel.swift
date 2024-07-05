@@ -79,6 +79,7 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func toggleBookmark(on articleToToggle: Article) async {
         let (article, index) = toggledArticleAndIndexOnArticles(articleToToggle: articleToToggle)
         

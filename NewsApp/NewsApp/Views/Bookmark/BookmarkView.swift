@@ -22,80 +22,9 @@ struct BookmarkView: View {
 
     var body: some View {
         ZStack {
-            NavigationStack {
-                VStack {
-                    List {
-                        ForEach(bookmarkViewModel.articles.indices, id: \.self) { index in
-                            let article = bookmarkViewModel.articles[index]
-                            Link(destination: URL(string: article.url)!, label: {
-                                VStack {
-                                    HStack {
-                                        Text(article.source.name)
-                                        Spacer()
-                                        Text(article.publishedAt)
-                                    }
-                                    if let imageUrl = article.urlToImage {
-                                        AsyncImage(url: URL(string: imageUrl)) { image in
-                                            image
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 300, height: 200)
-                                        } placeholder: {
-                                            Image(systemName: "photo.fill")
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 300, height: 200)
-                                        }
-                                    } else {
-                                        Image(systemName: "photo.fill")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 300, height: 200)
-                                    }
-                                    
-                                    Text(article.title)
-                                        .font(.title2)
-                                    Spacer()
-                                        .frame(height: 10)
-                                    Text(article.description ?? "NO DESCRIPTION")
-                                        .font(.headline)
-                                        .lineLimit(2)
-                                }
-                            })
-                        }
-                        .onDelete(perform: { indexSet in
-                            Task {
-                                await deleteBookmarks(indexSet: indexSet)
-                            }
-                        })
-                    }
-                    .listStyle(.plain)
-                }
-                .navigationTitle("Bookmark")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button(action: {
-                            isShowingDrawer = true
-                        }, label: {
-                            Image(systemName: "list.bullet")
-                        })
-                    }
-                    ToolbarItemGroup(placement: .topBarTrailing) {
-                        EditButton()
-                    }
-                }
-            }
-            
+            bookmarkView
             DrawerView(isShowing: $isShowingDrawer)
-
-            if authViewModel.signedInUser == nil {
-                ZStack {
-                    Color.gray.opacity(0.7)
-                    
-                    SuggestSignInView()
-                }
-            }
+            suggestSignInView
         }
         .task {
             await bookmarkViewModel.populateBookmarkedArticles()
@@ -106,15 +35,94 @@ struct BookmarkView: View {
             }
         })
     }
-    
+}
+
+// MARK: - Functions
+private extension BookmarkView {
     private func deleteBookmarks(indexSet: IndexSet) async {
         await bookmarkViewModel.deleteBookmarks(indexSet: indexSet)
     }
 }
 
-#Preview {
-    let appDependencyContainer = AppDependencyContainer()
-    return appDependencyContainer.makeBookmarkView()
+// MARK: - View Components
+private extension BookmarkView {
+    var bookmarkView: some View {
+        NavigationStack {
+            VStack {
+                List {
+                    ForEach(bookmarkViewModel.articles.indices, id: \.self) { index in
+                        let article = bookmarkViewModel.articles[index]
+                        Link(destination: URL(string: article.url)!, label: {
+                            VStack {
+                                HStack {
+                                    Text(article.source.name)
+                                    Spacer()
+                                    Text(article.publishedAt)
+                                }
+                                if let imageUrl = article.urlToImage {
+                                    AsyncImage(url: URL(string: imageUrl)) { image in
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 300, height: 200)
+                                    } placeholder: {
+                                        Image(systemName: "photo.fill")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 300, height: 200)
+                                    }
+                                } else {
+                                    Image(systemName: "photo.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 300, height: 200)
+                                }
+                                
+                                Text(article.title)
+                                    .font(.title2)
+                                Spacer()
+                                    .frame(height: 10)
+                                Text(article.description ?? "NO DESCRIPTION")
+                                    .font(.headline)
+                                    .lineLimit(2)
+                            }
+                        })
+                    }
+                    .onDelete(perform: { indexSet in
+                        Task {
+                            await deleteBookmarks(indexSet: indexSet)
+                        }
+                    })
+                }
+                .listStyle(.plain)
+            }
+            .navigationTitle("Bookmark")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        isShowingDrawer = true
+                    }, label: {
+                        Image(systemName: "list.bullet")
+                    })
+                }
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    EditButton()
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var suggestSignInView: some View {
+        if authViewModel.signedInUser == nil {
+            ZStack {
+                Color.gray.opacity(0.7)
+                
+                SuggestSignInView()
+            }
+        }
+    }
 }
 
 struct SuggestSignInView: View {
@@ -148,4 +156,9 @@ struct SuggestSignInView: View {
             appDependencyContainer.makeSignInView(isShowing: $isShowingSignInView)
         }
     }
+}
+
+#Preview {
+    let appDependencyContainer = AppDependencyContainer()
+    return appDependencyContainer.makeBookmarkView()
 }
