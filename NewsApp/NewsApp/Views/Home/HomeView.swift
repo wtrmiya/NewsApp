@@ -185,8 +185,7 @@ private extension HomeView {
     }
     
     func publishedDateView(article: Article) -> some View {
-        let formattedDateString = formartDate(dateString: article.publishedAt)
-        return Text(formattedDateString)
+        return Text(article.publishedAt.localDateString)
             .font(.system(size: 12, weight: .regular))
             .foregroundStyle(.bodyPrimary)
     }
@@ -258,21 +257,6 @@ private extension HomeView {
             .fill(Color.thickLine)
             .frame(width: proxy.size.width, height: 8)
     }
-    
-    private func formartDate(dateString: String) -> String {
-        // 基本的に末尾にZが付いているのでUTC
-        // ローカルのタイムゾーンを指定して適切な日付文字列に変換する
-        let iso8601DateFormatter = ISO8601DateFormatter()
-        guard let utcDate = iso8601DateFormatter.date(from: dateString)
-        else {
-            return dateString
-        }
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: Locale.preferredLanguages.first!)
-        dateFormatter.dateFormat = "yyyy/MM/dd a hh:mm"
-        return dateFormatter.string(from: utcDate)
-    }
 }
 
 fileprivate extension Image {
@@ -282,6 +266,23 @@ fileprivate extension Image {
             .aspectRatio(contentMode: .fill)
             .frame(width: proxy.size.width - 32, height: 200)
             .clipped()
+    }
+}
+
+fileprivate extension String {
+    var localDateString: String {
+        // 基本的に末尾にZが付いているのでUTC
+        // ローカルのタイムゾーンを指定して適切な日付文字列に変換する
+        let iso8601DateFormatter = ISO8601DateFormatter()
+        guard let utcDate = iso8601DateFormatter.date(from: self)
+        else {
+            return self
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: Locale.preferredLanguages.first!)
+        dateFormatter.dateFormat = "yyyy/MM/dd a hh:mm"
+        return dateFormatter.string(from: utcDate)
     }
 }
 
