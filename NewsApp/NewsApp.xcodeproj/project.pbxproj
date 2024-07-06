@@ -73,6 +73,7 @@
 		8694061C2C1D6D5E00436C96 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8694061B2C1D6D5E00436C96 /* AccountSettingsViewModel.swift */; };
 		869831E22C251B840092CFD7 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869831E12C251B840092CFD7 /* AuthViewModel.swift */; };
 		86CEB5242C225240007EAD36 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CEB5232C225240007EAD36 /* SearchViewModel.swift */; };
+		86E0725E2C389DD7006F9392 /* SelectedViewItemEnv+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E0725D2C389DD7006F9392 /* SelectedViewItemEnv+Extensions.swift */; };
 		86E7D4C02C12EEF900F56485 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4BF2C12EEF900F56485 /* AuthError.swift */; };
 		86EDFECF2C1FAA09002F7F5E /* ArticleCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EDFECE2C1FAA09002F7F5E /* ArticleCategory.swift */; };
 /* End PBXBuildFile section */
@@ -155,6 +156,7 @@
 		8694061B2C1D6D5E00436C96 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		869831E12C251B840092CFD7 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		86CEB5232C225240007EAD36 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		86E0725D2C389DD7006F9392 /* SelectedViewItemEnv+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SelectedViewItemEnv+Extensions.swift"; sourceTree = "<group>"; };
 		86E7D4BF2C12EEF900F56485 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		86EDFECE2C1FAA09002F7F5E /* ArticleCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -177,10 +179,17 @@
 		86DE8B392C26ADBB0086DB2A /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"EnvironmentValues+Extensions.swift",
 				ToastDisplayModifier.swift,
+				"ToastEnvironmentValues+Extensions.swift",
 				ToastHandler.swift,
 				ToastView.swift,
+			);
+			target = 86119AF82C0FD8090067DC64 /* NewsApp */;
+		};
+		86E0725A2C3890BC006F9392 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ArticleView.swift,
 			);
 			target = 86119AF82C0FD8090067DC64 /* NewsApp */;
 		};
@@ -197,6 +206,7 @@
 		861D98AF2C29092800A1962A /* PushNotification */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (861D98B22C29094E00A1962A /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = PushNotification; sourceTree = "<group>"; };
 		8644C3DD2C23E5DD00943FB5 /* Notification */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (8644C3E12C23E64A00943FB5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Notification; sourceTree = "<group>"; };
 		86DE8B362C26AD690086DB2A /* Toast */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (86DE8B392C26ADBB0086DB2A /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Toast; sourceTree = "<group>"; };
+		86E072562C389093006F9392 /* Article */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (86E0725A2C3890BC006F9392 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Article; sourceTree = "<group>"; };
 		86E296CB2C2D207E0012B774 /* AppState */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (86E296CF2C2D20870012B774 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AppState; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -294,6 +304,7 @@
 				8621FA5A2C1BCECD00E677D6 /* AppDependencyContainer.swift */,
 				869161B92C166DA700454D12 /* DebugView.swift */,
 				869831E12C251B840092CFD7 /* AuthViewModel.swift */,
+				86E0725D2C389DD7006F9392 /* SelectedViewItemEnv+Extensions.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -411,6 +422,7 @@
 				86748B472C1061D2004312AB /* SignIn */,
 				86748B4A2C106206004312AB /* Settings */,
 				86DE8B362C26AD690086DB2A /* Toast */,
+				86E072562C389093006F9392 /* Article */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -703,6 +715,7 @@
 			files = (
 				86119B0C2C0FD8F90067DC64 /* AppDelegate.swift in Sources */,
 				864DA5182C21307B00AB8D71 /* MockUserDataStoreManager.swift in Sources */,
+				86E0725E2C389DD7006F9392 /* SelectedViewItemEnv+Extensions.swift in Sources */,
 				86EDFECF2C1FAA09002F7F5E /* ArticleCategory.swift in Sources */,
 				86027CF92C184320006CD41B /* MockArticleManager.swift in Sources */,
 				863F1CF82C1A5D9400EBF185 /* Term.swift in Sources */,

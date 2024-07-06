@@ -11,6 +11,7 @@ struct BookmarkView: View {
     @State private var isShowingAlert: Bool = false
     @State private var isShowingSearchView: Bool = false
     @State private var isShowingDrawer: Bool = false
+    @State private var isEditing: Bool = false
     
     @ObservedObject private var bookmarkViewModel: BookmarkViewModel
     @ObservedObject private var authViewModel: AuthViewModel
@@ -22,80 +23,9 @@ struct BookmarkView: View {
 
     var body: some View {
         ZStack {
-            NavigationStack {
-                VStack {
-                    List {
-                        ForEach(bookmarkViewModel.articles.indices, id: \.self) { index in
-                            let article = bookmarkViewModel.articles[index]
-                            Link(destination: URL(string: article.url)!, label: {
-                                VStack {
-                                    HStack {
-                                        Text(article.source.name)
-                                        Spacer()
-                                        Text(article.publishedAt)
-                                    }
-                                    if let imageUrl = article.urlToImage {
-                                        AsyncImage(url: URL(string: imageUrl)) { image in
-                                            image
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 300, height: 200)
-                                        } placeholder: {
-                                            Image(systemName: "photo.fill")
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 300, height: 200)
-                                        }
-                                    } else {
-                                        Image(systemName: "photo.fill")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 300, height: 200)
-                                    }
-                                    
-                                    Text(article.title)
-                                        .font(.title2)
-                                    Spacer()
-                                        .frame(height: 10)
-                                    Text(article.description ?? "NO DESCRIPTION")
-                                        .font(.headline)
-                                        .lineLimit(2)
-                                }
-                            })
-                        }
-                        .onDelete(perform: { indexSet in
-                            Task {
-                                await deleteBookmarks(indexSet: indexSet)
-                            }
-                        })
-                    }
-                    .listStyle(.plain)
-                }
-                .navigationTitle("Bookmark")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button(action: {
-                            isShowingDrawer = true
-                        }, label: {
-                            Image(systemName: "list.bullet")
-                        })
-                    }
-                    ToolbarItemGroup(placement: .topBarTrailing) {
-                        EditButton()
-                    }
-                }
-            }
-            
+            bookmarkView
             DrawerView(isShowing: $isShowingDrawer)
-
-            if authViewModel.signedInUser == nil {
-                ZStack {
-                    Color.gray.opacity(0.7)
-                    
-                    SuggestSignInView()
-                }
-            }
+            suggestSignInView
         }
         .task {
             await bookmarkViewModel.populateBookmarkedArticles()
@@ -106,15 +36,92 @@ struct BookmarkView: View {
             }
         })
     }
-    
+}
+
+// MARK: - Functions
+private extension BookmarkView {
     private func deleteBookmarks(indexSet: IndexSet) async {
         await bookmarkViewModel.deleteBookmarks(indexSet: indexSet)
     }
 }
 
-#Preview {
-    let appDependencyContainer = AppDependencyContainer()
-    return appDependencyContainer.makeBookmarkView()
+// MARK: - View Components
+private extension BookmarkView {
+    var bookmarkView: some View {
+        NavigationStack {
+            GeometryReader { proxy in
+                ZStack {
+                    Color.surfacePrimary
+                    if bookmarkViewModel.articles.isEmpty {
+                        VStack {
+                            Text("ブックマークした記事がありません。")
+                                .font(.system(size: 16, weight: .medium))
+                        }
+                    } else {
+                        List {
+                            ForEach(bookmarkViewModel.articles.indices, id: \.self) { index in
+                                let article = bookmarkViewModel.articles[index]
+                                ArticleView(
+                                    article: article,
+                                    isSignedIn: authViewModel.signedInUser != nil,
+                                    bookmarkTapAction: nil,
+                                    proxy: proxy
+                                )
+                                .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
+                                .listRowBackground(Color.surfacePrimary)
+                                .listRowSeparator(.hidden)
+                                articleBorderView(proxy: proxy)
+                                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                    .listRowSeparator(.hidden)
+                            }
+                            .onDelete(perform: { indexSet in
+                                Task {
+                                    await deleteBookmarks(indexSet: indexSet)
+                                }
+                            })
+                        }
+                        .listStyle(.plain)
+                        .environment(\.defaultMinListRowHeight, 0)
+                    }
+                }
+                .navigationTitle("ブックマーク")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(Color.surfacePrimary, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: {
+                            isShowingDrawer = true
+                        }, label: {
+                            Image(systemName: "list.bullet")
+                                .foregroundStyle(.titleNormal)
+                        })
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        EditButton()
+                            .foregroundStyle(.titleNormal)
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var suggestSignInView: some View {
+        if authViewModel.signedInUser == nil {
+            ZStack {
+                Color.gray.opacity(0.7)
+                
+                SuggestSignInView()
+            }
+        }
+    }
+    
+    private func articleBorderView(proxy: GeometryProxy) -> some View {
+        Rectangle()
+            .fill(Color.thickLine)
+            .frame(width: proxy.size.width, height: 8)
+    }
 }
 
 struct SuggestSignInView: View {
@@ -123,24 +130,41 @@ struct SuggestSignInView: View {
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             Text("該当の機能はサインイン後に使用可能です")
+                .frame(width: 184)
+                .font(.system(size: 16, weight: .medium))
+                .multilineTextAlignment(.leading)
             Spacer()
-                .frame(height: 20)
-            Button(action: {
-                isShowingSignInView = true
-            }, label: {
-                Text("サインイン")
-            })
-            Spacer()
-                .frame(height: 20)
+                .frame(height: 24)
             Button(action: {
                 isShowingSignUpView = true
             }, label: {
                 Text("サインアップ")
+                    .font(.system(size: 16, weight: .medium))
+                    .frame(width: 184, height: 48)
+                    .background(.accent)
+                    .foregroundStyle(.titleNormal)
+            })
+            Spacer()
+                .frame(height: 16)
+            Button(action: {
+                isShowingSignInView = true
+            }, label: {
+                Text("サインイン")
+                    .font(.system(size: 16, weight: .medium))
+                    .frame(width: 184, height: 48)
+                    .background(.surfacePrimary)
+                    .foregroundStyle(.titleNormal)
+                    .overlay {
+                        Rectangle()
+                            .stroke(Color.borderNormal, lineWidth: 1)
+                            .frame(width: 184, height: 48)
+                    }
             })
         }
-        .background(.white)
+        .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
+        .background(.surfacePrimary)
         .fullScreenCover(isPresented: $isShowingSignUpView) {
             appDependencyContainer.makeSignUpView(isShowing: $isShowingSignUpView)
         }
@@ -148,4 +172,9 @@ struct SuggestSignInView: View {
             appDependencyContainer.makeSignInView(isShowing: $isShowingSignInView)
         }
     }
+}
+
+#Preview {
+    let appDependencyContainer = AppDependencyContainer()
+    return appDependencyContainer.makeBookmarkView()
 }
