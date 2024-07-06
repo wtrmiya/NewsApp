@@ -10,19 +10,19 @@ import SwiftUI
 struct DrawerView: View {
     @Binding var isShowing: Bool
     @State private var opacity: CGFloat = 0.0
-    @State private var offsetX: CGFloat = -250
+    @State private var offsetX: CGFloat = -256
     
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
     private let openingDuration: CGFloat = 0.2
     private let closingDuration: CGFloat = 0.1
-    private let drawerWidth: CGFloat = 250
+    private let drawerWidth: CGFloat = 256
 
     var body: some View {
         ZStack(alignment: .leading) {
             if isShowing {
                 Rectangle()
-                    .background(.black)
+                    .background(.surfacePrimary)
                     .opacity(opacity)
                     .onTapGesture {
                         closeDrawer()
@@ -36,14 +36,15 @@ struct DrawerView: View {
                 ZStack(alignment: .topLeading) {
                     appDependencyContainer.makeDrawerContentView(isShowing: $isShowing)
                         .frame(width: drawerWidth)
-                        .background(.white)
+                        .background(.surfacePrimary)
                     HStack {
                         Spacer()
                         Button(action: {
                             closeDrawer()
                         }, label: {
                             Image(systemName: "multiply")
-                                .foregroundStyle(.black)
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundStyle(.titleNormal)
                         })
                         .padding()
                     }
