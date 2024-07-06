@@ -24,7 +24,7 @@ struct ArticleView: View {
     
     init(article: Article,
          isSignedIn: Bool,
-         bookmarkTapAction: @escaping (Article) async -> Void,
+         bookmarkTapAction: ((Article) async -> Void)?,
          proxy: GeometryProxy ) {
         self.article = article
         self.isSignedIn = isSignedIn

@@ -11,6 +11,7 @@ struct BookmarkView: View {
     @State private var isShowingAlert: Bool = false
     @State private var isShowingSearchView: Bool = false
     @State private var isShowingDrawer: Bool = false
+    @State private var isEditing: Bool = false
     
     @ObservedObject private var bookmarkViewModel: BookmarkViewModel
     @ObservedObject private var authViewModel: AuthViewModel
@@ -48,45 +49,18 @@ private extension BookmarkView {
 private extension BookmarkView {
     var bookmarkView: some View {
         NavigationStack {
-            VStack {
+            GeometryReader { proxy in
                 List {
                     ForEach(bookmarkViewModel.articles.indices, id: \.self) { index in
                         let article = bookmarkViewModel.articles[index]
-                        Link(destination: URL(string: article.url)!, label: {
-                            VStack {
-                                HStack {
-                                    Text(article.source.name)
-                                    Spacer()
-                                    Text(article.publishedAt)
-                                }
-                                if let imageUrl = article.urlToImage {
-                                    AsyncImage(url: URL(string: imageUrl)) { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 300, height: 200)
-                                    } placeholder: {
-                                        Image(systemName: "photo.fill")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 300, height: 200)
-                                    }
-                                } else {
-                                    Image(systemName: "photo.fill")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 300, height: 200)
-                                }
-                                
-                                Text(article.title)
-                                    .font(.title2)
-                                Spacer()
-                                    .frame(height: 10)
-                                Text(article.description ?? "NO DESCRIPTION")
-                                    .font(.headline)
-                                    .lineLimit(2)
-                            }
-                        })
+                        ArticleView(
+                            article: article,
+                            isSignedIn: authViewModel.signedInUser != nil,
+                            bookmarkTapAction: nil,
+                            proxy: proxy
+                        )
+                        .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
+                        .listRowBackground(Color.surfacePrimary)
                     }
                     .onDelete(perform: { indexSet in
                         Task {
@@ -95,19 +69,24 @@ private extension BookmarkView {
                     })
                 }
                 .listStyle(.plain)
-            }
-            .navigationTitle("Bookmark")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {
-                        isShowingDrawer = true
-                    }, label: {
-                        Image(systemName: "list.bullet")
-                    })
-                }
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    EditButton()
+                .background(.surfacePrimary)
+                .navigationTitle("ブックマーク")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(Color.surfacePrimary, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: {
+                            isShowingDrawer = true
+                        }, label: {
+                            Image(systemName: "list.bullet")
+                                .foregroundStyle(.titleNormal)
+                        })
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        EditButton()
+                            .foregroundStyle(.titleNormal)
+                    }
                 }
             }
         }
@@ -131,24 +110,41 @@ struct SuggestSignInView: View {
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             Text("該当の機能はサインイン後に使用可能です")
+                .frame(width: 184)
+                .font(.system(size: 16, weight: .medium))
+                .multilineTextAlignment(.leading)
             Spacer()
-                .frame(height: 20)
-            Button(action: {
-                isShowingSignInView = true
-            }, label: {
-                Text("サインイン")
-            })
-            Spacer()
-                .frame(height: 20)
+                .frame(height: 24)
             Button(action: {
                 isShowingSignUpView = true
             }, label: {
                 Text("サインアップ")
+                    .font(.system(size: 16, weight: .medium))
+                    .frame(width: 184, height: 48)
+                    .background(.accent)
+                    .foregroundStyle(.titleNormal)
+            })
+            Spacer()
+                .frame(height: 16)
+            Button(action: {
+                isShowingSignInView = true
+            }, label: {
+                Text("サインイン")
+                    .font(.system(size: 16, weight: .medium))
+                    .frame(width: 184, height: 48)
+                    .background(.surfacePrimary)
+                    .foregroundStyle(.titleNormal)
+                    .overlay {
+                        Rectangle()
+                            .stroke(Color.borderNormal, lineWidth: 1)
+                            .frame(width: 184, height: 48)
+                    }
             })
         }
-        .background(.white)
+        .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
+        .background(.surfacePrimary)
         .fullScreenCover(isPresented: $isShowingSignUpView) {
             appDependencyContainer.makeSignUpView(isShowing: $isShowingSignUpView)
         }
