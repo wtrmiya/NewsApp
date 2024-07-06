@@ -20,6 +20,7 @@ struct ContentView: View {
         appearance.shadowColor = .clear
         appearance.backgroundColor = UIColor.surfacePrimary
         UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
     }
     
     var body: some View {

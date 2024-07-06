@@ -50,26 +50,40 @@ private extension BookmarkView {
     var bookmarkView: some View {
         NavigationStack {
             GeometryReader { proxy in
-                List {
-                    ForEach(bookmarkViewModel.articles.indices, id: \.self) { index in
-                        let article = bookmarkViewModel.articles[index]
-                        ArticleView(
-                            article: article,
-                            isSignedIn: authViewModel.signedInUser != nil,
-                            bookmarkTapAction: nil,
-                            proxy: proxy
-                        )
-                        .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
-                        .listRowBackground(Color.surfacePrimary)
-                    }
-                    .onDelete(perform: { indexSet in
-                        Task {
-                            await deleteBookmarks(indexSet: indexSet)
+                ZStack {
+                    Color.surfacePrimary
+                    if bookmarkViewModel.articles.isEmpty {
+                        VStack {
+                            Text("ブックマークした記事がありません。")
+                                .font(.system(size: 16, weight: .medium))
                         }
-                    })
+                    } else {
+                        List {
+                            ForEach(bookmarkViewModel.articles.indices, id: \.self) { index in
+                                let article = bookmarkViewModel.articles[index]
+                                ArticleView(
+                                    article: article,
+                                    isSignedIn: authViewModel.signedInUser != nil,
+                                    bookmarkTapAction: nil,
+                                    proxy: proxy
+                                )
+                                .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
+                                .listRowBackground(Color.surfacePrimary)
+                                .listRowSeparator(.hidden)
+                                articleBorderView(proxy: proxy)
+                                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                    .listRowSeparator(.hidden)
+                            }
+                            .onDelete(perform: { indexSet in
+                                Task {
+                                    await deleteBookmarks(indexSet: indexSet)
+                                }
+                            })
+                        }
+                        .listStyle(.plain)
+                        .environment(\.defaultMinListRowHeight, 0)
+                    }
                 }
-                .listStyle(.plain)
-                .background(.surfacePrimary)
                 .navigationTitle("ブックマーク")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(Color.surfacePrimary, for: .navigationBar)
@@ -101,6 +115,12 @@ private extension BookmarkView {
                 SuggestSignInView()
             }
         }
+    }
+    
+    private func articleBorderView(proxy: GeometryProxy) -> some View {
+        Rectangle()
+            .fill(Color.thickLine)
+            .frame(width: proxy.size.width, height: 8)
     }
 }
 
