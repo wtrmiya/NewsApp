@@ -29,110 +29,17 @@ struct SignUpView: View {
     var body: some View {
         NavigationStack {
             GeometryReader { proxy in
-                let itemWidth = max(proxy.size.width - 32, 0)
                 ZStack {
                     Color.surfacePrimary
                     VStack {
                         Spacer()
                             .frame(height: 32)
-                        VStack(alignment: .leading) {
-                            Text("ユーザ名")
-                                .font(.system(size: 16, weight: .medium))
-                            TextField("ユーザ名を入力してください", text: $authViewModel.displayName)
-                                .padding(8)
-                                .frame(width: itemWidth, height: 48)
-                                .background(.textFieldBackground)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .textInputAutocapitalization(.never)
-                                .font(.system(size: 16, weight: .regular))
-                                .autocorrectionDisabled(true)
-                                .focused($focusField, equals: .displayName)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.border, lineWidth: 1)
-                                }
-                        }
-                        Spacer()
-                            .frame(height: 32)
-                        VStack(alignment: .leading) {
-                            Text("Emailアドレス")
-                                .font(.system(size: 16, weight: .medium))
-                            TextField("Emailアドレスを入力してください", text: $authViewModel.email)
-                                .padding(8)
-                                .frame(width: itemWidth, height: 48)
-                                .background(.textFieldBackground)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .textInputAutocapitalization(.never)
-                                .font(.system(size: 16, weight: .regular))
-                                .autocorrectionDisabled(true)
-                                .focused($focusField, equals: .email)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.border, lineWidth: 1)
-                                }
-                        }
-                        
-                        Spacer()
-                            .frame(height: 32)
-                        VStack(alignment: .leading) {
-                            Text("パスワード")
-                                .font(.system(size: 16, weight: .medium))
-                            TextField("パスワードを入力してください", text: $authViewModel.password)
-                                .padding(8)
-                                .frame(width: itemWidth, height: 48)
-                                .background(.textFieldBackground)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .textInputAutocapitalization(.never)
-                                .font(.system(size: 16, weight: .regular))
-                                .autocorrectionDisabled(true)
-                                .focused($focusField, equals: .password)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.border, lineWidth: 1)
-                                }
-                        }
-                        
-                        Spacer()
-                            .frame(height: 32)
-                        VStack(alignment: .leading) {
-                            Text("パスワードの確認入力")
-                                .font(.system(size: 16, weight: .medium))
-                            TextField("パスワードを再度入力してください", text: $authViewModel.passwordRepeated)
-                                .padding(8)
-                                .frame(width: itemWidth, height: 48)
-                                .background(.textFieldBackground)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .textInputAutocapitalization(.never)
-                                .font(.system(size: 16, weight: .regular))
-                                .autocorrectionDisabled(true)
-                                .focused($focusField, equals: .passwordRepeated)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.border, lineWidth: 1)
-                                }
-                        }
-                        
+                        forms(proxy: proxy)
                         Spacer()
                             .frame(height: 48)
                         
-                        HStack {
-                            Text("全ての項目に情報を入力してください")
-                            Spacer()
-                        }
-                        .frame(width: itemWidth)
-                        
-                        Button(action: {
-                            Task {
-                                await signUp()
-                            }
-                        }, label: {
-                            Text("サインアップ")
-                                .frame(width: itemWidth, height: 48)
-                                .font(.system(size: 16, weight: .medium))
-                                .foregroundStyle(.titleNormal)
-                                .background(.accent)
-                        })
-                        
+                        notice(proxy: proxy)
+                        signUpButton(proxy: proxy)
                         Spacer()
                     }
                 }
@@ -180,6 +87,108 @@ struct SignUpView: View {
     
     private func signUp() async {
         await authViewModel.signUp()
+    }
+}
+
+// MARK: - View Components
+private extension SignUpView {
+    func forms(proxy: GeometryProxy) -> some View {
+        VStack {
+            userNameForm(proxy: proxy)
+            Spacer()
+                .frame(height: 32)
+            emailAddressForm(proxy: proxy)
+            Spacer()
+                .frame(height: 32)
+            passwordForm(proxy: proxy)
+            Spacer()
+                .frame(height: 32)
+            passwordConfirmationForm(proxy: proxy)
+        }
+    }
+    
+    func userNameForm(proxy: GeometryProxy) -> some View {
+        textForm(
+            title: "ユーザ名",
+            placeholder: "ユーザ名を入力してください",
+            textBinding: $authViewModel.displayName,
+            proxy: proxy,
+            focusState: $focusField,
+            focusValue: .displayName
+        )
+    }
+
+    func emailAddressForm(proxy: GeometryProxy) -> some View {
+        textForm(
+            title: "Emailアドレス",
+            placeholder: "Emailアドレスを入力してください",
+            textBinding: $authViewModel.email,
+            proxy: proxy,
+            focusState: $focusField,
+            focusValue: .email
+        )
+    }
+    
+    func passwordForm(proxy: GeometryProxy) -> some View {
+        textForm(
+            title: "パスワード",
+            placeholder: "パスワードを入力してください",
+            textBinding: $authViewModel.password,
+            proxy: proxy,
+            focusState: $focusField,
+            focusValue: .password
+        )
+    }
+    
+    func passwordConfirmationForm(proxy: GeometryProxy) -> some View {
+        textForm(
+            title: "パスワードの確認入力",
+            placeholder: "パスワードを再度入力してください",
+            textBinding: $authViewModel.passwordRepeated,
+            proxy: proxy,
+            focusState: $focusField,
+            focusValue: .passwordRepeated
+        )
+    }
+    
+    // swiftlint:disable:next function_parameter_count line_length
+    func textForm(title: String, placeholder: String, textBinding: Binding<String>, proxy: GeometryProxy, focusState: FocusState<Field?>.Binding, focusValue: Field) -> some View {
+        // swiftlint:disable:previous function_parameter_count line_length
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(.system(size: 16, weight: .medium))
+            TextField(placeholder, text: textBinding)
+                .standardTextFieldModifier(width: proxy.itemWidth)
+                .focused(focusState, equals: focusValue)
+        }
+    }
+    
+    func notice(proxy: GeometryProxy) -> some View {
+        HStack {
+            Text("全ての項目に情報を入力してください")
+            Spacer()
+        }
+        .frame(width: proxy.itemWidth)
+    }
+    
+    func signUpButton(proxy: GeometryProxy) -> some View {
+        Button(action: {
+            Task {
+                await signUp()
+            }
+        }, label: {
+            Text("サインアップ")
+                .frame(width: proxy.itemWidth, height: 48)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(.titleNormal)
+                .background(.accent)
+        })
+    }
+}
+
+fileprivate extension GeometryProxy {
+    var itemWidth: Double {
+        return max(self.size.width - 32.0, 0)
     }
 }
 
