@@ -30,97 +30,109 @@ struct DrawerContentView: View {
     }
 
     var body: some View {
-        VStack {
-            if let user = authViewModel.signedInUser {
-                VStack {
-                    Spacer()
-                        .frame(height: 50)
-                    HStack {
-                        Image(systemName: "person")
-                        Text(user.displayName)
+        GeometryReader { proxy in
+            VStack {
+                if let user = authViewModel.signedInUser {
+                    VStack {
                         Spacer()
+                            .frame(height: 48)
+                        HStack {
+                            Image(systemName: "person")
+                                .font(.system(size: 16, weight: .medium))
+                            Text(user.displayName)
+                                .font(.system(size: 16, weight: .medium))
+                            Spacer()
+                        }
+                        .padding(.leading, 16)
+                    }
+                } else {
+                    VStack {
+                        Spacer()
+                            .frame(height: 50)
+                        Button(action: {
+                            isShowingSignUpView = true
+                        }, label: {
+                            Text("サインアップ")
+                                .frame(width: proxy.size.width - 32, height: 48)
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundStyle(.titleNormal)
+                                .background(.accent)
+                        })
+                        Button(action: {
+                            isShowingSignInView = true
+                        }, label: {
+                            Text("サインイン")
+                                .frame(width: proxy.size.width - 32, height: 48)
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundStyle(.titleNormal)
+                                .overlay {
+                                    Rectangle()
+                                        .stroke(Color.borderNormal, lineWidth: 1)
+                                }
+                        })
                     }
                 }
-            } else {
-                VStack {
-                    Spacer()
-                        .frame(height: 50)
-                    Button(action: {
-                        isShowingSignUpView = true
-                    }, label: {
-                        Text("サインアップ")
-                            .foregroundStyle(.white)
-                            .frame(width: 150, height: 50)
-                            .background(.blue)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                    })
-                    Button(action: {
-                        isShowingSignInView = true
-                    }, label: {
-                        Text("サインイン")
-                            .foregroundStyle(.blue)
-                            .frame(width: 150, height: 50)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.blue, lineWidth: 1)
-                            }
-                    })
-                }
+                
+                Spacer()
+                menuBorder(proxy: proxy)
+                Button(action: {
+                    isShowingSettingsView = true
+                }, label: {
+                    HStack {
+                        Text("設定")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                    }
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundStyle(.black)
+                })
+                .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                menuBorder(proxy: proxy)
+                Button(action: {
+                    isShowingTermView = true
+                }, label: {
+                    HStack {
+                        Text("利用規約")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                    }
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundStyle(.black)
+                })
+                .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                menuBorder(proxy: proxy)
+                Button(action: {
+                    isShowingLicenseListView = true
+                }, label: {
+                    HStack {
+                        Text("ライセンス")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                    }
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundStyle(.black)
+                })
+                .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                menuBorder(proxy: proxy)
+                Spacer()
+                    .frame(height: 50)
+                Button(action: {
+                    isShowingSignOutAlert = true
+                }, label: {
+                    Text("サインアウト")
+                        .frame(width: proxy.size.width - 32, height: 48)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(isSignedIn ? Color.titleNormal : Color.disabled)
+                        .overlay {
+                            Rectangle()
+                                .stroke(isSignedIn ? Color.borderNormal : Color.borderDisabled, lineWidth: 1)
+                        }
+                })
+                .disabled(!isSignedIn)
+                Spacer()
+                    .frame(height: 16)
             }
-            
-            Spacer()
-            Divider()
-            Button(action: {
-                isShowingSettingsView = true
-            }, label: {
-                HStack {
-                    Text("設定")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-                .foregroundStyle(.black)
-            })
-            Divider()
-            Button(action: {
-                isShowingTermView = true
-            }, label: {
-                HStack {
-                    Text("利用規約")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-                .foregroundStyle(.black)
-            })
-            Divider()
-            Button(action: {
-                isShowingLicenseListView = true
-            }, label: {
-                HStack {
-                    Text("ライセンス")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-                .foregroundStyle(.black)
-            })
-            Divider()
-            Spacer()
-                .frame(height: 50)
-            Button(action: {
-                isShowingSignOutAlert = true
-            }, label: {
-                Text("サインアウト")
-                    .foregroundStyle(isSignedIn ? .blue : .gray)
-                    .frame(width: 150, height: 50)
-                    .background(isSignedIn ? .white : .gray.opacity(0.1))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(isSignedIn ? Color.blue : .gray.opacity(0.1), lineWidth: 1)
-                    }
-            })
-            .disabled(!isSignedIn)
         }
-        .padding()
         .fullScreenCover(isPresented: $isShowingSettingsView) {
             appDependencyContainer.makeSettingsView(isShowing: $isShowingSettingsView)
         }
@@ -149,6 +161,12 @@ struct DrawerContentView: View {
                 Text("サインアウト")
             })
         }
+    }
+    
+    private func menuBorder(proxy: GeometryProxy) -> some View {
+        Rectangle()
+            .fill(Color.thickLine)
+            .frame(width: proxy.size.width, height: 8)
     }
 }
 
