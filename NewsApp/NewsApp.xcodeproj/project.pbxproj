@@ -193,6 +193,13 @@
 			);
 			target = 86119AF82C0FD8090067DC64 /* NewsApp */;
 		};
+		86E08DDC2C3A00E10019BF2D /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"TextField+Extensions.swift",
+			);
+			target = 86119AF82C0FD8090067DC64 /* NewsApp */;
+		};
 		86E296CF2C2D20870012B774 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -207,6 +214,7 @@
 		8644C3DD2C23E5DD00943FB5 /* Notification */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (8644C3E12C23E64A00943FB5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Notification; sourceTree = "<group>"; };
 		86DE8B362C26AD690086DB2A /* Toast */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (86DE8B392C26ADBB0086DB2A /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Toast; sourceTree = "<group>"; };
 		86E072562C389093006F9392 /* Article */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (86E0725A2C3890BC006F9392 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Article; sourceTree = "<group>"; };
+		86E08DD92C3A00C10019BF2D /* Extensions */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (86E08DDC2C3A00E10019BF2D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Extensions; sourceTree = "<group>"; };
 		86E296CB2C2D207E0012B774 /* AppState */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (86E296CF2C2D20870012B774 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AppState; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -423,6 +431,7 @@
 				86748B4A2C106206004312AB /* Settings */,
 				86DE8B362C26AD690086DB2A /* Toast */,
 				86E072562C389093006F9392 /* Article */,
+				86E08DD92C3A00C10019BF2D /* Extensions */,
 			);
 			path = Views;
 			sourceTree = "<group>";

@@ -25,63 +25,39 @@ struct SignInView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .top) {
-            Text("サインイン")
-            VStack(alignment: .leading) {
-                HStack {
-                    Spacer()
+        NavigationStack {
+            GeometryReader { proxy in
+                ZStack {
+                    Color.surfacePrimary
+                    VStack {
+                        Spacer()
+                            .frame(height: 32)
+                        forms(proxy: proxy)
+                        Spacer()
+                            .frame(height: 48)
+                        signInButton(proxy: proxy)
+                        Spacer()
+                    }
+                }
+            }
+            .navigationTitle("サインイン")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.surfacePrimary, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        isShowing = false
+                        isShowing = true
                     }, label: {
                         Text("閉じる")
+                            .foregroundStyle(.titleNormal)
                     })
                 }
-                Spacer()
-                    .frame(height: 30)
-
-                VStack {
-                    VStack(alignment: .leading) {
-                        Text("Emailアドレス")
-                        TextField("Emailアドレスを入力してください", text: $authViewModel.email)
-                            .textFieldStyle(.roundedBorder)
-                            .focused($focusField, equals: .email)
-                    }
-                    Spacer()
-                        .frame(height: 20)
-                    VStack(alignment: .leading) {
-                        Text("パスワード")
-                        TextField("パスワードを入力してください", text: $authViewModel.password)
-                            .textFieldStyle(.roundedBorder)
-                            .focused($focusField, equals: .password)
-                    }
-                }
-                
-                Spacer()
-                    .frame(height: 30)
-
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        Task {
-                            await signIn()
-                        }
-                    }, label: {
-                        Text("サインイン")
-                            .foregroundStyle(.white)
-                            .frame(width: 150, height: 50)
-                            .background(.blue)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                    })
-                    Spacer()
-                }
-
-                Spacer()
             }
         }
         .onAppear {
             focusField = .email
         }
-        .padding()
         .alert("Error", isPresented: $isShowingAlert, actions: {
             Button(action: {
                 isShowing = false
@@ -107,6 +83,60 @@ struct SignInView: View {
     
     private func signIn() async {
         await authViewModel.signIn()
+    }
+}
+
+// MARK: - View Components
+private extension SignInView {
+    @ViewBuilder
+    private func forms(proxy: GeometryProxy) -> some View {
+        VStack {
+            emailAddressForm(proxy: proxy)
+            Spacer()
+                .frame(height: 32)
+            passwordForm(proxy: proxy)
+        }
+    }
+    
+    private func emailAddressForm(proxy: GeometryProxy) -> some View {
+        VStack(alignment: .leading) {
+            Text("Emailアドレス")
+                .font(.system(size: 16, weight: .medium))
+            TextField("Emailアドレスを入力してください", text: $authViewModel.email)
+                .standardTextFieldModifier(width: proxy.itemWidth)
+                .focused($focusField, equals: .email)
+        }
+    }
+    
+    private func passwordForm(proxy: GeometryProxy) -> some View {
+        VStack(alignment: .leading) {
+            Text("パスワード")
+                .font(.system(size: 16, weight: .medium))
+            TextField("パスワードを入力してください", text: $authViewModel.password)
+                .standardTextFieldModifier(width: proxy.itemWidth)
+                .focused($focusField, equals: .password)
+        }
+    }
+
+    @ViewBuilder
+    private func signInButton(proxy: GeometryProxy) -> some View {
+        Button(action: {
+            Task {
+                await signIn()
+            }
+        }, label: {
+            Text("サインイン")
+                .frame(width: proxy.itemWidth, height: 48)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(.titleNormal)
+                .background(.accent)
+        })
+    }
+}
+
+fileprivate extension GeometryProxy {
+    var itemWidth: Double {
+        return max(self.size.width - 32.0, 0)
     }
 }
 
