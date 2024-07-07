@@ -63,16 +63,14 @@ struct SettingsView: View {
                 }
                 Section {
                     NavigationLink {
-                        appDependencyContainer.makeAccountSettingsView(isShowing: $isShowing)
+                        LicenseView(isShowing: $isShowing)
                     } label: {
                         HStack {
-                            Text("アカウントの設定")
-                            Spacer()
-                            Text("サインイン中")
+                            Text("ライセンス")
                         }
                     }
                 } header: {
-                    Text("ACCOUNT")
+                    Text("LICENSE")
                 }
             }
             .toolbar {
