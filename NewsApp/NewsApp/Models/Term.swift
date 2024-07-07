@@ -48,7 +48,7 @@ extension Term {
     static var emptyTerm: Term {
         return Term(
             title: "NewsApp利用規約",
-            body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, ",
+            body: "読み込み中です",
             effectiveDate: Date(),
             createdAt: Date()
         )
