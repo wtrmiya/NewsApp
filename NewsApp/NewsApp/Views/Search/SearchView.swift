@@ -21,106 +21,28 @@ struct SearchView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
-                HStack {
-                    TextField("検索文字列を入力", text: $inputText)
-                        .padding(10)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.gray, lineWidth: 1)
-                                .frame(height: 44)
-                        }
-                    Spacer()
-                        .frame(width: 16)
-                    Button(action: {
-                        Task {
-                            await fetchArticle()
-                        }
-                    }, label: {
-                        Image(systemName: "magnifyingglass")
-                            .frame(width: 70, height: 44)
-                            .foregroundStyle(.white)
-                            .background(.blue)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                    })
-                }
-                .padding()
-                if !searchViewModel.searchResultWord.isEmpty {
-                    HStack {
-                        Text("検索ワード: \(searchViewModel.searchResultWord)")
-                            .font(.title2)
-                            .fontWeight(.bold)
+            GeometryReader { proxy in
+                ZStack(alignment: .top) {
+                    Color.surfacePrimary
+                    VStack {
+                        searchFormArea(proxy: proxy)
+                        Spacer()
+                        searchResultArea(proxy: proxy)
                         Spacer()
                     }
-                    .padding()
-                }
-                if searchViewModel.searchResultArticles.isEmpty {
-                    Spacer()
-                    Text("検索結果がありません")
-                    Spacer()
-                } else {
-                    List {
-                        ForEach(searchViewModel.searchResultArticles) { article in
-                            Link(destination: URL(string: article.url)!) {
-                                VStack {
-                                    HStack {
-                                        Text(article.source.name)
-                                        Spacer()
-                                        Text(article.publishedAt)
-                                    }
-                                    if let imageUrl = article.urlToImage {
-                                        AsyncImage(url: URL(string: imageUrl)) { image in
-                                            image
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 300, height: 200)
-                                        } placeholder: {
-                                            Image(systemName: "photo.fill")
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 300, height: 200)
-                                        }
-                                    } else {
-                                        Image(systemName: "photo.fill")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 300, height: 200)
-                                    }
-                                    if searchViewModel.isSignedIn {
-                                        HStack {
-                                            Spacer()
-                                            Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
-                                                .onTapGesture {
-                                                    Task {
-                                                        await bookmarkTapped(article: article)
-                                                    }
-                                                }
-                                        }
-                                    }
-                                    
-                                    Text(article.title)
-                                        .font(.title2)
-                                    Spacer()
-                                        .frame(height: 10)
-                                    Text(article.description ?? "NO DESCRIPTION")
-                                        .font(.headline)
-                                        .lineLimit(2)
-                                }
-                            }
-                        }
-                    }
-                    .listStyle(.plain)
-                    .scrollDismissesKeyboard(.immediately)
                 }
             }
             .navigationTitle("記事検索")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.surfacePrimary, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         isShowing = false
                     }, label: {
                         Text("閉じる")
+                            .foregroundStyle(.titleNormal)
                     })
                 }
             }
@@ -134,6 +56,103 @@ struct SearchView: View {
     
     private func bookmarkTapped(article: Article) async {
         await searchViewModel.toggleBookmark(on: article)
+    }
+}
+
+// MARK: - View Components
+private extension SearchView {
+    func searchFormArea(proxy: GeometryProxy) -> some View {
+        HStack {
+            searchTextField(proxy: proxy)
+            Spacer()
+                .frame(width: 16)
+            execSearchButton()
+        }
+        .padding()
+    }
+    
+    func searchTextField(proxy: GeometryProxy) -> some View {
+        let itemWidth = max(proxy.size.width - 32, 0)
+        return TextField("検索文字列を入力", text: $inputText)
+            .padding(8)
+            .frame(maxWidth: itemWidth, minHeight: 48)
+            .background(.textFieldBackground)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .textInputAutocapitalization(.never)
+            .font(.system(size: 16, weight: .regular))
+            .autocorrectionDisabled(true)
+            .overlay {
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.border, lineWidth: 1)
+            }
+    }
+    
+    func execSearchButton() -> some View {
+        Button(action: {
+            Task {
+                await fetchArticle()
+            }
+        }, label: {
+            Image(systemName: "magnifyingglass")
+                .frame(width: 64, height: 48)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(.titleNormal)
+                .background(.accent)
+        })
+    }
+    
+    @ViewBuilder
+    func searchResultArea(proxy: GeometryProxy) -> some View {
+        searchWord()
+        searchResult(proxy: proxy)
+    }
+    
+    @ViewBuilder
+    func searchWord() -> some View {
+        if !searchViewModel.searchResultWord.isEmpty {
+            HStack {
+                Text("検索ワード: \(searchViewModel.searchResultWord)")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.bodyPrimary)
+                Spacer()
+            }
+            .padding()
+        }
+    }
+    
+    @ViewBuilder
+    func searchResult(proxy: GeometryProxy) -> some View {
+        if searchViewModel.searchResultArticles.isEmpty {
+            Text("検索結果がありません")
+                .font(.system(size: 16, weight: .medium))
+        } else {
+            List {
+                ForEach(searchViewModel.searchResultArticles) { article in
+                    ArticleView(
+                        article: article,
+                        isSignedIn: searchViewModel.isSignedIn,
+                        bookmarkTapAction: bookmarkTapped(article:),
+                        proxy: proxy
+                    )
+                    .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
+                    .listRowBackground(Color.surfacePrimary)
+                    .listRowSeparator(.hidden)
+                    articleBorderView(proxy: proxy)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        .listRowSeparator(.hidden)
+                }
+            }
+            .listStyle(.plain)
+            .environment(\.defaultMinListRowHeight, 0)
+            .scrollDismissesKeyboard(.immediately)
+        }
+    }
+    
+    private func articleBorderView(proxy: GeometryProxy) -> some View {
+        Rectangle()
+            .fill(Color.thickLine)
+            .frame(width: proxy.size.width, height: 8)
     }
 }
 
