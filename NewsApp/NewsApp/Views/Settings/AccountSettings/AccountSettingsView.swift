@@ -143,6 +143,7 @@ private extension AccountSettingsView {
     func linkToWithdrawalView(proxy: GeometryProxy) -> some View {
         NavigationLink {
             appDependenciyContainer.makeWithdrawalConfirmationView(isShowing: $isShowing)
+                .navigationBarBackButtonHidden()
         } label: {
             normalButtonLabel(title: "アカウントを削除する", proxy: proxy)
         }
