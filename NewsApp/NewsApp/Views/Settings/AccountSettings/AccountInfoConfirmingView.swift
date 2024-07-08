@@ -23,11 +23,13 @@ struct AccountInfoConfirmingView: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text("表示名")
+                    /*
                     if let inputUserAccount = accountSettingsViewModel.inputUserAccount {
                         Text("変更後: \(inputUserAccount.displayName)")
                     } else {
                         Text("変更なし")
                     }
+                     */
                 }
                 Spacer()
             }
@@ -36,11 +38,13 @@ struct AccountInfoConfirmingView: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text("Email")
+                    /*
                     if let inputUserAccount = accountSettingsViewModel.inputUserAccount {
                         Text("変更後: \(inputUserAccount.email)")
                     } else {
                         Text("変更なし")
                     }
+                     */
                 }
                 Spacer()
             }

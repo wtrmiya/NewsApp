@@ -24,57 +24,144 @@ struct AccountInfoEditingView: View {
     }
     
     var body: some View {
-        VStack {
-            Form {
-                Section {
-                    if let userAccount = accountSettingsViewModel.userAccount {
-                        Text(userAccount.displayName)
-                        Text(userAccount.email)
+        NavigationStack {
+            GeometryReader { proxy in
+                ZStack {
+                    Color.surfacePrimary
+                    VStack(spacing: 0) {
+                        Spacer()
+                            .frame(height: 48)
+                        if let userAccount = accountSettingsViewModel.userAccount {
+                            userNameView(proxy: proxy, info: userAccount.displayName)
+                            Spacer()
+                                .frame(height: 32)
+                            emailView(proxy: proxy, info: userAccount.email)
+                            Spacer()
+                                .frame(height: 48)
+                        }
+                        
+                        VStack {
+                            userNameForm(proxy: proxy)
+                            Spacer()
+                                .frame(height: 32)
+                            emailAddressForm(proxy: proxy)
+                            Spacer()
+                                .frame(height: 32)
+                            passwordForm(proxy: proxy)
+                        }
+                        
+                        Spacer()
+                        linkToConfirmationView(proxy: proxy)
+                        Spacer()
+                            .frame(height: 16)
                     }
-                } header: {
-                    Text("サインイン中のアカウント")
-                }
-                
-                Section {
-                    TextField("Input New Name", text: $displayName)
-                } header: {
-                    Text("変更後の表示名")
-                }
-                
-                Section {
-                    TextField("Input New Email", text: $email)
-                } header: {
-                    Text("変更後のEmail")
-                }
-                
-                Section {
-                    SecureField("Input New Password", text: $password)
-                } header: {
-                    Text("変更後のパスワード")
-                }
-                Section {
-                    SecureField("Repeat New Password", text: $repeatedPassword)
-                } header: {
-                    Text("パスワードの確認入力")
                 }
             }
-            NavigationLink {
-                appDependencyContainer.makeAccountInfoConfirmingView(isShowing: $isShowing)
-            } label: {
-                Text("変更内容の確認")
+            .navigationTitle("アカウントの設定")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.surfacePrimary, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        isShowing = false
+                    }, label: {
+                        Text("Dismiss")
+                            .foregroundStyle(.titleNormal)
+                    })
+                }
             }
         }
-        .navigationTitle("アカウントの設定")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    isShowing = false
-                }, label: {
-                    Text("Dismiss")
-                })
+    }
+}
+
+private extension AccountInfoEditingView {
+    func userNameView(proxy: GeometryProxy, info: String) -> some View {
+        accountInfo(
+            title: "ユーザ名",
+            info: info,
+            proxy: proxy
+        )
+    }
+    
+    func emailView(proxy: GeometryProxy, info: String) -> some View {
+        accountInfo(
+            title: "Emailアドレス",
+            info: info,
+            proxy: proxy
+        )
+    }
+    
+    func accountInfo(title: String, info: String, proxy: GeometryProxy) -> some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(.titleNormal)
+                Text(info)
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundStyle(.bodyPrimary)
             }
+            Spacer()
         }
+        .frame(width: proxy.itemWidth)
+    }
+    
+    func userNameForm(proxy: GeometryProxy) -> some View {
+        textForm(
+            title: "変更後のユーザ名",
+            placeholder: "ユーザ名を入力してください",
+            textBinding: $accountSettingsViewModel.inputDisplayName,
+            proxy: proxy
+        )
+    }
+
+    func emailAddressForm(proxy: GeometryProxy) -> some View {
+        textForm(
+            title: "変更後のEmailアドレス",
+            placeholder: "Emailアドレスを入力してください",
+            textBinding: $accountSettingsViewModel.inputEmail,
+            proxy: proxy
+        )
+    }
+    
+    func passwordForm(proxy: GeometryProxy) -> some View {
+        textForm(
+            title: "パスワード",
+            placeholder: "パスワードを入力してください",
+            textBinding: $accountSettingsViewModel.inputPassword,
+            proxy: proxy
+        )
+    }
+    
+    func textForm(title: String, placeholder: String, textBinding: Binding<String>, proxy: GeometryProxy) -> some View {
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(.system(size: 16, weight: .medium))
+            TextField(placeholder, text: textBinding)
+                .standardTextFieldModifier(width: proxy.itemWidth)
+        }
+    }
+    
+    func linkToConfirmationView(proxy: GeometryProxy) -> some View {
+        NavigationLink {
+            appDependencyContainer.makeAccountInfoConfirmingView(isShowing: $isShowing)
+        } label: {
+            Text("変更内容の確認")
+                .frame(width: proxy.itemWidth, height: 48)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(.titleNormal)
+                .overlay {
+                    Rectangle()
+                        .stroke(Color.borderNormal, lineWidth: 1)
+                }
+        }
+    }
+}
+
+fileprivate extension GeometryProxy {
+    var itemWidth: CGFloat {
+        return max(self.size.width - 32, 0)
     }
 }
 

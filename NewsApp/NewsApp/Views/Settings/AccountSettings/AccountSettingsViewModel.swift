@@ -9,7 +9,8 @@ import Foundation
 
 final class AccountSettingsViewModel: ObservableObject {
     @Published var userAccount: UserAccount?
-    @Published var inputUserAccount: UserAccount?
+    @Published var inputDisplayName: String = ""
+    @Published var inputEmail: String = ""
     @Published var inputPassword: String = ""
 
     private let accountManager: AccountProtocol
@@ -22,6 +23,7 @@ final class AccountSettingsViewModel: ObservableObject {
         self.userAccount = accountManager.user
     }
     
+    /*
     @MainActor
     func setupInputUserAccount(email: String, displayName: String, password: String) {
         guard let currentUserAccount = userAccount else { return }
@@ -34,4 +36,5 @@ final class AccountSettingsViewModel: ObservableObject {
         self.inputUserAccount = inputUserAccount
         self.inputPassword = password
     }
+     */
 }
