@@ -21,43 +21,49 @@ struct AccountSettingsView: View {
     }
 
     var body: some View {
-        VStack {
-            HStack {
-                VStack(alignment: .leading) {
-                    if let userAccount = accountSettingsViewModel.userAccount {
-                        Text("サインイン中のアカウント")
-                        Text(userAccount.displayName)
-                        Text(userAccount.email)
+        NavigationStack {
+            GeometryReader { proxy in
+                ZStack {
+                    Color.surfacePrimary
+                    VStack(spacing: 0) {
+                        Spacer()
+                            .frame(height: 48)
+                        if let userAccount = accountSettingsViewModel.userAccount {
+                            userNameView(proxy: proxy, info: userAccount.displayName)
+                            Spacer()
+                                .frame(height: 32)
+                            emailView(proxy: proxy, info: userAccount.email)
+                            Spacer()
+                                .frame(height: 48)
+                        }
+                        linkToAccountEditingView(proxy: proxy)
+                        Spacer()
+                            .frame(height: 16)
+                        signOutButton(proxy: proxy)
+                        Spacer()
+                        
+                        linkToWithdrawalView(proxy: proxy)
+                        Spacer()
+                            .frame(height: 16)
                     }
                 }
-                Spacer()
             }
-            
-            Spacer()
-                .frame(height: 50)
-            
-            NavigationLink {
-                appDependenciyContainer.makeAccountInfoEditingView(isShowing: $isShowing)
-                    .navigationBarBackButtonHidden()
-            } label: {
-                Text("アカウント情報の編集")
-            }
-            Button(action: {
-                isShowingConfirmSignOutAlert = true
-            }, label: {
-                Text("サインアウト")
-            })
-            
-            Spacer()
-            
-            NavigationLink {
-                appDependenciyContainer.makeWithdrawalConfirmationView(isShowing: $isShowing)
-            } label: {
-                Text("退会する")
+            .navigationTitle("アカウントの設定")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.surfacePrimary, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        isShowing = false
+                    }, label: {
+                        Text("Dismiss")
+                            .foregroundStyle(.titleNormal)
+                    })
+                }
             }
         }
-        .padding()
-        .alert("Yamada Tarou\nでサインイン中です。\nサインアウトしますか", isPresented: $isShowingConfirmSignOutAlert, actions: {
+        .alert("サインアウトしますか", isPresented: $isShowingConfirmSignOutAlert, actions: {
             Button(role: .cancel, action: {
                 isShowingConfirmSignOutAlert = false
             }, label: {
@@ -78,20 +84,86 @@ struct AccountSettingsView: View {
                 Text("OK")
             })
         })
-        .navigationTitle("アカウントの設定")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    isShowing = false
-                }, label: {
-                    Text("Dismiss")
-                })
-            }
-        }
         .task {
             accountSettingsViewModel.populateUserAccount()
         }
+    }
+}
+
+// MARK: - View Components
+private extension AccountSettingsView {
+    func userNameView(proxy: GeometryProxy, info: String) -> some View {
+        accountInfo(
+            title: "ユーザ名",
+            info: info,
+            proxy: proxy
+        )
+    }
+    
+    func emailView(proxy: GeometryProxy, info: String) -> some View {
+        accountInfo(
+            title: "Emailアドレス",
+            info: info,
+            proxy: proxy
+        )
+    }
+    
+    func accountInfo(title: String, info: String, proxy: GeometryProxy) -> some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(.titleNormal)
+                Text(info)
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundStyle(.bodyPrimary)
+            }
+            Spacer()
+        }
+        .frame(width: proxy.itemWidth)
+    }
+    
+    func linkToAccountEditingView(proxy: GeometryProxy) -> some View {
+        NavigationLink {
+            appDependenciyContainer.makeAccountInfoEditingView(isShowing: $isShowing)
+                .navigationBarBackButtonHidden()
+        } label: {
+            normalButtonLabel(title: "アカウント情報の編集", proxy: proxy)
+        }
+    }
+    
+    func signOutButton(proxy: GeometryProxy) -> some View {
+        Button(action: {
+            isShowingConfirmSignOutAlert = true
+        }, label: {
+            normalButtonLabel(title: "サインアウト", proxy: proxy)
+        })
+    }
+    
+    func linkToWithdrawalView(proxy: GeometryProxy) -> some View {
+        NavigationLink {
+            appDependenciyContainer.makeWithdrawalConfirmationView(isShowing: $isShowing)
+                .navigationBarBackButtonHidden()
+        } label: {
+            normalButtonLabel(title: "アカウントを削除する", proxy: proxy)
+        }
+    }
+    
+    func normalButtonLabel(title: String, proxy: GeometryProxy) -> some View {
+        Text(title)
+            .frame(width: proxy.itemWidth, height: 48)
+            .font(.system(size: 16, weight: .medium))
+            .foregroundStyle(.titleNormal)
+            .overlay {
+                Rectangle()
+                    .stroke(Color.borderNormal, lineWidth: 1)
+            }
+    }
+}
+
+fileprivate extension GeometryProxy {
+    var itemWidth: CGFloat {
+        return max(self.size.width - 32, 0)
     }
 }
 
