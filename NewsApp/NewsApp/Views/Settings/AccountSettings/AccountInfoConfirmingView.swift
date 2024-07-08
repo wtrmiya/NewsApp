@@ -11,6 +11,7 @@ struct AccountInfoConfirmingView: View {
     @Binding var isShowing: Bool
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
     
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
     init(isShowing: Binding<Bool>, accountSettingsViewModel: AccountSettingsViewModel) {
@@ -19,69 +20,122 @@ struct AccountInfoConfirmingView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("表示名")
-                    /*
-                    if let inputUserAccount = accountSettingsViewModel.inputUserAccount {
-                        Text("変更後: \(inputUserAccount.displayName)")
-                    } else {
-                        Text("変更なし")
-                    }
-                     */
-                }
-                Spacer()
-            }
-            Spacer()
-                .frame(height: 30)
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Email")
-                    /*
-                    if let inputUserAccount = accountSettingsViewModel.inputUserAccount {
-                        Text("変更後: \(inputUserAccount.email)")
-                    } else {
-                        Text("変更なし")
-                    }
-                     */
-                }
-                Spacer()
-            }
-            Spacer()
-                .frame(height: 30)
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("パスワード")
-                    Text("変更後: ●●●●●●")
+        GeometryReader { proxy in
+            ZStack {
+                Color.surfacePrimary
+                VStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: 48)
+                    userNameView(proxy: proxy)
+                    Spacer()
+                        .frame(height: 32)
+                    emailView(proxy: proxy)
+                    Spacer()
+                    confirmButton(proxy: proxy)
+                    Spacer()
+                        .frame(height: 16)
                 }
             }
-            Spacer()
-                .frame(height: 50)
-            HStack {
-                Spacer()
-                NavigationLink {
-                    appDependencyContainer.makeAccountInfoUpdateCompletionView(isShowing: $isShowing)
-                        .navigationBarBackButtonHidden()
-                } label: {
-                    Text("変更を確定する")
-                }
-                Spacer()
-            }
-            Spacer()
         }
-        .padding()
         .navigationTitle("アカウントの設定")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.surfacePrimary, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {
+                    dismiss()
+                }, label: {
+                    Text("< 内容入力")
+                        .foregroundStyle(.titleNormal)
+                })
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
                     isShowing = false
                 }, label: {
-                    Text("Dismiss")
+                    Text("閉じる")
+                        .foregroundStyle(.titleNormal)
                 })
             }
         }
+    }
+}
+
+// MARK: - View Components
+private extension AccountInfoConfirmingView {
+    @ViewBuilder
+    func userNameView(proxy: GeometryProxy) -> some View {
+        if let displayName = accountSettingsViewModel.userAccount?.displayName {
+            accountInfo(
+                title: "ユーザ名",
+                currentValue: displayName,
+                newValue: accountSettingsViewModel.inputDisplayName,
+                proxy: proxy
+            )
+        }
+    }
+    
+    @ViewBuilder
+    func emailView(proxy: GeometryProxy) -> some View {
+        if let email = accountSettingsViewModel.userAccount?.email {
+            accountInfo(
+                title: "Emailアドレス",
+                currentValue: email,
+                newValue: accountSettingsViewModel.inputEmail,
+                proxy: proxy
+            )
+        }
+    }
+    
+    func accountInfo(title: String, currentValue: String, newValue: String, proxy: GeometryProxy) -> some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(.titleNormal)
+                Text(currentValue)
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundStyle(.bodyPrimary)
+                Spacer()
+                    .frame(height: 8)
+                Image(systemName: "arrow.down")
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundStyle(.bodyPrimary)
+                Spacer()
+                    .frame(height: 8)
+                if currentValue == newValue {
+                    Text("(変更なし)")
+                        .font(.system(size: 14, weight: .regular))
+                        .foregroundStyle(.bodyPrimary)
+                } else {
+                    Text(newValue)
+                        .font(.system(size: 14, weight: .regular))
+                        .foregroundStyle(.bodyPrimary)
+                }
+            }
+            Spacer()
+        }
+        .frame(width: proxy.itemWidth)
+    }
+    
+    func confirmButton(proxy: GeometryProxy) -> some View {
+        Button(action: {
+            print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+            isShowing = false
+        }, label: {
+            Text("変更を確定する")
+                .frame(width: proxy.itemWidth, height: 48)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(.titleNormal)
+                .background(.accent)
+        })
+    }
+}
+
+fileprivate extension GeometryProxy {
+    var itemWidth: CGFloat {
+        return max(self.size.width - 32, 0)
     }
 }
 

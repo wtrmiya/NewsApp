@@ -66,7 +66,7 @@ struct AccountInfoEditingView: View {
                     Button(action: {
                         isShowing = false
                     }, label: {
-                        Text("Dismiss")
+                        Text("閉じる")
                             .foregroundStyle(.titleNormal)
                     })
                 }
@@ -146,6 +146,7 @@ private extension AccountInfoEditingView {
     func linkToConfirmationView(proxy: GeometryProxy) -> some View {
         NavigationLink {
             appDependencyContainer.makeAccountInfoConfirmingView(isShowing: $isShowing)
+                .navigationBarBackButtonHidden()
         } label: {
             Text("変更内容の確認")
                 .frame(width: proxy.itemWidth, height: 48)
