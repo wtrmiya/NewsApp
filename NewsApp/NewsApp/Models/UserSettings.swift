@@ -15,7 +15,7 @@ struct UserSettings {
     var pushEveningEnabled: Bool
     var letterSize: LetterSize
     var letterWeight: LetterWeight
-    var darkMode: Int
+    var darkMode: DarkModeSetting
     let createdAt: Date
     var updatedAt: Date
     var userSettingsDocumentId: String?
@@ -34,7 +34,7 @@ extension UserSettings {
             pushEveningEnabled: true,
             letterSize: LetterSize.medium,
             letterWeight: LetterWeight.normal,
-            darkMode: 0,
+            darkMode: DarkModeSetting.followDeviceSetting,
             createdAt: Date(),
             updatedAt: Date()
         )
@@ -48,7 +48,7 @@ extension UserSettings {
             pushEveningEnabled: true,
             letterSize: LetterSize.medium,
             letterWeight: LetterWeight.normal,
-            darkMode: 0,
+            darkMode: DarkModeSetting.followDeviceSetting,
             createdAt: Date(),
             updatedAt: Date()
         )
@@ -88,14 +88,12 @@ extension UserSettings {
     
     var darkModeDescription: String {
         switch darkMode {
-        case 0:
+        case .followDeviceSetting:
             "端末の設定に合わせる"
-        case 1:
+        case .lightModeAlways:
             "常にライトモード"
-        case 2:
+        case .darkModeAlways:
             "常にダークモード"
-        default:
-            "端末の設定に合わせる"
         }
     }
 
@@ -107,7 +105,7 @@ extension UserSettings {
             "push_evening_enabled": pushEveningEnabled,
             "letter_size": letterSize.rawValue,
             "letter_weight": letterWeight.rawValue,
-            "dark_mode": darkMode,
+            "dark_mode": darkMode.rawValue,
             "created_at": createdAt,
             "updated_at": updatedAt
         ]
@@ -124,7 +122,8 @@ extension UserSettings {
             let letterSize = LetterSize(rawValue: letterSizeRawValue),
             let letterWeightRawValue = dictionary["letter_weight"] as? Int,
             let letterWeight = LetterWeight(rawValue: letterWeightRawValue),
-            let darkMode = dictionary["dark_mode"] as? Int,
+            let darkModeRawValue = dictionary["dark_mode"] as? Int,
+            let darkModeSetting = DarkModeSetting(rawValue: darkModeRawValue),
             let createdAt = (dictionary["created_at"] as? Timestamp)?.dateValue(),
             let updatedAt = (dictionary["updated_at"] as? Timestamp)?.dateValue()
         else {
@@ -140,7 +139,7 @@ extension UserSettings {
             pushEveningEnabled: pushEveningEnabled,
             letterSize: letterSize,
             letterWeight: letterWeight,
-            darkMode: darkMode,
+            darkMode: darkModeSetting,
             createdAt: createdAt,
             updatedAt: updatedAt,
             userSettingsDocumentId: userSettingsDocumentId

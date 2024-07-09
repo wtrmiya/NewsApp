@@ -13,6 +13,7 @@
 		86027CF92C184320006CD41B /* MockArticleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86027CF82C184320006CD41B /* MockArticleManager.swift */; };
 		86027CFB2C184344006CD41B /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86027CFA2C184344006CD41B /* HomeViewModelTests.swift */; };
 		860FF68C2C3CC57500D57F20 /* LetterAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860FF68B2C3CC57500D57F20 /* LetterAppearance.swift */; };
+		860FF6A02C3D094400D57F20 /* DarkModeSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860FF69F2C3D094400D57F20 /* DarkModeSetting.swift */; };
 		86119AFD2C0FD8090067DC64 /* NewsAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86119AFC2C0FD8090067DC64 /* NewsAppApp.swift */; };
 		86119AFF2C0FD8090067DC64 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86119AFE2C0FD8090067DC64 /* ContentView.swift */; };
 		86119B012C0FD80A0067DC64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86119B002C0FD80A0067DC64 /* Assets.xcassets */; };
@@ -97,6 +98,7 @@
 		86027CF82C184320006CD41B /* MockArticleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockArticleManager.swift; sourceTree = "<group>"; };
 		86027CFA2C184344006CD41B /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		860FF68B2C3CC57500D57F20 /* LetterAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterAppearance.swift; sourceTree = "<group>"; };
+		860FF69F2C3D094400D57F20 /* DarkModeSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeSetting.swift; sourceTree = "<group>"; };
 		86119AF92C0FD8090067DC64 /* NewsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86119AFC2C0FD8090067DC64 /* NewsAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsAppApp.swift; sourceTree = "<group>"; };
 		86119AFE2C0FD8090067DC64 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -339,6 +341,7 @@
 				864CCE2F2C1B9141006D2B5B /* UserSettings.swift */,
 				86EDFECE2C1FAA09002F7F5E /* ArticleCategory.swift */,
 				860FF68B2C3CC57500D57F20 /* LetterAppearance.swift */,
+				860FF69F2C3D094400D57F20 /* DarkModeSetting.swift */,
 				862F1D652C18D5160013DE91 /* Errors */,
 			);
 			path = Models;
@@ -764,6 +767,7 @@
 				862F1D642C18D4C60013DE91 /* Article.swift in Sources */,
 				865408372C12A16E0034055A /* MockAccountManager.swift in Sources */,
 				86748B5B2C106331004312AB /* WithdrawalConfirmationView.swift in Sources */,
+				860FF6A02C3D094400D57F20 /* DarkModeSetting.swift in Sources */,
 				8621FA5B2C1BCECD00E677D6 /* AppDependencyContainer.swift in Sources */,
 				86748B492C1061F0004312AB /* SignInView.swift in Sources */,
 				86027CF32C1810E3006CD41B /* APIKeyManager.swift in Sources */,

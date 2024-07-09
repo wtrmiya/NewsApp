@@ -15,22 +15,16 @@ struct DarkModeSettingsView: View {
         self._isShowing = isShowing
         self.settingsViewModel = settingsViewModel
     }
+    
+    private func isSelected(darkModeSetting: DarkModeSetting) -> Bool {
+        return darkModeSetting == settingsViewModel.userSettings.darkMode
+    }
 
     var body: some View {
         VStack {
             List {
-                Text(settingsViewModel.userSettings.darkMode.description)
-                HStack {
-                    Image(systemName: "checkmark.circle.fill")
-                    Text("端末の設定に沿う")
-                }
-                HStack {
-                    Image(systemName: "circle")
-                    Text("常にライトモードを使用する")
-                }
-                HStack {
-                    Image(systemName: "circle")
-                    Text("常にダークモードを使用する")
+                ForEach(DarkModeSetting.allCases, id: \.self) { colorScheme in
+                    colorSchemeSettingItem(darkModeSetting: colorScheme)
                 }
             }
         }
@@ -47,6 +41,30 @@ struct DarkModeSettingsView: View {
         }
         .task {
             await settingsViewModel.populateUserSettings()
+        }
+    }
+}
+
+// MARK: - View Components
+
+private extension DarkModeSettingsView {
+    func colorSchemeSettingItem(darkModeSetting: DarkModeSetting) -> some View {
+        let isSelected: Bool
+        if darkModeSetting == settingsViewModel.userSettings.darkMode {
+            isSelected = true
+        } else {
+            isSelected = false
+        }
+        return HStack {
+            if isSelected {
+                Image(systemName: "checkmark.circle.fill")
+            } else {
+                Image(systemName: "circle")
+            }
+            Text(darkModeSetting.description)
+        }
+        .onTapGesture {
+            settingsViewModel.userSettings.darkMode = darkModeSetting
         }
     }
 }

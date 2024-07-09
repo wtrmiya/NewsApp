@@ -10,11 +10,13 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     @ObservedObject private var authViewModel: AuthViewModel
+    @ObservedObject private var settingsViewModel: SettingsViewModel
     @Environment(\.displayToast) private var displayToast
     @State private var selectedTab: SelectedViewItem = .home
     
-    init(authViewModel: AuthViewModel) {
+    init(authViewModel: AuthViewModel, settingsViewModel: SettingsViewModel) {
         self.authViewModel = authViewModel
+        self.settingsViewModel = settingsViewModel
         
         let appearance = UITabBarAppearance()
         appearance.shadowColor = .clear
@@ -42,6 +44,7 @@ struct ContentView: View {
                 }
             #endif
         }
+        .preferredColorScheme(settingsViewModel.userSettings.darkMode.colorScheme)
         .environment(\.selectedViewItem, $selectedTab)
         .onReceive(authViewModel.$signedInUser, perform: { user in
             if user != nil {
