@@ -102,10 +102,20 @@ private extension AccountInfoEditingView {
         HStack {
             VStack(alignment: .leading) {
                 Text(title)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                        )
+                    )
                     .foregroundStyle(.titleNormal)
                 Text(info)
-                    .font(.system(size: 14, weight: .regular))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.accountInfoLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                        )
+                    )
                     .foregroundStyle(.bodyPrimary)
             }
             Spacer()
@@ -143,7 +153,12 @@ private extension AccountInfoEditingView {
     func textForm(title: String, placeholder: String, textBinding: Binding<String>, proxy: GeometryProxy) -> some View {
         VStack(alignment: .leading) {
             Text(title)
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
             TextField(placeholder, text: textBinding)
                 .standardTextFieldModifier(width: proxy.itemWidth)
         }
@@ -156,7 +171,12 @@ private extension AccountInfoEditingView {
         } label: {
             Text("変更内容の確認")
                 .frame(width: proxy.itemWidth, height: 48)
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
                 .foregroundStyle(.titleNormal)
                 .overlay {
                     Rectangle()

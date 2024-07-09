@@ -55,13 +55,23 @@ struct ArticleView: View {
     
     func articleSourceView(article: Article) -> some View {
         Text(article.source.name)
-            .font(.system(size: 12, weight: .regular))
+            .font(
+                .system(
+                    size: userSettings.letterSize.captionLetterSize,
+                    weight: userSettings.letterWeight.thinLetterWeight
+                )
+            )
             .foregroundStyle(.bodyPrimary)
     }
     
     func publishedDateView(article: Article) -> some View {
         return Text(article.publishedAt.localDateString)
-            .font(.system(size: 12, weight: .regular))
+            .font(
+                .system(
+                    size: userSettings.letterSize.captionLetterSize,
+                    weight: userSettings.letterWeight.thinLetterWeight
+                )
+            )
             .foregroundStyle(.bodyPrimary)
     }
     
@@ -73,7 +83,12 @@ struct ArticleView: View {
                     .stroke(Color.thinLine, lineWidth: 1)
                     .frame(width: 32, height: 32)
                 Image(systemName: article.bookmarked ? "bookmark.fill" : "bookmark")
-                    .font(.system(size: 12, weight: .regular))
+                    .font(
+                        .system(
+                            size: userSettings.letterSize.captionLetterSize,
+                            weight: userSettings.letterWeight.thinLetterWeight
+                        )
+                    )
                     .foregroundStyle(.bodySecondary)
             }
             .onTapGesture {
@@ -112,6 +127,12 @@ struct ArticleView: View {
                 .stroke(Color.thinLine, lineWidth: 1)
             VStack {
                 Text(article.title)
+                    .font(
+                        .system(
+                            size: userSettings.letterSize.bodyLetterSize,
+                            weight: userSettings.letterWeight.bodyLetterWeight
+                        )
+                    )
                     .font(.system(size: 16, weight: .medium))
                     .foregroundStyle(.bodyPrimary)
                     .lineSpacing(4)
@@ -119,7 +140,12 @@ struct ArticleView: View {
                 Spacer()
                     .frame(height: 10)
                 Text(article.description ?? "NO DESCRIPTION")
-                    .font(.system(size: 12, weight: .regular))
+                    .font(
+                        .system(
+                            size: userSettings.letterSize.captionLetterSize,
+                            weight: userSettings.letterWeight.thinLetterWeight
+                        )
+                    )
                     .foregroundStyle(.bodyPrimary)
                     .lineLimit(2)
                     .lineSpacing(2)

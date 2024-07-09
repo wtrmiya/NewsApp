@@ -49,7 +49,12 @@ struct WithdrawalConfirmationView: View {
                     }, label: {
                         Text("このまま使用を続ける")
                             .frame(width: proxy.itemWidth, height: 48)
-                            .font(.system(size: 16, weight: .medium))
+                            .font(
+                                .system(
+                                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                                    weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                                )
+                            )
                             .foregroundStyle(.titleNormal)
                             .overlay {
                                 Rectangle()
@@ -63,7 +68,12 @@ struct WithdrawalConfirmationView: View {
                     }, label: {
                         Text("アカウントを削除する")
                             .frame(width: proxy.itemWidth, height: 48)
-                            .font(.system(size: 16, weight: .medium))
+                            .font(
+                                .system(
+                                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                                    weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                                )
+                            )
                             .foregroundStyle(.titleDestructive)
                             .background(.destructive)
                     })
@@ -125,10 +135,20 @@ private extension WithdrawalConfirmationView {
         HStack {
             VStack(alignment: .leading) {
                 Text(title)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                        )
+                    )
                     .foregroundStyle(.titleNormal)
                 Text(info)
-                    .font(.system(size: 14, weight: .regular))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.accountInfoLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                        )
+                    )
                     .foregroundStyle(.bodyPrimary)
             }
             Spacer()

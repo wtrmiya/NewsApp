@@ -118,10 +118,20 @@ private extension AccountSettingsView {
         HStack {
             VStack(alignment: .leading) {
                 Text(title)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                        )
+                    )
                     .foregroundStyle(.titleNormal)
                 Text(info)
-                    .font(.system(size: 14, weight: .regular))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.accountInfoLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                        )
+                    )
                     .foregroundStyle(.bodyPrimary)
             }
             Spacer()
@@ -158,7 +168,12 @@ private extension AccountSettingsView {
     func normalButtonLabel(title: String, proxy: GeometryProxy) -> some View {
         Text(title)
             .frame(width: proxy.itemWidth, height: 48)
-            .font(.system(size: 16, weight: .medium))
+            .font(
+                .system(
+                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                    weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                )
+            )
             .foregroundStyle(.titleNormal)
             .overlay {
                 Rectangle()

@@ -43,6 +43,14 @@ enum LetterSize: Int {
         case .large: return 26
         }
     }
+    
+    var accountInfoLetterSize: CGFloat {
+        switch self {
+        case .small: return 12
+        case .medium: return 14
+        case .large: return 16
+        }
+    }
 }
 
 enum LetterWeight: Int {

@@ -103,7 +103,12 @@ private extension SignInView {
     private func emailAddressForm(proxy: GeometryProxy) -> some View {
         VStack(alignment: .leading) {
             Text("Emailアドレス")
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
             TextField("Emailアドレスを入力してください", text: $authViewModel.email)
                 .standardTextFieldModifier(width: proxy.itemWidth)
                 .focused($focusField, equals: .email)
@@ -113,7 +118,12 @@ private extension SignInView {
     private func passwordForm(proxy: GeometryProxy) -> some View {
         VStack(alignment: .leading) {
             Text("パスワード")
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
             TextField("パスワードを入力してください", text: $authViewModel.password)
                 .standardTextFieldModifier(width: proxy.itemWidth)
                 .focused($focusField, equals: .password)
@@ -129,7 +139,12 @@ private extension SignInView {
         }, label: {
             Text("サインイン")
                 .frame(width: proxy.itemWidth, height: 48)
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
                 .foregroundStyle(.titleNormal)
                 .background(.accent)
         })

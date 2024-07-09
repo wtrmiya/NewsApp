@@ -117,7 +117,12 @@ private extension HomeView {
         
         ZStack(alignment: .bottom) {
             Text(category.description)
-                .font(.system(size: 14, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.categoryLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
                 .frame(width: 96, height: 48)
                 .background(.surfacePrimary)
                 .foregroundStyle(isSelected ? .bodyPrimary : .bodySecondary)
@@ -145,9 +150,16 @@ private extension HomeView {
     
     @ViewBuilder
     var emptyArticlesView: some View {
-        Spacer()
-        Text("該当するカテゴリの記事が存在しません。")
-        Spacer()
+        ZStack {
+            Color.surfacePrimary
+            Text("該当するカテゴリの記事が存在しません。")
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
+        }
     }
     
     func articleListView() -> some View {
