@@ -26,7 +26,7 @@ struct LetterSizeSettingsView: View {
             
             VStack {
                 Text("サイズ")
-                Text(settingsViewModel.userSettings.letterSize.description)
+                Text(settingsViewModel.userSettings.letterSizeSettingsDescription)
                 HStack {
                     Button(action: {
                         print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
@@ -47,7 +47,7 @@ struct LetterSizeSettingsView: View {
             }
             VStack {
                 Text("太さ")
-                Text(settingsViewModel.userSettings.letterWeight.description)
+                Text(settingsViewModel.userSettings.letterWeightSettingsDescription)
                 HStack {
                     Button(action: {
                         print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
