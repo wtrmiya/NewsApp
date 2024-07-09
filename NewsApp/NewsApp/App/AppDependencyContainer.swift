@@ -53,7 +53,8 @@ final class AppDependencyContainer: ObservableObject {
     
     func makeContentView() -> ContentView {
         return ContentView(
-            authViewModel: sharedAuthViewModel
+            authViewModel: sharedAuthViewModel,
+            settingsViewModel: sharedSettingsViewModel
         )
     }
     
