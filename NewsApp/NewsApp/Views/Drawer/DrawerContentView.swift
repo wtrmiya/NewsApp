@@ -16,13 +16,15 @@ struct DrawerContentView: View {
     @State private var isShowingSignOutAlert: Bool = false
 
     @ObservedObject private var authViewModel: AuthViewModel
-    
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+
     @Binding var isShowing: Bool
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
-    init(isShowing: Binding<Bool>, authViewModel: AuthViewModel) {
+    init(isShowing: Binding<Bool>, authViewModel: AuthViewModel, settingsViewModel: SettingsViewModel) {
         self._isShowing = isShowing
         self.authViewModel = authViewModel
+        self.settingsViewModel = settingsViewModel
     }
     
     private var isSignedIn: Bool {
@@ -89,9 +91,19 @@ private extension DrawerContentView {
                     .frame(height: 48)
                 HStack {
                     Image(systemName: "person")
-                        .font(.system(size: 16, weight: .medium))
+                        .font(
+                            .system(
+                                size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                                weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                            )
+                        )
                     Text(user.displayName)
-                        .font(.system(size: 16, weight: .medium))
+                        .font(
+                            .system(
+                                size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                                weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                            )
+                        )
                     Spacer()
                 }
                 .padding(.leading, 16)
@@ -112,7 +124,12 @@ private extension DrawerContentView {
         }, label: {
             Text("サインアップ")
                 .frame(width: proxy.size.width - 32, height: 48)
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
                 .foregroundStyle(.titleNormal)
                 .background(.accent)
         })
@@ -124,7 +141,12 @@ private extension DrawerContentView {
         }, label: {
             Text("サインイン")
                 .frame(width: proxy.size.width - 32, height: 48)
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
                 .foregroundStyle(.titleNormal)
                 .overlay {
                     Rectangle()
@@ -153,7 +175,12 @@ private extension DrawerContentView {
                 Spacer()
                 Image(systemName: "chevron.right")
             }
-            .font(.system(size: 16, weight: .regular))
+            .font(
+                .system(
+                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                    weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                )
+            )
             .foregroundStyle(.titleNormal)
         })
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
@@ -168,7 +195,12 @@ private extension DrawerContentView {
                 Spacer()
                 Image(systemName: "chevron.right")
             }
-            .font(.system(size: 16, weight: .regular))
+            .font(
+                .system(
+                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                    weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                )
+            )
             .foregroundStyle(.titleNormal)
         })
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
@@ -185,7 +217,12 @@ private extension DrawerContentView {
                     Image(systemName: "chevron.right")
                 }
             }
-            .font(.system(size: 16, weight: .regular))
+            .font(
+                .system(
+                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                    weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                )
+            )
             .foregroundStyle(isSignedIn ? .titleNormal : .disabled)
         })
         .disabled(!isSignedIn)
@@ -198,7 +235,12 @@ private extension DrawerContentView {
         }, label: {
             Text("サインアウト")
                 .frame(width: proxy.size.width - 32, height: 48)
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
                 .foregroundStyle(isSignedIn ? Color.titleNormal : Color.disabled)
                 .overlay {
                     Rectangle()

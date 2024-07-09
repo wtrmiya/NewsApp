@@ -60,14 +60,16 @@ final class AppDependencyContainer: ObservableObject {
     func makeHomeView() -> HomeView {
         return HomeView(
             homeViewModel: sharedHomeViewModel,
-            authViewModel: sharedAuthViewModel
+            authViewModel: sharedAuthViewModel,
+            settingsViewModel: sharedSettingsViewModel
         )
     }
     
     func makeBookmarkView() -> BookmarkView {
         return BookmarkView(
             bookmarkViewModel: makeBookmarkViewModel(),
-            authViewModel: sharedAuthViewModel
+            authViewModel: sharedAuthViewModel,
+            settingsViewModel: sharedSettingsViewModel
         )
     }
     
@@ -82,14 +84,16 @@ final class AppDependencyContainer: ObservableObject {
     func makeDrawerContentView(isShowing: Binding<Bool>) -> DrawerContentView {
         return DrawerContentView(
             isShowing: isShowing,
-            authViewModel: sharedAuthViewModel
+            authViewModel: sharedAuthViewModel,
+            settingsViewModel: sharedSettingsViewModel
         )
     }
     
     func makeTermView(isShowing: Binding<Bool>) -> TermView {
         return TermView(
             isShowing: isShowing,
-            termViewModel: makeTermViewModel()
+            termViewModel: makeTermViewModel(),
+            settingsViewModel: sharedSettingsViewModel
         )
     }
     
@@ -133,21 +137,24 @@ final class AppDependencyContainer: ObservableObject {
     func makeAccountSettingsView(isShowing: Binding<Bool>) -> AccountSettingsView {
         return AccountSettingsView(
             isShowing: isShowing,
-            accountSettingsViewModel: makeAccountSettingsViewModel()
+            accountSettingsViewModel: makeAccountSettingsViewModel(),
+            settingsViewModel: sharedSettingsViewModel
         )
     }
     
     func makeAccountInfoEditingView(isShowing: Binding<Bool>) -> AccountInfoEditingView {
         return AccountInfoEditingView(
             isShowing: isShowing,
-            accountSettingsViewModel: makeAccountSettingsViewModel()
+            accountSettingsViewModel: makeAccountSettingsViewModel(),
+            settingsViewModel: sharedSettingsViewModel
         )
     }
     
     func makeAccountInfoConfirmingView(isShowing: Binding<Bool>) -> AccountInfoConfirmingView {
         return AccountInfoConfirmingView(
             isShowing: isShowing,
-            accountSettingsViewModel: makeAccountSettingsViewModel()
+            accountSettingsViewModel: makeAccountSettingsViewModel(),
+            settingsViewModel: sharedSettingsViewModel
         )
     }
     
@@ -160,7 +167,8 @@ final class AppDependencyContainer: ObservableObject {
     func makeWithdrawalConfirmationView(isShowing: Binding<Bool>) -> WithdrawalConfirmationView {
         return WithdrawalConfirmationView(
             isShowing: isShowing,
-            accountSettingsViewModel: makeAccountSettingsViewModel()
+            accountSettingsViewModel: makeAccountSettingsViewModel(),
+            settingsViewModel: sharedSettingsViewModel
         )
     }
 
@@ -171,7 +179,8 @@ final class AppDependencyContainer: ObservableObject {
     func makeSearchView(isShowing: Binding<Bool>) -> SearchView {
         return SearchView(
             isShowing: isShowing,
-            searchViewModel: makeSearchViewModel()
+            searchViewModel: makeSearchViewModel(),
+            settingsViewModel: sharedSettingsViewModel
         )
     }
     
@@ -187,14 +196,16 @@ final class AppDependencyContainer: ObservableObject {
     func makeSignInView(isShowing: Binding<Bool>) -> SignInView {
         return SignInView(
             isShowing: isShowing,
-            authViewModel: sharedAuthViewModel
+            authViewModel: sharedAuthViewModel,
+            settingsViewModel: sharedSettingsViewModel
         )
     }
     
     func makeSignUpView(isShowing: Binding<Bool>) -> SignUpView {
         return SignUpView(
             isShowing: isShowing,
-            authViewModel: sharedAuthViewModel
+            authViewModel: sharedAuthViewModel,
+            settingsViewModel: sharedSettingsViewModel
         )
     }
 

@@ -10,13 +10,19 @@ import SwiftUI
 struct AccountInfoConfirmingView: View {
     @Binding var isShowing: Bool
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
-    
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
-    init(isShowing: Binding<Bool>, accountSettingsViewModel: AccountSettingsViewModel) {
+    init(
+        isShowing: Binding<Bool>,
+        accountSettingsViewModel: AccountSettingsViewModel,
+        settingsViewModel: SettingsViewModel
+    ) {
         self._isShowing = isShowing
         self.accountSettingsViewModel = accountSettingsViewModel
+        self.settingsViewModel = settingsViewModel
     }
     
     var body: some View {
@@ -92,26 +98,30 @@ private extension AccountInfoConfirmingView {
         HStack {
             VStack(alignment: .leading) {
                 Text(title)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                        )
+                    )
                     .foregroundStyle(.titleNormal)
-                Text(currentValue)
-                    .font(.system(size: 14, weight: .regular))
-                    .foregroundStyle(.bodyPrimary)
+                accountInfo(value: currentValue)
                 Spacer()
                     .frame(height: 8)
                 Image(systemName: "arrow.down")
-                    .font(.system(size: 14, weight: .regular))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.accountInfoLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                        )
+                    )
                     .foregroundStyle(.bodyPrimary)
                 Spacer()
                     .frame(height: 8)
                 if currentValue == newValue {
-                    Text("(変更なし)")
-                        .font(.system(size: 14, weight: .regular))
-                        .foregroundStyle(.bodyPrimary)
+                    accountInfo(value: "(変更なし)")
                 } else {
-                    Text(newValue)
-                        .font(.system(size: 14, weight: .regular))
-                        .foregroundStyle(.bodyPrimary)
+                    accountInfo(value: newValue)
                 }
             }
             Spacer()
@@ -126,10 +136,26 @@ private extension AccountInfoConfirmingView {
         }, label: {
             Text("変更を確定する")
                 .frame(width: proxy.itemWidth, height: 48)
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
                 .foregroundStyle(.titleNormal)
                 .background(.accent)
         })
+    }
+    
+    func accountInfo(value: String) -> some View {
+        Text(value)
+            .font(
+                .system(
+                    size: settingsViewModel.userSettings.letterSize.accountInfoLetterSize,
+                    weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                )
+            )
+            .foregroundStyle(.bodyPrimary)
     }
 }
 

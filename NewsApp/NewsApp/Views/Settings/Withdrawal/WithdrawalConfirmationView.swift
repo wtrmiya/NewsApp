@@ -12,12 +12,18 @@ struct WithdrawalConfirmationView: View {
     @State private var isShowingWithdrawalCompletionAlert: Bool = false
     
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
+    @ObservedObject private var settingsViewModel: SettingsViewModel
     @EnvironmentObject private var appDependenciyContainer: AppDependencyContainer
     @Environment(\.dismiss) private var dismiss
 
-    init(isShowing: Binding<Bool>, accountSettingsViewModel: AccountSettingsViewModel) {
+    init(
+        isShowing: Binding<Bool>,
+        accountSettingsViewModel: AccountSettingsViewModel,
+        settingsViewModel: SettingsViewModel
+    ) {
         self._isShowing = isShowing
         self.accountSettingsViewModel = accountSettingsViewModel
+        self.settingsViewModel = settingsViewModel
     }
 
     var body: some View {
@@ -43,7 +49,12 @@ struct WithdrawalConfirmationView: View {
                     }, label: {
                         Text("このまま使用を続ける")
                             .frame(width: proxy.itemWidth, height: 48)
-                            .font(.system(size: 16, weight: .medium))
+                            .font(
+                                .system(
+                                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                                    weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                                )
+                            )
                             .foregroundStyle(.titleNormal)
                             .overlay {
                                 Rectangle()
@@ -57,7 +68,12 @@ struct WithdrawalConfirmationView: View {
                     }, label: {
                         Text("アカウントを削除する")
                             .frame(width: proxy.itemWidth, height: 48)
-                            .font(.system(size: 16, weight: .medium))
+                            .font(
+                                .system(
+                                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                                    weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                                )
+                            )
                             .foregroundStyle(.titleDestructive)
                             .background(.destructive)
                     })
@@ -119,10 +135,20 @@ private extension WithdrawalConfirmationView {
         HStack {
             VStack(alignment: .leading) {
                 Text(title)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                        )
+                    )
                     .foregroundStyle(.titleNormal)
                 Text(info)
-                    .font(.system(size: 14, weight: .regular))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.accountInfoLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                        )
+                    )
                     .foregroundStyle(.bodyPrimary)
             }
             Spacer()

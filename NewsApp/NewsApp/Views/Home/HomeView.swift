@@ -14,11 +14,13 @@ struct HomeView: View {
 
     @ObservedObject private var homeViewModel: HomeViewModel
     @ObservedObject private var authViewModel: AuthViewModel
+    @ObservedObject private var settingsViewModel: SettingsViewModel
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
 
-    init(homeViewModel: HomeViewModel, authViewModel: AuthViewModel) {
+    init(homeViewModel: HomeViewModel, authViewModel: AuthViewModel, settingsViewModel: SettingsViewModel) {
         self.homeViewModel = homeViewModel
         self.authViewModel = authViewModel
+        self.settingsViewModel = settingsViewModel
     }
     
     var body: some View {
@@ -115,7 +117,12 @@ private extension HomeView {
         
         ZStack(alignment: .bottom) {
             Text(category.description)
-                .font(.system(size: 14, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.categoryLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
                 .frame(width: 96, height: 48)
                 .background(.surfacePrimary)
                 .foregroundStyle(isSelected ? .bodyPrimary : .bodySecondary)
@@ -143,9 +150,16 @@ private extension HomeView {
     
     @ViewBuilder
     var emptyArticlesView: some View {
-        Spacer()
-        Text("該当するカテゴリの記事が存在しません。")
-        Spacer()
+        ZStack {
+            Color.surfacePrimary
+            Text("該当するカテゴリの記事が存在しません。")
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
+        }
     }
     
     func articleListView() -> some View {
@@ -157,7 +171,8 @@ private extension HomeView {
                             article: article,
                             isSignedIn: authViewModel.signedInUser != nil,
                             bookmarkTapAction: bookmarkTapped(article:),
-                            proxy: proxy
+                            proxy: proxy,
+                            userSettings: settingsViewModel.userSettings
                         )
                             .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
                         articleBorderView(proxy: proxy)

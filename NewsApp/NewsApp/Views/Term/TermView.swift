@@ -11,10 +11,12 @@ import MarkdownUI
 struct TermView: View {
     @Binding var isShowing: Bool
     @ObservedObject private var termViewModel: TermViewModel
-    
-    init(isShowing: Binding<Bool>, termViewModel: TermViewModel) {
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+
+    init(isShowing: Binding<Bool>, termViewModel: TermViewModel, settingsViewModel: SettingsViewModel) {
         self._isShowing = isShowing
         self.termViewModel = termViewModel
+        self.settingsViewModel = settingsViewModel
     }
     
     var body: some View {
@@ -24,11 +26,22 @@ struct TermView: View {
                 ScrollView {
                     VStack(alignment: .leading) {
                         Text(termViewModel.term.title)
-                            .font(.system(size: 24, weight: .medium))
+                            .font(
+                                .system(
+                                    size: settingsViewModel.userSettings.letterSize.termTitleLetterSize,
+                                    weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                                )
+                            )
                             .foregroundStyle(.bodyPrimary)
                         Spacer()
                             .frame(height: 24)
                         Text("発効日: \(termViewModel.term.formattedEffectiveDateDescription)")
+                            .font(
+                                .system(
+                                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                                    weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                                )
+                            )
                             .foregroundStyle(.bodyPrimary)
                         Spacer()
                             .frame(height: 24)

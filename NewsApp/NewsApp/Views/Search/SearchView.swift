@@ -13,10 +13,12 @@ struct SearchView: View {
     
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     @ObservedObject private var searchViewModel: SearchViewModel
-    
-    init(isShowing: Binding<Bool>, searchViewModel: SearchViewModel) {
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+
+    init(isShowing: Binding<Bool>, searchViewModel: SearchViewModel, settingsViewModel: SettingsViewModel) {
         self._isShowing = isShowing
         self.searchViewModel = searchViewModel
+        self.settingsViewModel = settingsViewModel
     }
 
     var body: some View {
@@ -79,7 +81,12 @@ private extension SearchView {
             .background(.textFieldBackground)
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .textInputAutocapitalization(.never)
-            .font(.system(size: 16, weight: .regular))
+            .font(
+                .system(
+                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                    weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                )
+            )
             .autocorrectionDisabled(true)
             .overlay {
                 RoundedRectangle(cornerRadius: 8)
@@ -95,7 +102,12 @@ private extension SearchView {
         }, label: {
             Image(systemName: "magnifyingglass")
                 .frame(width: 64, height: 48)
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
                 .foregroundStyle(.titleNormal)
                 .background(.accent)
         })
@@ -112,8 +124,12 @@ private extension SearchView {
         if !searchViewModel.searchResultWord.isEmpty {
             HStack {
                 Text("検索ワード: \(searchViewModel.searchResultWord)")
-                    .font(.title2)
-                    .fontWeight(.bold)
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                        )
+                    )
                     .foregroundStyle(.bodyPrimary)
                 Spacer()
             }
@@ -125,7 +141,12 @@ private extension SearchView {
     func searchResult(proxy: GeometryProxy) -> some View {
         if searchViewModel.searchResultArticles.isEmpty {
             Text("検索結果がありません")
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
         } else {
             List {
                 ForEach(searchViewModel.searchResultArticles) { article in
@@ -133,7 +154,8 @@ private extension SearchView {
                         article: article,
                         isSignedIn: searchViewModel.isSignedIn,
                         bookmarkTapAction: bookmarkTapped(article:),
-                        proxy: proxy
+                        proxy: proxy,
+                        userSettings: settingsViewModel.userSettings
                     )
                     .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
                     .listRowBackground(Color.surfacePrimary)

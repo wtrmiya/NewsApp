@@ -61,6 +61,7 @@ final class SettingsViewModel: ObservableObject {
             else { return }
             try await userSettingsManager.fetchCurrentUserSettings(user: user)
             self.userSettings = userSettingsManager.currentUserSettings
+            print("fetched userSettings: \(userSettingsManager.currentUserSettings)")
         } catch {
             print(error)
         }
@@ -77,19 +78,15 @@ final class SettingsViewModel: ObservableObject {
             .sink { [weak self] newSettings in
                 guard let self else { return }
                 Task {
-                    print("updatePushSetings")
-                    await self.updatePushSettings(
-                        morning: newSettings.pushMorningEnabled,
-                        afternoon: newSettings.pushAfternoonEnabled,
-                        evening: newSettings.pushEveningEnabled
-                    )
+                    print("updateSetings")
+                    await self.updateSettings(inputSettings: newSettings)
                 }
             }
             .store(in: &allCancellables)
     }
     
-    private func updatePushSettings(morning: Bool, afternoon: Bool, evening: Bool) async {
-        print("morning: \(morning), afternoon: \(afternoon), evening: \(evening)")
+    private func updateSettings(inputSettings: UserSettings) async {
+        print("userSettings: \(userSettings)")
         guard self.userSettings.userSettingsDocumentId != nil
         else {
             print("\(#file): \(#function): userSettings.userSettingsDocumentId is nil")
@@ -104,12 +101,12 @@ final class SettingsViewModel: ObservableObject {
             let currentSettings = self.userSettings
             let newSettings = UserSettings(
                 uid: currentSettings.uid,
-                pushMorningEnabled: morning,
-                pushAfternoonEnabled: afternoon,
-                pushEveningEnabled: evening,
-                letterSize: currentSettings.letterSize,
-                letterWeight: currentSettings.letterWeight,
-                darkMode: currentSettings.darkMode,
+                pushMorningEnabled: inputSettings.pushMorningEnabled,
+                pushAfternoonEnabled: inputSettings.pushAfternoonEnabled,
+                pushEveningEnabled: inputSettings.pushAfternoonEnabled,
+                letterSize: inputSettings.letterSize,
+                letterWeight: inputSettings.letterWeight,
+                darkMode: inputSettings.darkMode,
                 createdAt: currentSettings.createdAt,
                 updatedAt: Date(),
                 userSettingsDocumentId: currentSettings.userSettingsDocumentId
@@ -126,12 +123,10 @@ final class SettingsViewModel: ObservableObject {
     
     @objc func userSettingsChanged(notification: Notification) {
         guard let userSettings = notification.userInfo?["user_settings"] as? UserSettings else {
-            print("\(#function) route #2")
             return
         }
         Task {
             await MainActor.run {
-                print("\(#function) route #3")
                 self.userSettings = userSettings
             }
         }

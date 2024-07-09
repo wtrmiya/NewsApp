@@ -15,10 +15,12 @@ struct BookmarkView: View {
     
     @ObservedObject private var bookmarkViewModel: BookmarkViewModel
     @ObservedObject private var authViewModel: AuthViewModel
+    @ObservedObject private var settingsViewModel: SettingsViewModel
 
-    init(bookmarkViewModel: BookmarkViewModel, authViewModel: AuthViewModel) {
+    init(bookmarkViewModel: BookmarkViewModel, authViewModel: AuthViewModel, settingsViewModel: SettingsViewModel) {
         self.bookmarkViewModel = bookmarkViewModel
         self.authViewModel = authViewModel
+        self.settingsViewModel = settingsViewModel
     }
 
     var body: some View {
@@ -55,7 +57,13 @@ private extension BookmarkView {
                     if bookmarkViewModel.articles.isEmpty {
                         VStack {
                             Text("ブックマークした記事がありません。")
-                                .font(.system(size: 16, weight: .medium))
+                                .font(
+                                    .system(
+                                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                                    )
+                                )
+                                .foregroundStyle(.bodyPrimary)
                         }
                     } else {
                         List {
@@ -65,7 +73,8 @@ private extension BookmarkView {
                                     article: article,
                                     isSignedIn: authViewModel.signedInUser != nil,
                                     bookmarkTapAction: nil,
-                                    proxy: proxy
+                                    proxy: proxy,
+                                    userSettings: settingsViewModel.userSettings
                                 )
                                 .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
                                 .listRowBackground(Color.surfacePrimary)
@@ -112,7 +121,7 @@ private extension BookmarkView {
             ZStack {
                 Color.gray.opacity(0.7)
                 
-                SuggestSignInView()
+                SuggestSignInView(settingsViewModel: settingsViewModel)
             }
         }
     }
@@ -128,20 +137,36 @@ struct SuggestSignInView: View {
     @State private var isShowingSignInView: Bool = false
     @State private var isShowingSignUpView: Bool = false
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+    
+    init(settingsViewModel: SettingsViewModel) {
+        self.settingsViewModel = settingsViewModel
+    }
     
     var body: some View {
         VStack(spacing: 0) {
             Text("該当の機能はサインイン後に使用可能です")
                 .frame(width: 184)
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
                 .multilineTextAlignment(.leading)
+                .foregroundStyle(.bodyPrimary)
             Spacer()
                 .frame(height: 24)
             Button(action: {
                 isShowingSignUpView = true
             }, label: {
                 Text("サインアップ")
-                    .font(.system(size: 16, weight: .medium))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                        )
+                    )
                     .frame(width: 184, height: 48)
                     .background(.accent)
                     .foregroundStyle(.titleNormal)
@@ -152,7 +177,12 @@ struct SuggestSignInView: View {
                 isShowingSignInView = true
             }, label: {
                 Text("サインイン")
-                    .font(.system(size: 16, weight: .medium))
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                        )
+                    )
                     .frame(width: 184, height: 48)
                     .background(.surfacePrimary)
                     .foregroundStyle(.titleNormal)

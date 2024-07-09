@@ -20,10 +20,12 @@ struct SignUpView: View {
     @FocusState private var focusField: Field?
     
     @ObservedObject private var authViewModel: AuthViewModel
-    
-    init(isShowing: Binding<Bool>, authViewModel: AuthViewModel) {
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+
+    init(isShowing: Binding<Bool>, authViewModel: AuthViewModel, settingsViewModel: SettingsViewModel) {
         self._isShowing = isShowing
         self.authViewModel = authViewModel
+        self.settingsViewModel = settingsViewModel
     }
     
     var body: some View {
@@ -156,7 +158,12 @@ private extension SignUpView {
         // swiftlint:disable:previous function_parameter_count line_length
         VStack(alignment: .leading) {
             Text(title)
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
             TextField(placeholder, text: textBinding)
                 .standardTextFieldModifier(width: proxy.itemWidth)
                 .focused(focusState, equals: focusValue)
@@ -179,7 +186,12 @@ private extension SignUpView {
         }, label: {
             Text("サインアップ")
                 .frame(width: proxy.itemWidth, height: 48)
-                .font(.system(size: 16, weight: .medium))
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
                 .foregroundStyle(.titleNormal)
                 .background(.accent)
         })
