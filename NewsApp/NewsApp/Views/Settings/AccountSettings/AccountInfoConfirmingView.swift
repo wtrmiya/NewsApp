@@ -10,13 +10,19 @@ import SwiftUI
 struct AccountInfoConfirmingView: View {
     @Binding var isShowing: Bool
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
-    
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
-    init(isShowing: Binding<Bool>, accountSettingsViewModel: AccountSettingsViewModel) {
+    init(
+        isShowing: Binding<Bool>,
+        accountSettingsViewModel: AccountSettingsViewModel,
+        settingsViewModel: SettingsViewModel
+    ) {
         self._isShowing = isShowing
         self.accountSettingsViewModel = accountSettingsViewModel
+        self.settingsViewModel = settingsViewModel
     }
     
     var body: some View {

@@ -15,10 +15,12 @@ struct BookmarkView: View {
     
     @ObservedObject private var bookmarkViewModel: BookmarkViewModel
     @ObservedObject private var authViewModel: AuthViewModel
+    @ObservedObject private var settingsViewModel: SettingsViewModel
 
-    init(bookmarkViewModel: BookmarkViewModel, authViewModel: AuthViewModel) {
+    init(bookmarkViewModel: BookmarkViewModel, authViewModel: AuthViewModel, settingsViewModel: SettingsViewModel) {
         self.bookmarkViewModel = bookmarkViewModel
         self.authViewModel = authViewModel
+        self.settingsViewModel = settingsViewModel
     }
 
     var body: some View {
@@ -65,7 +67,8 @@ private extension BookmarkView {
                                     article: article,
                                     isSignedIn: authViewModel.signedInUser != nil,
                                     bookmarkTapAction: nil,
-                                    proxy: proxy
+                                    proxy: proxy,
+                                    userSettings: settingsViewModel.userSettings
                                 )
                                 .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
                                 .listRowBackground(Color.surfacePrimary)

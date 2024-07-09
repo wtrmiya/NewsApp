@@ -18,10 +18,12 @@ struct SignInView: View {
     
     @Binding var isShowing: Bool
     @ObservedObject private var authViewModel: AuthViewModel
-    
-    init(isShowing: Binding<Bool>, authViewModel: AuthViewModel) {
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+
+    init(isShowing: Binding<Bool>, authViewModel: AuthViewModel, settingsViewModel: SettingsViewModel) {
         self._isShowing = isShowing
         self.authViewModel = authViewModel
+        self.settingsViewModel = settingsViewModel
     }
 
     var body: some View {

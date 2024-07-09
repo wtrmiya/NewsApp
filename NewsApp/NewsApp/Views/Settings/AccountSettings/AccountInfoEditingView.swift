@@ -15,12 +15,18 @@ struct AccountInfoEditingView: View {
     
     @Binding var isShowing: Bool
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
-    
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
-    init(isShowing: Binding<Bool>, accountSettingsViewModel: AccountSettingsViewModel) {
+    init(
+        isShowing: Binding<Bool>,
+        accountSettingsViewModel: AccountSettingsViewModel,
+        settingsViewModel: SettingsViewModel
+    ) {
         self._isShowing = isShowing
         self.accountSettingsViewModel = accountSettingsViewModel
+        self.settingsViewModel = settingsViewModel
     }
     
     var body: some View {

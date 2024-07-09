@@ -12,7 +12,8 @@ struct ArticleView: View {
     private var isSignedIn: Bool
     private var bookmarkTapAction: ((Article) async -> Void)?
     private var proxy: GeometryProxy
-    
+    private var userSettings: UserSettings
+
     @Environment(\.selectedViewItem) private var selectedViewItem: Binding<SelectedViewItem>?
     var currentViewItem: SelectedViewItem {
         if let currentViewItem = selectedViewItem?.wrappedValue {
@@ -25,11 +26,14 @@ struct ArticleView: View {
     init(article: Article,
          isSignedIn: Bool,
          bookmarkTapAction: ((Article) async -> Void)?,
-         proxy: GeometryProxy ) {
+         proxy: GeometryProxy,
+         userSettings: UserSettings
+    ) {
         self.article = article
         self.isSignedIn = isSignedIn
         self.bookmarkTapAction = bookmarkTapAction
         self.proxy = proxy
+        self.userSettings = userSettings
     }
     
     var body: some View {

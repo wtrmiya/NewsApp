@@ -11,10 +11,12 @@ import MarkdownUI
 struct TermView: View {
     @Binding var isShowing: Bool
     @ObservedObject private var termViewModel: TermViewModel
-    
-    init(isShowing: Binding<Bool>, termViewModel: TermViewModel) {
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+
+    init(isShowing: Binding<Bool>, termViewModel: TermViewModel, settingsViewModel: SettingsViewModel) {
         self._isShowing = isShowing
         self.termViewModel = termViewModel
+        self.settingsViewModel = settingsViewModel
     }
     
     var body: some View {

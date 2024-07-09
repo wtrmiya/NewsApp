@@ -14,11 +14,13 @@ struct HomeView: View {
 
     @ObservedObject private var homeViewModel: HomeViewModel
     @ObservedObject private var authViewModel: AuthViewModel
+    @ObservedObject private var settingsViewModel: SettingsViewModel
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
 
-    init(homeViewModel: HomeViewModel, authViewModel: AuthViewModel) {
+    init(homeViewModel: HomeViewModel, authViewModel: AuthViewModel, settingsViewModel: SettingsViewModel) {
         self.homeViewModel = homeViewModel
         self.authViewModel = authViewModel
+        self.settingsViewModel = settingsViewModel
     }
     
     var body: some View {
@@ -157,7 +159,8 @@ private extension HomeView {
                             article: article,
                             isSignedIn: authViewModel.signedInUser != nil,
                             bookmarkTapAction: bookmarkTapped(article:),
-                            proxy: proxy
+                            proxy: proxy,
+                            userSettings: settingsViewModel.userSettings
                         )
                             .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
                         articleBorderView(proxy: proxy)

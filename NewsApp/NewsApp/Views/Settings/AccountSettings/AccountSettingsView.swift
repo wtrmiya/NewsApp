@@ -13,11 +13,17 @@ struct AccountSettingsView: View {
     @State private var isShowingSignOutCompletionAlert: Bool = false
     
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
+    @ObservedObject private var settingsViewModel: SettingsViewModel
     @EnvironmentObject private var appDependenciyContainer: AppDependencyContainer
     
-    init(isShowing: Binding<Bool>, accountSettingsViewModel: AccountSettingsViewModel) {
+    init(
+        isShowing: Binding<Bool>,
+        accountSettingsViewModel: AccountSettingsViewModel,
+        settingsViewModel: SettingsViewModel
+    ) {
         self._isShowing = isShowing
         self.accountSettingsViewModel = accountSettingsViewModel
+        self.settingsViewModel = settingsViewModel
     }
 
     var body: some View {

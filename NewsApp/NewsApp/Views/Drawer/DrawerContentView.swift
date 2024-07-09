@@ -16,13 +16,15 @@ struct DrawerContentView: View {
     @State private var isShowingSignOutAlert: Bool = false
 
     @ObservedObject private var authViewModel: AuthViewModel
-    
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+
     @Binding var isShowing: Bool
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
-    init(isShowing: Binding<Bool>, authViewModel: AuthViewModel) {
+    init(isShowing: Binding<Bool>, authViewModel: AuthViewModel, settingsViewModel: SettingsViewModel) {
         self._isShowing = isShowing
         self.authViewModel = authViewModel
+        self.settingsViewModel = settingsViewModel
     }
     
     private var isSignedIn: Bool {

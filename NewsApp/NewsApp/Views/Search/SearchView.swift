@@ -13,10 +13,12 @@ struct SearchView: View {
     
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     @ObservedObject private var searchViewModel: SearchViewModel
-    
-    init(isShowing: Binding<Bool>, searchViewModel: SearchViewModel) {
+    @ObservedObject private var settingsViewModel: SettingsViewModel
+
+    init(isShowing: Binding<Bool>, searchViewModel: SearchViewModel, settingsViewModel: SettingsViewModel) {
         self._isShowing = isShowing
         self.searchViewModel = searchViewModel
+        self.settingsViewModel = settingsViewModel
     }
 
     var body: some View {
@@ -133,7 +135,8 @@ private extension SearchView {
                         article: article,
                         isSignedIn: searchViewModel.isSignedIn,
                         bookmarkTapAction: bookmarkTapped(article:),
-                        proxy: proxy
+                        proxy: proxy,
+                        userSettings: settingsViewModel.userSettings
                     )
                     .padding(EdgeInsets(top: 16, leading: 16, bottom: 24, trailing: 16))
                     .listRowBackground(Color.surfacePrimary)
