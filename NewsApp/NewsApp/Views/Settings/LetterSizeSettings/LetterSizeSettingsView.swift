@@ -17,49 +17,43 @@ struct LetterSizeSettingsView: View {
     }
 
     var body: some View {
-        VStack {
-            Text("記事タイトルが入ります記事タイトルが入ります記事タイトルが入ります記事タイトルが入ります")
-            Spacer()
-                .frame(height: 40)
-            Text("記事本文が入ります記事本文が入ります記事本文が入ります記事本文が入ります記事本文が入ります記事本文が入ります")
-            Spacer()
-            
-            VStack {
-                Text("サイズ")
-                Text(settingsViewModel.userSettings.letterSizeSettingsDescription)
-                HStack {
-                    Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-                    }, label: {
-                        Text("小")
-                    })
-                    Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-                    }, label: {
-                        Text("中")
-                    })
-                    Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-                    }, label: {
-                        Text("大")
-                    })
-                }
+        Form {
+            Section {
+                Text("記事タイトルが入ります記事タイトルが入ります記事タイトルが入ります記事タイトルが入ります")
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                        )
+                    )
+                Text("記事概要が入ります記事概要が入ります記事概要が入ります記事概要が入ります記事概要が入ります記事概要が入ります")
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.captionLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                        )
+                    )
             }
-            VStack {
-                Text("太さ")
-                Text(settingsViewModel.userSettings.letterWeightSettingsDescription)
-                HStack {
-                    Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-                    }, label: {
-                        Text("通常")
-                    })
-                    Button(action: {
-                        print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-                    }, label: {
-                        Text("太い")
-                    })
+            Section {
+                Picker("文字のサイズ", selection: $settingsViewModel.userSettings.letterSize) {
+                    ForEach(LetterSize.allCases, id: \.self) { letterSize in
+                        Text(letterSize.description)
+                    }
                 }
+                .pickerStyle(.segmented)
+            } header: {
+                Text("文字のサイズ")
+            }
+            
+            Section {
+                Picker("文字の太さ", selection: $settingsViewModel.userSettings.letterWeight) {
+                    ForEach(LetterWeight.allCases, id: \.self) { letterWeight in
+                        Text(letterWeight.description)
+                    }
+                }
+                .pickerStyle(.segmented)
+            } header: {
+                Text("文字の太さ")
             }
         }
         .navigationTitle("文字サイズの設定")

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum LetterSize: Int {
+enum LetterSize: Int, CaseIterable, CustomStringConvertible {
     case small = 0
     case medium
     case large
@@ -16,7 +16,7 @@ enum LetterSize: Int {
         switch self {
         case .small: return 14
         case .medium: return 16
-        case .large: return 18
+        case .large: return 20
         }
     }
 
@@ -24,7 +24,7 @@ enum LetterSize: Int {
         switch self {
         case .small: return 12
         case .medium: return 14
-        case .large: return 16
+        case .large: return 18
         }
     }
     
@@ -32,7 +32,7 @@ enum LetterSize: Int {
         switch self {
         case .small: return 10
         case .medium: return 12
-        case .large: return 14
+        case .large: return 16
         }
     }
     
@@ -40,7 +40,7 @@ enum LetterSize: Int {
         switch self {
         case .small: return 22
         case .medium: return 24
-        case .large: return 26
+        case .large: return 28
         }
     }
     
@@ -48,12 +48,23 @@ enum LetterSize: Int {
         switch self {
         case .small: return 12
         case .medium: return 14
-        case .large: return 16
+        case .large: return 18
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .small:
+            "小"
+        case .medium:
+            "中"
+        case .large:
+            "大"
         }
     }
 }
 
-enum LetterWeight: Int {
+enum LetterWeight: Int, CaseIterable, CustomStringConvertible {
     case normal = 0
     case thick
     
@@ -68,6 +79,13 @@ enum LetterWeight: Int {
         switch self {
         case .normal: return .regular
         case .thick: return .medium
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .normal: return "通常"
+        case .thick: return "太い"
         }
     }
 }

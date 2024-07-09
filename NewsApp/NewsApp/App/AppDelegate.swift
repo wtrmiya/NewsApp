@@ -25,6 +25,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
                 
                 // UsereSettings
                 if let tempUser = AccountManager.shared.user {
+                    print("tempUser: \(tempUser)")
                     // この時点でユーザのDocumentIdが不明。
                     // UserDataStoreから取得する必要がある。
                     let userDataStoreDocumentId = try await UserDataStoreManager.shared

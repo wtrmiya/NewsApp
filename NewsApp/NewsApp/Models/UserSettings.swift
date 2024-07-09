@@ -120,7 +120,7 @@ extension UserSettings {
             let pushMorningEnabled = dictionary["push_morning_enabled"] as? Bool,
             let pushAfternoonEnabled = dictionary["push_afternoon_enabled"] as? Bool,
             let pushEveningEnabled = dictionary["push_evening_enabled"] as? Bool,
-            let letterSizeRawValue = ["letter_size"] as? Int,
+            let letterSizeRawValue = dictionary["letter_size"] as? Int,
             let letterSize = LetterSize(rawValue: letterSizeRawValue),
             let letterWeightRawValue = dictionary["letter_weight"] as? Int,
             let letterWeight = LetterWeight(rawValue: letterWeightRawValue),
@@ -130,7 +130,7 @@ extension UserSettings {
         else {
             return nil
         }
-        
+
         let userSettingsDocumentId = snapshot.documentID
 
         return UserSettings(
