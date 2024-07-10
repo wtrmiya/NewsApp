@@ -32,7 +32,7 @@ final class BookmarkViewModelTests: XCTestCase {
             }
         }
         wait(for: [expectation1], timeout: 5.0)
-        XCTAssertNotNil(sut.accountManager.user)
+        XCTAssertNotNil(sut.accountManager.userAccount)
 
         // テスト
         let expectation2 = XCTestExpectation()

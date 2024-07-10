@@ -127,7 +127,7 @@ final class HomeViewModelTests: XCTestCase {
             }
         }
         wait(for: [expectation1], timeout: 5.0)
-        XCTAssertNotNil(sut.accountManager.user)
+        XCTAssertNotNil(sut.accountManager.userAccount)
 
         // ダミー記事登録
         let expectation2 = XCTestExpectation()
@@ -179,7 +179,7 @@ final class HomeViewModelTests: XCTestCase {
             }
         }
         wait(for: [expectation1], timeout: 5.0)
-        XCTAssertNotNil(sut.accountManager.user)
+        XCTAssertNotNil(sut.accountManager.userAccount)
 
         // ダミー記事登録
         let expectation2 = XCTestExpectation()
