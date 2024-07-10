@@ -13,7 +13,7 @@ final class SettingsViewModel: ObservableObject {
     @Published var userSettings: UserSettings = UserSettings.defaultSettingsWithDummyUID() {
         didSet {
             if appStateManager.appState == .launching {
-                if accountManager.user != nil {
+                if accountManager.userAccount != nil {
                     appStateManager.appState = .launchedSignedIn
                 } else {
                     appStateManager.appState = .launchedSignedOut
@@ -57,9 +57,9 @@ final class SettingsViewModel: ObservableObject {
     func populateUserSettings() async {
         print("populateUserSettings")
         do {
-            guard let user = accountManager.user
+            guard let userAccount = accountManager.userAccount
             else { return }
-            try await userSettingsManager.fetchCurrentUserSettings(user: user)
+            try await userSettingsManager.fetchCurrentUserSettings(userAccount: userAccount)
             self.userSettings = userSettingsManager.currentUserSettings
             print("fetched userSettings: \(userSettingsManager.currentUserSettings)")
         } catch {
@@ -93,7 +93,7 @@ final class SettingsViewModel: ObservableObject {
             return
         }
         do {
-            guard let user = accountManager.user
+            guard let userAccount = accountManager.userAccount
             else {
                 print("\(#file): \(#function): accountManager.user is nil")
                 return
@@ -114,7 +114,7 @@ final class SettingsViewModel: ObservableObject {
             try await pushNotificationManager.applyPushNotificaionSettings(userSettings: newSettings)
             
             if AppStateManager.shared.appState == .launchedSignedIn {
-                try await userSettingsManager.updateUserSettings(by: newSettings, user: user)
+                try await userSettingsManager.updateUserSettings(by: newSettings, userAccount: userAccount)
             }
         } catch {
             print(error)

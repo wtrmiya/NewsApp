@@ -38,7 +38,7 @@ struct SettingsView: View {
                     }
                 } header: {
                     Text("PUSH")
-                }.disabled(authViewModel.signedInUser == nil)
+                }.disabled(authViewModel.signedInUserAccount == nil)
                 Section {
                     NavigationLink {
                         appDependencyContainer.makeLetterSizeSettingsView(isShowing: $isShowing)

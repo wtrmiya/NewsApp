@@ -46,8 +46,8 @@ struct ContentView: View {
         }
         .preferredColorScheme(settingsViewModel.userSettings.darkMode.colorScheme)
         .environment(\.selectedViewItem, $selectedTab)
-        .onReceive(authViewModel.$signedInUser, perform: { user in
-            if user != nil {
+        .onReceive(authViewModel.$signedInUserAccount, perform: { userAccount in
+            if userAccount != nil {
                 displayToast?("サインインしました")
             } else {
                 displayToast?("サインアウトしました")

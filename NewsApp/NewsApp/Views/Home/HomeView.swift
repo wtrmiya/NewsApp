@@ -169,7 +169,7 @@ private extension HomeView {
                     ForEach(homeViewModel.articles) { article in
                         ArticleView(
                             article: article,
-                            isSignedIn: authViewModel.signedInUser != nil,
+                            isSignedIn: authViewModel.signedInUserAccount != nil,
                             bookmarkTapAction: bookmarkTapped(article:),
                             proxy: proxy,
                             userSettings: settingsViewModel.userSettings

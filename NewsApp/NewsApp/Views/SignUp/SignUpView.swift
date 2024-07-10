@@ -80,7 +80,7 @@ struct SignUpView: View {
                 isShowingAlert = true
             }
         })
-        .onReceive(authViewModel.$signedInUser, perform: { value in
+        .onReceive(authViewModel.$signedInUserAccount, perform: { value in
             if value != nil {
                 isShowing = false
             }

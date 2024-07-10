@@ -14,5 +14,5 @@ protocol AccountProtocol: AnyObject {
     func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String)
     
     var isSignedIn: Bool { get }
-    var user: UserAccount? { get set }
+    var userAccount: UserAccount? { get set }
 }

@@ -28,19 +28,19 @@ final class BookmarkViewModel: ObservableObject {
     @MainActor
     func populateBookmarkedArticles() async {
         do {
-            guard let tempUser = accountManager.user else {
+            guard let tempUserAccount = accountManager.userAccount else {
                 return
             }
             
-            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
-            let currentUser = UserAccount(
-                uid: tempUser.uid,
-                email: tempUser.email,
-                displayName: tempUser.displayName,
+            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(userAccount: tempUserAccount)
+            let currentUserAccount = UserAccount(
+                uid: tempUserAccount.uid,
+                email: tempUserAccount.email,
+                displayName: tempUserAccount.displayName,
                 userDataStoreDocumentId: userDocumentId
             )
 
-            let bookmarkedArticles = try await bookmarkManager.getBookmarks(user: currentUser)
+            let bookmarkedArticles = try await bookmarkManager.getBookmarks(userAccount: currentUserAccount)
             self.articles = bookmarkedArticles
         } catch {
             if let error = error as? NetworkError {
@@ -54,21 +54,21 @@ final class BookmarkViewModel: ObservableObject {
     @MainActor
     func deleteBookmarks(indexSet: IndexSet) async {
         do {
-            guard let tempUser = accountManager.user else {
+            guard let tempUserAccount = accountManager.userAccount else {
                 return
             }
             
-            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
-            let currentUser = UserAccount(
-                uid: tempUser.uid,
-                email: tempUser.email,
-                displayName: tempUser.displayName,
+            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(userAccount: tempUserAccount)
+            let currentUserAccount = UserAccount(
+                uid: tempUserAccount.uid,
+                email: tempUserAccount.email,
+                displayName: tempUserAccount.displayName,
                 userDataStoreDocumentId: userDocumentId
             )
             
             let bookmarksToDelete = indexSet.compactMap { articles[$0] }
-            try await bookmarkManager.deleteBookmarks(articles: bookmarksToDelete, user: currentUser)
-            let updatedBookmarkedArticles = try await bookmarkManager.getBookmarks(user: currentUser)
+            try await bookmarkManager.deleteBookmarks(articles: bookmarksToDelete, userAccount: currentUserAccount)
+            let updatedBookmarkedArticles = try await bookmarkManager.getBookmarks(userAccount: currentUserAccount)
             self.articles = updatedBookmarkedArticles
         } catch {
             if let error = error as? NetworkError {

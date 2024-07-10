@@ -28,7 +28,7 @@ struct DrawerContentView: View {
     }
     
     private var isSignedIn: Bool {
-        authViewModel.signedInUser != nil
+        authViewModel.signedInUserAccount != nil
     }
 
     var body: some View {
@@ -85,7 +85,7 @@ struct DrawerContentView: View {
 private extension DrawerContentView {
     @ViewBuilder
     func accountDisplayArea(proxy: GeometryProxy) -> some View {
-        if let user = authViewModel.signedInUser {
+        if let userAccount = authViewModel.signedInUserAccount {
             VStack {
                 Spacer()
                     .frame(height: 48)
@@ -97,7 +97,7 @@ private extension DrawerContentView {
                                 weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
                             )
                         )
-                    Text(user.displayName)
+                    Text(userAccount.displayName)
                         .font(
                             .system(
                                 size: settingsViewModel.userSettings.letterSize.bodyLetterSize,

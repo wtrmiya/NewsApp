@@ -37,7 +37,7 @@ final class AccountSettingsViewModel: ObservableObject {
     }
     
     func populateUserAccount() {
-        self.userAccount = accountManager.user
+        self.userAccount = accountManager.userAccount
     }
     
     private func bindDisplayNameValidation() {
@@ -83,21 +83,17 @@ final class AccountSettingsViewModel: ObservableObject {
             inputEmail = currentUserAccount.email
         }
     }
-
-    /*
-    @MainActor
-    func setupInputUserAccount(email: String, displayName: String, password: String) {
-        guard let currentUserAccount = userAccount else { return }
-        let inputUserAccount = UserAccount(
-            uid: currentUserAccount.uid,
-            email: email,
-            displayName: displayName
-        )
+    
+    func updateAccountInfo() {
+        guard let userAccount = self.userAccount else { return }
+        if userAccount.displayName != inputDisplayName {
+            print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+        }
         
-        self.inputUserAccount = inputUserAccount
-        self.inputPassword = password
+        if userAccount.email != inputEmail {
+            print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+        }
     }
-     */
 }
 
 fileprivate extension String {

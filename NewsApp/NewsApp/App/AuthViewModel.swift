@@ -14,7 +14,7 @@ final class AuthViewModel: ObservableObject {
     @Published var password: String = ""
     @Published var passwordRepeated: String = ""
     
-    @Published var signedInUser: UserAccount?
+    @Published var signedInUserAccount: UserAccount?
 
     @Published var errorMessage: String?
 
@@ -46,11 +46,13 @@ final class AuthViewModel: ObservableObject {
     func signIn() async {
         do {
             try await accountManager.signIn(email: email, password: password)
-            guard let tempUser = accountManager.user else { return }
-            let userDataStoreDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
+            guard let tempUserAccount = accountManager.userAccount else { return }
+            let userDataStoreDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(
+                userAccount: tempUserAccount
+            )
             accountManager.setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: userDataStoreDocumentId)
-            guard let user = accountManager.user else { return }
-            try await userSettingsManager.fetchCurrentUserSettings(user: user)
+            guard let userAccount = accountManager.userAccount else { return }
+            try await userSettingsManager.fetchCurrentUserSettings(userAccount: userAccount)
         } catch {
             if let error = error as? AuthError {
                 switch error {
@@ -69,12 +71,12 @@ final class AuthViewModel: ObservableObject {
     func signUp() async {
         do {
             try await accountManager.signUp(email: email, password: password, displayName: displayName)
-            guard let tempUser = accountManager.user else { return }
-            try await userDataStoreManager.createUserDataStore(user: tempUser)
-            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
+            guard let tempUserAccount = accountManager.userAccount else { return }
+            try await userDataStoreManager.createUserDataStore(userAccount: tempUserAccount)
+            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(userAccount: tempUserAccount)
             accountManager.setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: userDocumentId)
-            guard let user = accountManager.user else { return }
-            try await userSettingsManager.createDefaultUserSettings(user: user)
+            guard let userAccount = accountManager.userAccount else { return }
+            try await userSettingsManager.createDefaultUserSettings(userAccount: userAccount)
         } catch {
             if let error = error as? AuthError {
                 switch error {
@@ -99,10 +101,10 @@ final class AuthViewModel: ObservableObject {
     }
     
     @objc func userStateChanged(notification: Notification) {
-        let user = notification.userInfo?["user"] as? UserAccount
+        let userAccount = notification.userInfo?["user"] as? UserAccount
         Task {
             await MainActor.run {
-                self.signedInUser = user
+                self.signedInUserAccount = userAccount
             }
         }
     }

@@ -12,11 +12,11 @@ final class MockUserSettingsManager: UserSettingsManagerProtocol {
         return UserSettings.defaultSettingsWithDummyUID()
     }
     
-    func createDefaultUserSettings(user: UserAccount) async throws {}
+    func createDefaultUserSettings(userAccount: UserAccount) async throws {}
     
-    func fetchCurrentUserSettings(user: UserAccount) async throws {}
+    func fetchCurrentUserSettings(userAccount: UserAccount) async throws {}
     
-    func updateUserSettings(by updatedUserSettings: UserSettings, user: UserAccount) async throws {}
+    func updateUserSettings(by updatedUserSettings: UserSettings, userAccount: UserAccount) async throws {}
     
     func removeCurrentUserSettings() {}
 }

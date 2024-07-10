@@ -32,8 +32,8 @@ struct BookmarkView: View {
         .task {
             await bookmarkViewModel.populateBookmarkedArticles()
         }
-        .onReceive(authViewModel.$signedInUser, perform: { user in
-            if user == nil {
+        .onReceive(authViewModel.$signedInUserAccount, perform: { userAccount in
+            if userAccount == nil {
                 isShowingDrawer = false
             }
         })
@@ -71,7 +71,7 @@ private extension BookmarkView {
                                 let article = bookmarkViewModel.articles[index]
                                 ArticleView(
                                     article: article,
-                                    isSignedIn: authViewModel.signedInUser != nil,
+                                    isSignedIn: authViewModel.signedInUserAccount != nil,
                                     bookmarkTapAction: nil,
                                     proxy: proxy,
                                     userSettings: settingsViewModel.userSettings
@@ -117,7 +117,7 @@ private extension BookmarkView {
     
     @ViewBuilder
     var suggestSignInView: some View {
-        if authViewModel.signedInUser == nil {
+        if authViewModel.signedInUserAccount == nil {
             ZStack {
                 Color.gray.opacity(0.7)
                 
