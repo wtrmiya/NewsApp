@@ -125,7 +125,12 @@ final class AccountSettingsViewModel: ObservableObject {
             }
             
             if userAccount.email != inputEmail {
-                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+                try await accountManager
+                    .updateEmail(
+                        currentEmail: userAccount.email,
+                        password: inputPassword,
+                        newEmail: inputEmail
+                    )
             }
         } catch {
             print(error)

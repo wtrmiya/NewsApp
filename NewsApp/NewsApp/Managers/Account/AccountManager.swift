@@ -157,14 +157,15 @@ extension AccountManager: AccountProtocol {
         try await request.commitChanges()
     }
     
-    /*
-    func updateEmail(displayName: String) async throws {
+    func updateEmail(currentEmail: String, password: String, newEmail: String) async throws {
         guard let user else { return }
-        let credential = EmailAuthProvider.credential(withEmail: <#T##String#>, password: <#T##String#>)
+        let credential = EmailAuthProvider.credential(withEmail: currentEmail, password: password)
         // reauthenticate
-        try await user.reauthenticate(with: )
+        try await user.reauthenticate(with: credential)
+        
+        // update email
+        try await user.sendEmailVerification(beforeUpdatingEmail: newEmail)
     }
-     */
 
     func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String) {
         self.userAccount?.setUserDataStoreDocumentId(userDataStoreDocumentId: userDataStoreDocumentId)

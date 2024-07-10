@@ -75,6 +75,9 @@ final class MockAccountManager: AccountProtocol {
     
     func updateDisplayName(displayName: String) async throws {
     }
+    
+    func updateEmail(currentEmail: String, password: String, newEmail: String) async throws {
+    }
 }
 
 fileprivate extension String {
