@@ -9,18 +9,21 @@ import SwiftUI
 
 struct AccountInfoConfirmingView: View {
     @Binding var isShowing: Bool
+    @Binding var navigationPath: [String]
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
     @ObservedObject private var settingsViewModel: SettingsViewModel
 
-    @Environment(\.dismiss) private var dismiss
+//    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
     init(
         isShowing: Binding<Bool>,
+        navigationPath: Binding<[String]>,
         accountSettingsViewModel: AccountSettingsViewModel,
         settingsViewModel: SettingsViewModel
     ) {
         self._isShowing = isShowing
+        self._navigationPath = navigationPath
         self.accountSettingsViewModel = accountSettingsViewModel
         self.settingsViewModel = settingsViewModel
     }
@@ -50,7 +53,8 @@ struct AccountInfoConfirmingView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
-                    dismiss()
+                    // dismiss()
+                    navigationPath.removeLast()
                 }, label: {
                     Text("< 内容入力")
                         .foregroundStyle(.titleNormal)
@@ -167,7 +171,10 @@ fileprivate extension GeometryProxy {
 
 #Preview {
     let appDC = AppDependencyContainer()
-    return NavigationStack {
-        appDC.makeAccountInfoConfirmingView(isShowing: .constant(true))
+    NavigationStack {
+        appDC.makeAccountInfoConfirmingView(
+            isShowing: .constant(true),
+            navigationPath: .constant([])
+        )
     }
 }

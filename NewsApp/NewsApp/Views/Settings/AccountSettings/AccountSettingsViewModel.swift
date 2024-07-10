@@ -21,6 +21,7 @@ final class AccountSettingsViewModel: ObservableObject {
     @Published var inputEmailValid: Bool = true
     
     @Published var inputInfoValid: Bool = true
+    @Published var didValuesChanged: Bool = false
 
     private let accountManager: AccountProtocol
     
@@ -32,6 +33,7 @@ final class AccountSettingsViewModel: ObservableObject {
         bindDisplayNameValidation()
         bindEmailValidation()
         bindInputInfoValidation()
+        bindDidValuesChanged()
     }
     
     func populateUserAccount() {
@@ -59,6 +61,19 @@ final class AccountSettingsViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .map { $0 && $1 }
             .assign(to: \.inputInfoValid, on: self)
+            .store(in: &allCancellables)
+    }
+    
+    private func bindDidValuesChanged() {
+        Publishers.CombineLatest($inputDisplayName, $inputEmail)
+            .receive(on: DispatchQueue.main)
+            .map { [weak self] newDisplayName, newEmail in
+                guard let self else { return false }
+                guard let userAccount  = self.userAccount else { return false }
+                return (newDisplayName != userAccount.displayName)
+                || (newEmail != userAccount.email)
+            }
+            .assign(to: \.didValuesChanged, on: self)
             .store(in: &allCancellables)
     }
     

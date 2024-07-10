@@ -9,7 +9,9 @@ import SwiftUI
 
 struct AccountInfoEditingView: View {
     @State private var isShowingDiscardingInputAlert: Bool = false
-    
+    @State private var isShowingNotChangingAlert: Bool = false
+    @Binding private var navigationPath: [String]
+
     @Binding var isShowing: Bool
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
     @ObservedObject private var settingsViewModel: SettingsViewModel
@@ -18,72 +20,87 @@ struct AccountInfoEditingView: View {
     
     init(
         isShowing: Binding<Bool>,
+        navigationPath: Binding<[String]>,
         accountSettingsViewModel: AccountSettingsViewModel,
         settingsViewModel: SettingsViewModel
     ) {
         self._isShowing = isShowing
+        self._navigationPath = navigationPath
         self.accountSettingsViewModel = accountSettingsViewModel
         self.settingsViewModel = settingsViewModel
     }
     
     var body: some View {
-        NavigationStack {
-            GeometryReader { proxy in
-                ZStack {
-                    Color.surfacePrimary
-                    VStack(spacing: 0) {
+        GeometryReader { proxy in
+            ZStack {
+                Color.surfacePrimary
+                VStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: 48)
+                    if let userAccount = accountSettingsViewModel.userAccount {
+                        userNameView(proxy: proxy, info: userAccount.displayName)
+                        Spacer()
+                            .frame(height: 32)
+                        emailView(proxy: proxy, info: userAccount.email)
                         Spacer()
                             .frame(height: 48)
-                        if let userAccount = accountSettingsViewModel.userAccount {
-                            userNameView(proxy: proxy, info: userAccount.displayName)
-                            Spacer()
-                                .frame(height: 32)
-                            emailView(proxy: proxy, info: userAccount.email)
-                            Spacer()
-                                .frame(height: 48)
-                        }
-                        
-                        VStack {
-                            userNameForm(proxy: proxy)
-                            Spacer()
-                                .frame(height: 32)
-                            emailAddressForm(proxy: proxy)
-                        }
-                        
-                        Spacer()
-                        linkToConfirmationView(proxy: proxy)
-                        Spacer()
-                            .frame(height: 16)
                     }
+                    
+                    VStack {
+                        userNameForm(proxy: proxy)
+                        Spacer()
+                            .frame(height: 32)
+                        emailAddressForm(proxy: proxy)
+                    }
+                    
+                    Spacer()
+                    linkToConfirmationView(proxy: proxy)
+                    Spacer()
+                        .frame(height: 16)
                 }
             }
-            .navigationTitle("アカウントの設定")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color.surfacePrimary, for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        isShowingDiscardingInputAlert = true
-                    }, label: {
-                        Text("閉じる")
-                            .foregroundStyle(.titleNormal)
-                    })
-                }
-            }
-            .alert("入力内容は失われます\n設定画面を閉じますか", isPresented: $isShowingDiscardingInputAlert) {
-                Button(role: .cancel, action: {
-                    isShowingDiscardingInputAlert = false
-                }, label: {
-                    Text("キャンセル")
-                })
+        }
+        .navigationTitle("アカウントの設定")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.surfacePrimary, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    accountSettingsViewModel.resetInputValuesToDefault()
-                    isShowing = false
+                    isShowingDiscardingInputAlert = true
                 }, label: {
-                    Text("OK")
+                    Text("閉じる")
+                        .foregroundStyle(.titleNormal)
                 })
             }
+        }
+        .alert("入力内容は失われます\n設定画面を閉じますか", isPresented: $isShowingDiscardingInputAlert) {
+            Button(role: .cancel, action: {
+                isShowingDiscardingInputAlert = false
+            }, label: {
+                Text("キャンセル")
+            })
+            Button(action: {
+                accountSettingsViewModel.resetInputValuesToDefault()
+                isShowing = false
+                navigationPath.removeAll()
+            }, label: {
+                Text("OK")
+            })
+        }
+        .alert("既存の内容と変更がありません\n設定画面を閉じますか", isPresented: $isShowingNotChangingAlert) {
+            Button(role: .cancel, action: {
+                isShowingNotChangingAlert = false
+            }, label: {
+                Text("キャンセル")
+            })
+            Button(action: {
+                accountSettingsViewModel.resetInputValuesToDefault()
+                isShowing = false
+                navigationPath.removeAll()
+            }, label: {
+                Text("OK")
+            })
         }
     }
 }
@@ -184,9 +201,12 @@ private extension AccountInfoEditingView {
     }
     
     func linkToConfirmationView(proxy: GeometryProxy) -> some View {
-        NavigationLink {
-            appDependencyContainer.makeAccountInfoConfirmingView(isShowing: $isShowing)
-                .navigationBarBackButtonHidden()
+        Button {
+            if accountSettingsViewModel.didValuesChanged {
+                navigationPath.append(AppDependencyContainer.accountInfoConfirmingViewName)
+            } else {
+                isShowingNotChangingAlert = true
+            }
         } label: {
             Text("変更内容の確認")
                 .frame(width: proxy.itemWidth, height: 48)
@@ -215,6 +235,6 @@ fileprivate extension GeometryProxy {
 #Preview {
     let appDC = AppDependencyContainer()
     return NavigationStack {
-        appDC.makeAccountInfoEditingView(isShowing: .constant(true))
+        appDC.makeAccountInfoEditingView(isShowing: .constant(true), navigationPath: .constant([]))
     }
 }
