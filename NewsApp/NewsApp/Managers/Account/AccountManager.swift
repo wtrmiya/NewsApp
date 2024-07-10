@@ -166,6 +166,14 @@ extension AccountManager: AccountProtocol {
         // update email
         try await user.sendEmailVerification(beforeUpdatingEmail: newEmail)
     }
+    
+    func deleteAccount(email: String, password: String) async throws {
+        guard let user else { return }
+        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+        // reauthenticate
+        try await user.reauthenticate(with: credential)
+        try await user.delete()
+    }
 
     func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String) {
         self.userAccount?.setUserDataStoreDocumentId(userDataStoreDocumentId: userDataStoreDocumentId)

@@ -14,6 +14,7 @@ protocol AccountProtocol: AnyObject {
     func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String)
     func updateDisplayName(displayName: String) async throws
     func updateEmail(currentEmail: String, password: String, newEmail: String) async throws
+    func deleteAccount(email: String, password: String) async throws
     
     var isSignedIn: Bool { get }
     var userAccount: UserAccount? { get set }
