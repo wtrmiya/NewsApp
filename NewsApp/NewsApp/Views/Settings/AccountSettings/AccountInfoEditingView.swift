@@ -8,11 +8,6 @@
 import SwiftUI
 
 struct AccountInfoEditingView: View {
-    @State private var displayName: String = ""
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var repeatedPassword: String = ""
-    
     @Binding var isShowing: Bool
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
     @ObservedObject private var settingsViewModel: SettingsViewModel
@@ -51,9 +46,6 @@ struct AccountInfoEditingView: View {
                             Spacer()
                                 .frame(height: 32)
                             emailAddressForm(proxy: proxy)
-                            Spacer()
-                                .frame(height: 32)
-                            passwordForm(proxy: proxy)
                         }
                         
                         Spacer()
@@ -123,34 +115,34 @@ private extension AccountInfoEditingView {
         .frame(width: proxy.itemWidth)
     }
     
+    @ViewBuilder
     func userNameForm(proxy: GeometryProxy) -> some View {
         textForm(
             title: "変更後のユーザ名",
             placeholder: "ユーザ名を入力してください",
             textBinding: $accountSettingsViewModel.inputDisplayName,
-            proxy: proxy
+            proxy: proxy,
+            errorMessage: "英数字3文字以上を入力してください",
+            validationResult: accountSettingsViewModel.inputDisplayNameValid
         )
     }
 
+    @ViewBuilder
     func emailAddressForm(proxy: GeometryProxy) -> some View {
         textForm(
             title: "変更後のEmailアドレス",
             placeholder: "Emailアドレスを入力してください",
             textBinding: $accountSettingsViewModel.inputEmail,
-            proxy: proxy
+            proxy: proxy,
+            errorMessage: "Emailの形式が誤っています",
+            validationResult: accountSettingsViewModel.inputEmailValid
         )
     }
     
-    func passwordForm(proxy: GeometryProxy) -> some View {
-        textForm(
-            title: "パスワード",
-            placeholder: "パスワードを入力してください",
-            textBinding: $accountSettingsViewModel.inputPassword,
-            proxy: proxy
-        )
-    }
-    
-    func textForm(title: String, placeholder: String, textBinding: Binding<String>, proxy: GeometryProxy) -> some View {
+    @ViewBuilder
+    // swiftlint:disable:next function_parameter_count line_length
+    func textForm( title: String, placeholder: String, textBinding: Binding<String>, proxy: GeometryProxy, errorMessage: String, validationResult: Bool ) -> some View {
+    // swiftlint:disable:previous function_parameter_count line_length
         VStack(alignment: .leading) {
             Text(title)
                 .font(
@@ -161,6 +153,18 @@ private extension AccountInfoEditingView {
                 )
             TextField(placeholder, text: textBinding)
                 .standardTextFieldModifier(width: proxy.itemWidth)
+            if !validationResult {
+                Text(errorMessage)
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.captionLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                        )
+                    )
+                    .foregroundStyle(.destructive)
+            } else {
+                EmptyView()
+            }
         }
     }
     
@@ -183,6 +187,7 @@ private extension AccountInfoEditingView {
                         .stroke(Color.borderNormal, lineWidth: 1)
                 }
         }
+        .disabled(!accountSettingsViewModel.inputInfoValid)
     }
 }
 

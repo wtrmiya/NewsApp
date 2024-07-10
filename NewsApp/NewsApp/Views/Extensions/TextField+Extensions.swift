@@ -13,6 +13,7 @@ extension TextField {
             .padding(8)
             .frame(width: width, height: 48)
             .background(.textFieldBackground)
+            .foregroundStyle(.textFieldInputTextNormal)
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .textInputAutocapitalization(.never)
             .font(.system(size: 16, weight: .regular))

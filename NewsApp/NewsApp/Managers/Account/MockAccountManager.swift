@@ -74,7 +74,7 @@ final class MockAccountManager: AccountProtocol {
     }
 }
 
-extension String {
+fileprivate extension String {
     func isValidEmail() -> Bool {
         // swiftlint:disable:next force_try line_length
         let regex = try! NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .caseInsensitive)
