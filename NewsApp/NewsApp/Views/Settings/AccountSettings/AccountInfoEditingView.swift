@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AccountInfoEditingView: View {
+    @State private var isShowingDiscardingInputAlert: Bool = false
+    
     @Binding var isShowing: Bool
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
     @ObservedObject private var settingsViewModel: SettingsViewModel
@@ -62,12 +64,25 @@ struct AccountInfoEditingView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        isShowing = false
+                        isShowingDiscardingInputAlert = true
                     }, label: {
                         Text("閉じる")
                             .foregroundStyle(.titleNormal)
                     })
                 }
+            }
+            .alert("入力内容は失われます\n設定画面を閉じますか", isPresented: $isShowingDiscardingInputAlert) {
+                Button(role: .cancel, action: {
+                    isShowingDiscardingInputAlert = false
+                }, label: {
+                    Text("キャンセル")
+                })
+                Button(action: {
+                    accountSettingsViewModel.resetInputValuesToDefault()
+                    isShowing = false
+                }, label: {
+                    Text("OK")
+                })
             }
         }
     }

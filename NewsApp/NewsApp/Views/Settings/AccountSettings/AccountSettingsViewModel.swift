@@ -11,10 +11,7 @@ import Combine
 final class AccountSettingsViewModel: ObservableObject {
     @Published var userAccount: UserAccount? {
         didSet {
-            if let currentUserAccount = userAccount {
-                inputDisplayName = currentUserAccount.displayName
-                inputEmail = currentUserAccount.email
-            }
+            resetInputValuesToDefault()
         }
     }
     @Published var inputDisplayName: String = ""
@@ -63,6 +60,13 @@ final class AccountSettingsViewModel: ObservableObject {
             .map { $0 && $1 }
             .assign(to: \.inputInfoValid, on: self)
             .store(in: &allCancellables)
+    }
+    
+    func resetInputValuesToDefault() {
+        if let currentUserAccount = userAccount {
+            inputDisplayName = currentUserAccount.displayName
+            inputEmail = currentUserAccount.email
+        }
     }
 
     /*
