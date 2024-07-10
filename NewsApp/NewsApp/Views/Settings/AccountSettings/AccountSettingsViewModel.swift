@@ -26,6 +26,9 @@ final class AccountSettingsViewModel: ObservableObject {
 
     @Published var inputInfoValid: Bool = true
     @Published var didValuesChanged: Bool = false
+    
+    @Published var withdrawalPassword: String = ""
+    @Published var withdrawalPasswordValid: Bool = true
 
     private let accountManager: AccountProtocol
     
@@ -40,6 +43,7 @@ final class AccountSettingsViewModel: ObservableObject {
         bindDidValuesChanged()
         bindIsEditingEmail()
         bindPasswordValidation()
+        bindWithdrawalPasswordValidation()
     }
     
     func populateUserAccount() {
@@ -108,6 +112,14 @@ final class AccountSettingsViewModel: ObservableObject {
             .assign(to: \.inputPasswordValid, on: self)
             .store(in: &allCancellables)
     }
+    
+    private func bindWithdrawalPasswordValidation() {
+        $withdrawalPassword
+            .receive(on: DispatchQueue.main)
+            .map { $0.count > 0 }
+            .assign(to: \.withdrawalPasswordValid, on: self)
+            .store(in: &allCancellables)
+    }
 
     func resetInputValuesToDefault() {
         if let currentUserAccount = userAccount {
@@ -132,6 +144,15 @@ final class AccountSettingsViewModel: ObservableObject {
                         newEmail: inputEmail
                     )
             }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func deleteAccount() async {
+        do {
+            guard let userAccount = self.userAccount else { return }
+            try await accountManager.deleteAccount(email: userAccount.email, password: withdrawalPassword)
         } catch {
             print(error)
         }

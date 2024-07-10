@@ -43,40 +43,13 @@ struct WithdrawalConfirmationView: View {
                     }
 
                     Spacer()
-                    
-                    Button(action: {
-                        isShowing = false
-                    }, label: {
-                        Text("このまま使用を続ける")
-                            .frame(width: proxy.itemWidth, height: 48)
-                            .font(
-                                .system(
-                                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
-                                    weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
-                                )
-                            )
-                            .foregroundStyle(.titleNormal)
-                            .overlay {
-                                Rectangle()
-                                    .stroke(Color.borderNormal, lineWidth: 1)
-                            }
-                    })
+                    continueUsingAppButton(proxy: proxy)
                     Spacer()
-                        .frame(height: 16)
-                    Button(action: {
-                        isShowingWithdrawalCompletionAlert = true
-                    }, label: {
-                        Text("アカウントを削除する")
-                            .frame(width: proxy.itemWidth, height: 48)
-                            .font(
-                                .system(
-                                    size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
-                                    weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
-                                )
-                            )
-                            .foregroundStyle(.titleDestructive)
-                            .background(.destructive)
-                    })
+                        .frame(height: 48)
+                    withdrawalPasswordForm(proxy: proxy)
+                    Spacer()
+                        .frame(height: 32)
+                    withdrawalButton(proxy: proxy)
                     Spacer()
                         .frame(height: 16)
                 }
@@ -154,6 +127,87 @@ private extension WithdrawalConfirmationView {
             Spacer()
         }
         .frame(width: proxy.itemWidth)
+    }
+    
+    func continueUsingAppButton(proxy: GeometryProxy) -> some View {
+        Button(action: {
+            isShowing = false
+        }, label: {
+            Text("このまま使用を続ける")
+                .frame(width: proxy.itemWidth, height: 48)
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
+                .foregroundStyle(.titleNormal)
+                .overlay {
+                    Rectangle()
+                        .stroke(Color.borderNormal, lineWidth: 1)
+                }
+        })
+    }
+    
+    func withdrawalPasswordForm(proxy: GeometryProxy) -> some View {
+        textForm(
+            title: "パスワード",
+            placeholder: "パスワードを入力してください",
+            textBinding: $accountSettingsViewModel.withdrawalPassword,
+            proxy: proxy,
+            errorMessage: "アカウント削除時、パスワードは必須です",
+            validationResult: accountSettingsViewModel.withdrawalPasswordValid
+        )
+    }
+    
+    @ViewBuilder
+    // swiftlint:disable:next function_parameter_count line_length
+    func textForm( title: String, placeholder: String, textBinding: Binding<String>, proxy: GeometryProxy, errorMessage: String, validationResult: Bool ) -> some View {
+    // swiftlint:disable:previous function_parameter_count line_length
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
+            TextField(placeholder, text: textBinding)
+                .standardTextFieldModifier(width: proxy.itemWidth)
+            if !validationResult {
+                Text(errorMessage)
+                    .font(
+                        .system(
+                            size: settingsViewModel.userSettings.letterSize.captionLetterSize,
+                            weight: settingsViewModel.userSettings.letterWeight.thinLetterWeight
+                        )
+                    )
+                    .foregroundStyle(.destructive)
+            } else {
+                EmptyView()
+            }
+        }
+    }
+    
+    func withdrawalButton(proxy: GeometryProxy) -> some View {
+        Button(action: {
+            Task {
+                await accountSettingsViewModel.deleteAccount()
+            }
+            isShowingWithdrawalCompletionAlert = true
+        }, label: {
+            Text("アカウントを削除する")
+                .frame(width: proxy.itemWidth, height: 48)
+                .font(
+                    .system(
+                        size: settingsViewModel.userSettings.letterSize.bodyLetterSize,
+                        weight: settingsViewModel.userSettings.letterWeight.bodyLetterWeight
+                    )
+                )
+                .foregroundStyle(.titleDestructive)
+                .background(.destructive)
+        })
+        .disabled(!accountSettingsViewModel.withdrawalPasswordValid)
     }
 }
 

@@ -78,6 +78,9 @@ final class MockAccountManager: AccountProtocol {
     
     func updateEmail(currentEmail: String, password: String, newEmail: String) async throws {
     }
+    
+    func deleteAccount(email: String, password: String) async throws {
+    }
 }
 
 fileprivate extension String {
