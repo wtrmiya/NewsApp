@@ -23,16 +23,16 @@ private extension UserDataStoreManager {
 }
 
 extension UserDataStoreManager: UserDataStoreManagerProtocol {
-    func createUserDataStore(user: UserAccount) async throws {
+    func createUserDataStore(userAccount: UserAccount) async throws {
         try await usersCollectionRef.addDocument(data: [
-            "uid": user.uid,
-            "displayName": user.displayName
+            "uid": userAccount.uid,
+            "displayName": userAccount.displayName
         ])
     }
     
-    func getUserDataStoreDocumentId(user: UserAccount) async throws -> String {
+    func getUserDataStoreDocumentId(userAccount: UserAccount) async throws -> String {
         guard let userDocumentId = try await usersCollectionRef
-            .whereField("uid", isEqualTo: user.uid)
+            .whereField("uid", isEqualTo: userAccount.uid)
             .getDocuments()
             .documents.first?.documentID
         else {

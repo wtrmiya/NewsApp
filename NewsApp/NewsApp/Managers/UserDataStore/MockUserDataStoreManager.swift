@@ -8,9 +8,9 @@
 import Foundation
 
 final class MockUserDataStoreManager: UserDataStoreManagerProtocol {
-    func createUserDataStore(user: UserAccount) async throws {}
+    func createUserDataStore(userAccount: UserAccount) async throws {}
     
-    func getUserDataStoreDocumentId(user: UserAccount) async throws -> String {
+    func getUserDataStoreDocumentId(userAccount: UserAccount) async throws -> String {
         return UUID().uuidString
     }
 }

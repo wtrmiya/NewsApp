@@ -50,9 +50,9 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
         }
     }
     
-    func createDefaultUserSettings(user: UserAccount) async throws {
-        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else { return }
-        var defaultSettings = UserSettings.defaultSettings(uid: user.uid)
+    func createDefaultUserSettings(userAccount: UserAccount) async throws {
+        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId else { return }
+        var defaultSettings = UserSettings.defaultSettings(uid: userAccount.uid)
         let defaultSettingsDict = defaultSettings.toDictionary()
         
         let userSettingsCollectionRef = getUserSettingsCollectionReference(
@@ -63,8 +63,8 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
         self.userSettings = defaultSettings
     }
 
-    func fetchCurrentUserSettings(user: UserAccount) async throws {
-        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else {
+    func fetchCurrentUserSettings(userAccount: UserAccount) async throws {
+        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId else {
             return
         }
         
@@ -72,7 +72,7 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
             userDataStoreDocumentId: userDataStoreDocumentId
         )
         guard let snapshot = try await userSettingsCollectionRef
-            .whereField("uid", isEqualTo: user.uid)
+            .whereField("uid", isEqualTo: userAccount.uid)
             .getDocuments().documents.first
         else {
             return
@@ -82,8 +82,8 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
         self.userSettings = currentUserSettings
     }
     
-    func updateUserSettings(by updatedUserSettings: UserSettings, user: UserAccount) async throws {
-        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else {
+    func updateUserSettings(by updatedUserSettings: UserSettings, userAccount: UserAccount) async throws {
+        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId else {
             return
         }
         guard let userSettingsDocumentId = updatedUserSettings.userSettingsDocumentId else {

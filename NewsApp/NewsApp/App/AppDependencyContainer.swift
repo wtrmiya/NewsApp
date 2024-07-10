@@ -18,6 +18,10 @@ final class AppDependencyContainer: ObservableObject {
     private let sharedAuthViewModel: AuthViewModel
     private let sharedHomeViewModel: HomeViewModel
     private let sharedSettingsViewModel: SettingsViewModel
+    
+    static let accountInfoEditingViewName = "AccountInfoEditingView"
+    static let withdrawalConfirmingViewName = "WithdrawalConfirmationView"
+    static let accountInfoConfirmingViewName = "AccountInfoConfirmingView"
 
     init() {
         self.sharedAccountManager = AccountManager.shared
@@ -143,17 +147,25 @@ final class AppDependencyContainer: ObservableObject {
         )
     }
     
-    func makeAccountInfoEditingView(isShowing: Binding<Bool>) -> AccountInfoEditingView {
+    func makeAccountInfoEditingView(
+        isShowing: Binding<Bool>,
+        navigationPath: Binding<[String]>
+    ) -> AccountInfoEditingView {
         return AccountInfoEditingView(
             isShowing: isShowing,
+            navigationPath: navigationPath,
             accountSettingsViewModel: makeAccountSettingsViewModel(),
             settingsViewModel: sharedSettingsViewModel
         )
     }
     
-    func makeAccountInfoConfirmingView(isShowing: Binding<Bool>) -> AccountInfoConfirmingView {
+    func makeAccountInfoConfirmingView(
+        isShowing: Binding<Bool>,
+        navigationPath: Binding<[String]>
+    ) -> AccountInfoConfirmingView {
         return AccountInfoConfirmingView(
             isShowing: isShowing,
+            navigationPath: navigationPath,
             accountSettingsViewModel: makeAccountSettingsViewModel(),
             settingsViewModel: sharedSettingsViewModel
         )

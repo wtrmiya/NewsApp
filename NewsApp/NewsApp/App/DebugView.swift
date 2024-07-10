@@ -44,19 +44,19 @@ struct DebugView: View {
             }, label: {
                 Text("Sign In")
             })
-            .disabled(authViewModel.signedInUser != nil)
+            .disabled(authViewModel.signedInUserAccount != nil)
             
             Button(action: {
                 authViewModel.signOut()
             }, label: {
                 Text("Sign Out")
             })
-            .disabled(authViewModel.signedInUser == nil)
+            .disabled(authViewModel.signedInUserAccount == nil)
         }
     }
     
     private var isSignedInString: String {
-        if authViewModel.signedInUser != nil {
+        if authViewModel.signedInUserAccount != nil {
             return "サインイン中"
         } else {
             return "サインアウト中"

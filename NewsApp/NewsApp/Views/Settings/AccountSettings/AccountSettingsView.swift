@@ -11,11 +11,12 @@ struct AccountSettingsView: View {
     @Binding var isShowing: Bool
     @State private var isShowingConfirmSignOutAlert: Bool = false
     @State private var isShowingSignOutCompletionAlert: Bool = false
+    @State private var navigationPath: [String] = []
     
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
     @ObservedObject private var settingsViewModel: SettingsViewModel
-    @EnvironmentObject private var appDependenciyContainer: AppDependencyContainer
-    
+    @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
+
     init(
         isShowing: Binding<Bool>,
         accountSettingsViewModel: AccountSettingsViewModel,
@@ -27,7 +28,7 @@ struct AccountSettingsView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             GeometryReader { proxy in
                 ZStack {
                     Color.surfacePrimary
@@ -56,6 +57,26 @@ struct AccountSettingsView: View {
             }
             .navigationTitle("アカウントの設定")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(
+                for: String.self,
+                destination: { nextViewName in
+                    if nextViewName == AppDependencyContainer.accountInfoEditingViewName {
+                        appDependencyContainer.makeAccountInfoEditingView(
+                            isShowing: $isShowing,
+                            navigationPath: $navigationPath
+                        )
+                        .navigationBarBackButtonHidden()
+                    } else if nextViewName == AppDependencyContainer.accountInfoConfirmingViewName {
+                        appDependencyContainer.makeAccountInfoConfirmingView(
+                            isShowing: $isShowing,
+                            navigationPath: $navigationPath
+                        )
+                        .navigationBarBackButtonHidden()
+                    } else if nextViewName == AppDependencyContainer.withdrawalConfirmingViewName {
+                        appDependencyContainer.makeWithdrawalConfirmationView(isShowing: $isShowing)
+                            .navigationBarBackButtonHidden()
+                    }
+            })
             .toolbarBackground(Color.surfacePrimary, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
@@ -140,9 +161,12 @@ private extension AccountSettingsView {
     }
     
     func linkToAccountEditingView(proxy: GeometryProxy) -> some View {
-        NavigationLink {
+        Button {
+            /*
             appDependenciyContainer.makeAccountInfoEditingView(isShowing: $isShowing)
                 .navigationBarBackButtonHidden()
+             */
+            navigationPath.append(AppDependencyContainer.accountInfoEditingViewName)
         } label: {
             normalButtonLabel(title: "アカウント情報の編集", proxy: proxy)
         }
@@ -157,9 +181,12 @@ private extension AccountSettingsView {
     }
     
     func linkToWithdrawalView(proxy: GeometryProxy) -> some View {
-        NavigationLink {
+        Button {
+            /*
             appDependenciyContainer.makeWithdrawalConfirmationView(isShowing: $isShowing)
                 .navigationBarBackButtonHidden()
+             */
+            navigationPath.append(AppDependencyContainer.withdrawalConfirmingViewName)
         } label: {
             normalButtonLabel(title: "アカウントを削除する", proxy: proxy)
         }

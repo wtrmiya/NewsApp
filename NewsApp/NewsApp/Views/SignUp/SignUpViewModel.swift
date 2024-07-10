@@ -32,12 +32,12 @@ final class SignUpViewModel: ObservableObject {
     func signUp() async {
         do {
             try await accountManager.signUp(email: email, password: password, displayName: displayName)
-            guard let tempUser = accountManager.user else { return }
-            try await userDataStoreManager.createUserDataStore(user: tempUser)
-            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(user: tempUser)
+            guard let tempUserAccount = accountManager.userAccount else { return }
+            try await userDataStoreManager.createUserDataStore(userAccount: tempUserAccount)
+            let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(userAccount: tempUserAccount)
             accountManager.setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: userDocumentId)
-            guard let user = accountManager.user else { return }
-            try await userSettingsManager.createDefaultUserSettings(user: user)
+            guard let userAccount = accountManager.userAccount else { return }
+            try await userSettingsManager.createDefaultUserSettings(userAccount: userAccount)
         } catch {
             if let error = error as? AuthError {
                 switch error {

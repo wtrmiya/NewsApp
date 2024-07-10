@@ -9,18 +9,21 @@ import SwiftUI
 
 struct AccountInfoConfirmingView: View {
     @Binding var isShowing: Bool
+    @Binding var navigationPath: [String]
+    @State private var isShowingDiscardingInputAlert: Bool = false
     @ObservedObject private var accountSettingsViewModel: AccountSettingsViewModel
     @ObservedObject private var settingsViewModel: SettingsViewModel
 
-    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var appDependencyContainer: AppDependencyContainer
     
     init(
         isShowing: Binding<Bool>,
+        navigationPath: Binding<[String]>,
         accountSettingsViewModel: AccountSettingsViewModel,
         settingsViewModel: SettingsViewModel
     ) {
         self._isShowing = isShowing
+        self._navigationPath = navigationPath
         self.accountSettingsViewModel = accountSettingsViewModel
         self.settingsViewModel = settingsViewModel
     }
@@ -50,7 +53,7 @@ struct AccountInfoConfirmingView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
-                    dismiss()
+                    navigationPath.removeLast()
                 }, label: {
                     Text("< 内容入力")
                         .foregroundStyle(.titleNormal)
@@ -58,12 +61,26 @@ struct AccountInfoConfirmingView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    isShowing = false
+                    isShowingDiscardingInputAlert = true
                 }, label: {
                     Text("閉じる")
                         .foregroundStyle(.titleNormal)
                 })
             }
+        }
+        .alert("入力内容は失われます\n設定画面を閉じますか", isPresented: $isShowingDiscardingInputAlert) {
+            Button(role: .cancel, action: {
+                isShowingDiscardingInputAlert = false
+            }, label: {
+                Text("キャンセル")
+            })
+            Button(action: {
+                accountSettingsViewModel.resetInputValuesToDefault()
+                isShowing = false
+                navigationPath.removeAll()
+            }, label: {
+                Text("OK")
+            })
         }
     }
 }
@@ -131,7 +148,9 @@ private extension AccountInfoConfirmingView {
     
     func confirmButton(proxy: GeometryProxy) -> some View {
         Button(action: {
-            print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+            Task {
+                await accountSettingsViewModel.updateAccountInfo()
+            }
             isShowing = false
         }, label: {
             Text("変更を確定する")
@@ -167,7 +186,10 @@ fileprivate extension GeometryProxy {
 
 #Preview {
     let appDC = AppDependencyContainer()
-    return NavigationStack {
-        appDC.makeAccountInfoConfirmingView(isShowing: .constant(true))
+    NavigationStack {
+        appDC.makeAccountInfoConfirmingView(
+            isShowing: .constant(true),
+            navigationPath: .constant([])
+        )
     }
 }

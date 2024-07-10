@@ -19,18 +19,20 @@ final class AccountManager {
                 print("\(#function): Listener called")
                 guard let self else { return }
                 
+                self.user = user
+                
                 if let user {
                     guard let email = user.email,
                           let displayName = user.displayName
                     else { return }
                     
-                    self.user = UserAccount(
+                    self.userAccount = UserAccount(
                         uid: user.uid,
                         email: email,
                         displayName: displayName
                     )
                 } else {
-                    self.user = nil
+                    self.userAccount = nil
                 }
             })
         }
@@ -38,11 +40,11 @@ final class AccountManager {
     
     private var authStateHander: AuthStateDidChangeListenerHandle?
     
-    var user: UserAccount? {
+    var userAccount: UserAccount? {
         didSet {
-            if oldValue == nil && user != nil {
+            if oldValue == nil && userAccount != nil {
                 postNotification()
-            } else if oldValue != nil && user == nil {
+            } else if oldValue != nil && userAccount == nil {
                 postNotification()
             }
         }
@@ -52,9 +54,11 @@ final class AccountManager {
         NotificationCenter.default.post(
             name: Notification.Name.signInStateChanged,
             object: nil,
-            userInfo: ["user": user as Any]
+            userInfo: ["user": userAccount as Any]
         )
     }
+    
+    private var user: User?
 }
 
 extension AccountManager: AccountProtocol {
@@ -69,8 +73,9 @@ extension AccountManager: AccountProtocol {
     func signUp(email: String, password: String, displayName: String) async throws {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
-            try await updateDisplayName(user: result.user, displayName: displayName)
-            self.user = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
+            self.user = result.user
+            try await updateDisplayName(displayName: displayName)
+            self.userAccount = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
         } catch {
             if let error = error as? AuthErrorCode {
                 let errorMessage: String
@@ -97,8 +102,9 @@ extension AccountManager: AccountProtocol {
     func signIn(email: String, password: String) async throws {
         do {
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
+            self.user = result.user
             guard let displayName = result.user.displayName else { return }
-            self.user = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
+            self.userAccount = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
         } catch {
             if let error = error as? AuthErrorCode {
                 let errorMessage: String
@@ -126,6 +132,7 @@ extension AccountManager: AccountProtocol {
         do {
             try Auth.auth().signOut()
             self.user = nil
+            self.userAccount = nil
         } catch {
             if let error = error as? AuthErrorCode {
                 let errorMessage: String
@@ -143,13 +150,24 @@ extension AccountManager: AccountProtocol {
         }
     }
     
-    private func updateDisplayName(user: User, displayName: String) async throws {
+    func updateDisplayName(displayName: String) async throws {
+        guard let user else { return }
         let request = user.createProfileChangeRequest()
         request.displayName = displayName
         try await request.commitChanges()
     }
     
+    func updateEmail(currentEmail: String, password: String, newEmail: String) async throws {
+        guard let user else { return }
+        let credential = EmailAuthProvider.credential(withEmail: currentEmail, password: password)
+        // reauthenticate
+        try await user.reauthenticate(with: credential)
+        
+        // update email
+        try await user.sendEmailVerification(beforeUpdatingEmail: newEmail)
+    }
+
     func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String) {
-        self.user?.setUserDataStoreDocumentId(userDataStoreDocumentId: userDataStoreDocumentId)
+        self.userAccount?.setUserDataStoreDocumentId(userDataStoreDocumentId: userDataStoreDocumentId)
     }
 }

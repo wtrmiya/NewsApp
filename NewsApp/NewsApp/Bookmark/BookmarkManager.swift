@@ -25,8 +25,8 @@ private extension BookmarkManager {
 }
 
 extension BookmarkManager: BookmarkManagerProtocol {
-    func addBookmark(article: Article, user: UserAccount) async throws -> Article? {
-        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else {
+    func addBookmark(article: Article, userAccount: UserAccount) async throws -> Article? {
+        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId else {
             return nil
         }
         guard article.bookmarked else {
@@ -39,8 +39,8 @@ extension BookmarkManager: BookmarkManagerProtocol {
         return updatedArticle
     }
     
-    func deleteBookmark(article: Article, user: UserAccount) async throws -> Article? {
-        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else { return nil }
+    func deleteBookmark(article: Article, userAccount: UserAccount) async throws -> Article? {
+        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId else { return nil }
         guard !article.bookmarked else { return nil }
         
         guard let bookmarkDocumentId = article.documentId
@@ -54,8 +54,8 @@ extension BookmarkManager: BookmarkManagerProtocol {
         return updatedArticle
     }
     
-    func deleteBookmarks(articles: [Article], user: UserAccount) async throws {
-        guard let userDataStoreDocumentId = user.userDataStoreDocumentId else { return }
+    func deleteBookmarks(articles: [Article], userAccount: UserAccount) async throws {
+        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId else { return }
         
         let bookmarksCollectionRef = getBookmarksCollectionReference(userDataStoreDocumentId: userDataStoreDocumentId)
 
@@ -69,8 +69,8 @@ extension BookmarkManager: BookmarkManagerProtocol {
         try await batch.commit()
     }
     
-    func getBookmarks(user: UserAccount) async throws -> [Article] {
-        guard let userDocumentId = user.userDataStoreDocumentId else { return [] }
+    func getBookmarks(userAccount: UserAccount) async throws -> [Article] {
+        guard let userDocumentId = userAccount.userDataStoreDocumentId else { return [] }
         
         let bookmarksCollectionRef = getBookmarksCollectionReference(userDataStoreDocumentId: userDocumentId)
 

@@ -24,19 +24,19 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
                 try await PushNotificationManager.shared.setupPushNotifications()
                 
                 // UsereSettings
-                if let tempUser = AccountManager.shared.user {
-                    print("tempUser: \(tempUser)")
+                if let tempUserAccount = AccountManager.shared.userAccount {
+                    print("tempUser: \(tempUserAccount)")
                     // この時点でユーザのDocumentIdが不明。
                     // UserDataStoreから取得する必要がある。
                     let userDataStoreDocumentId = try await UserDataStoreManager.shared
-                        .getUserDataStoreDocumentId(user: tempUser)
-                    let user = UserAccount(
-                        uid: tempUser.uid,
-                        email: tempUser.email,
-                        displayName: tempUser.displayName,
+                        .getUserDataStoreDocumentId(userAccount: tempUserAccount)
+                    let userAccount = UserAccount(
+                        uid: tempUserAccount.uid,
+                        email: tempUserAccount.email,
+                        displayName: tempUserAccount.displayName,
                         userDataStoreDocumentId: userDataStoreDocumentId
                     )
-                    try await UserSettingsManager.shared.fetchCurrentUserSettings(user: user)
+                    try await UserSettingsManager.shared.fetchCurrentUserSettings(userAccount: userAccount)
                     AccountManager.shared
                         .setUserDataStoreDocumentIdToCurrentUser(
                             userDataStoreDocumentId: userDataStoreDocumentId

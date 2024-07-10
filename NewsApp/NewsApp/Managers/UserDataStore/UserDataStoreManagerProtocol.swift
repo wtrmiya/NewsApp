@@ -8,6 +8,6 @@
 import Foundation
 
 protocol UserDataStoreManagerProtocol {
-    func createUserDataStore(user: UserAccount) async throws
-    func getUserDataStoreDocumentId(user: UserAccount) async throws -> String
+    func createUserDataStore(userAccount: UserAccount) async throws
+    func getUserDataStoreDocumentId(userAccount: UserAccount) async throws -> String
 }
