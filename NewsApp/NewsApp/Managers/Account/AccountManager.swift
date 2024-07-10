@@ -19,6 +19,8 @@ final class AccountManager {
                 print("\(#function): Listener called")
                 guard let self else { return }
                 
+                self.user = user
+                
                 if let user {
                     guard let email = user.email,
                           let displayName = user.displayName
@@ -55,6 +57,8 @@ final class AccountManager {
             userInfo: ["user": userAccount as Any]
         )
     }
+    
+    private var user: User?
 }
 
 extension AccountManager: AccountProtocol {
@@ -69,7 +73,8 @@ extension AccountManager: AccountProtocol {
     func signUp(email: String, password: String, displayName: String) async throws {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
-            try await updateDisplayName(user: result.user, displayName: displayName)
+            self.user = result.user
+            try await updateDisplayName(displayName: displayName)
             self.userAccount = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
         } catch {
             if let error = error as? AuthErrorCode {
@@ -97,6 +102,7 @@ extension AccountManager: AccountProtocol {
     func signIn(email: String, password: String) async throws {
         do {
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
+            self.user = result.user
             guard let displayName = result.user.displayName else { return }
             self.userAccount = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
         } catch {
@@ -125,6 +131,7 @@ extension AccountManager: AccountProtocol {
     func signOut() throws {
         do {
             try Auth.auth().signOut()
+            self.user = nil
             self.userAccount = nil
         } catch {
             if let error = error as? AuthErrorCode {
@@ -143,17 +150,19 @@ extension AccountManager: AccountProtocol {
         }
     }
     
-    private func updateDisplayName(user: User, displayName: String) async throws {
+    func updateDisplayName(displayName: String) async throws {
+        guard let user else { return }
         let request = user.createProfileChangeRequest()
         request.displayName = displayName
         try await request.commitChanges()
     }
     
     /*
-    private func updateDisplayName(displayName: String) async throws {
-        let request = user.createProfileChangeRequest()
-        request.displayName = displayName
-        try await request.commitChanges()
+    func updateEmail(displayName: String) async throws {
+        guard let user else { return }
+        let credential = EmailAuthProvider.credential(withEmail: <#T##String#>, password: <#T##String#>)
+        // reauthenticate
+        try await user.reauthenticate(with: )
     }
      */
 

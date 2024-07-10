@@ -34,30 +34,37 @@ struct AccountInfoEditingView: View {
         GeometryReader { proxy in
             ZStack {
                 Color.surfacePrimary
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: 48)
-                    if let userAccount = accountSettingsViewModel.userAccount {
-                        userNameView(proxy: proxy, info: userAccount.displayName)
-                        Spacer()
-                            .frame(height: 32)
-                        emailView(proxy: proxy, info: userAccount.email)
+                ScrollView {
+                    VStack(spacing: 0) {
                         Spacer()
                             .frame(height: 48)
-                    }
-                    
-                    VStack {
-                        userNameForm(proxy: proxy)
+                        if let userAccount = accountSettingsViewModel.userAccount {
+                            userNameView(proxy: proxy, info: userAccount.displayName)
+                            Spacer()
+                                .frame(height: 32)
+                            emailView(proxy: proxy, info: userAccount.email)
+                            Spacer()
+                                .frame(height: 48)
+                        }
+                        
+                        VStack {
+                            userNameForm(proxy: proxy)
+                            Spacer()
+                                .frame(height: 32)
+                            emailAddressForm(proxy: proxy)
+                            Spacer()
+                                .frame(height: 32)
+                            passwordForm(proxy: proxy)
+                        }
+                        
                         Spacer()
-                            .frame(height: 32)
-                        emailAddressForm(proxy: proxy)
+                            .frame(height: 48)
+                        linkToConfirmationView(proxy: proxy)
+                        Spacer()
+                            .frame(height: 16)
                     }
-                    
-                    Spacer()
-                    linkToConfirmationView(proxy: proxy)
-                    Spacer()
-                        .frame(height: 16)
                 }
+                .scrollIndicators(.hidden)
             }
         }
         .navigationTitle("アカウントの設定")
@@ -171,6 +178,19 @@ private extension AccountInfoEditingView {
         )
     }
     
+    @ViewBuilder
+    func passwordForm(proxy: GeometryProxy) -> some View {
+        textForm(
+            title: "使用中のパスワード",
+            placeholder: "パスワードを入力してください",
+            textBinding: $accountSettingsViewModel.inputPassword,
+            proxy: proxy,
+            errorMessage: "Emailアドレス変更時、パスワードは必須です",
+            validationResult: accountSettingsViewModel.inputPasswordValid
+        )
+        .disabled(!accountSettingsViewModel.isEditingEmail)
+    }
+
     @ViewBuilder
     // swiftlint:disable:next function_parameter_count line_length
     func textForm( title: String, placeholder: String, textBinding: Binding<String>, proxy: GeometryProxy, errorMessage: String, validationResult: Bool ) -> some View {

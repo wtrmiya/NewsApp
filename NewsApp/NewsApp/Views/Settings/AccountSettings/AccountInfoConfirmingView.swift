@@ -148,7 +148,9 @@ private extension AccountInfoConfirmingView {
     
     func confirmButton(proxy: GeometryProxy) -> some View {
         Button(action: {
-            accountSettingsViewModel.updateAccountInfo()
+            Task {
+                await accountSettingsViewModel.updateAccountInfo()
+            }
             isShowing = false
         }, label: {
             Text("変更を確定する")

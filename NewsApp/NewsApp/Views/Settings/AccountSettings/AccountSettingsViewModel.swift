@@ -20,6 +20,10 @@ final class AccountSettingsViewModel: ObservableObject {
     @Published var inputEmail: String = ""
     @Published var inputEmailValid: Bool = true
     
+    @Published var inputPassword: String = ""
+    @Published var isEditingEmail: Bool = false
+    @Published var inputPasswordValid: Bool = true
+
     @Published var inputInfoValid: Bool = true
     @Published var didValuesChanged: Bool = false
 
@@ -34,6 +38,8 @@ final class AccountSettingsViewModel: ObservableObject {
         bindEmailValidation()
         bindInputInfoValidation()
         bindDidValuesChanged()
+        bindIsEditingEmail()
+        bindPasswordValidation()
     }
     
     func populateUserAccount() {
@@ -77,6 +83,32 @@ final class AccountSettingsViewModel: ObservableObject {
             .store(in: &allCancellables)
     }
     
+    private func bindIsEditingEmail() {
+        $inputEmail
+            .receive(on: DispatchQueue.main)
+            .map { [weak self] newEmail in
+                guard let self else { return false }
+                guard let userAccount  = self.userAccount else { return false }
+                return newEmail != userAccount.email
+            }
+            .assign(to: \.isEditingEmail, on: self)
+            .store(in: &allCancellables)
+    }
+    
+    private func bindPasswordValidation() {
+        Publishers.CombineLatest($isEditingEmail, $inputPassword)
+            .receive(on: DispatchQueue.main)
+            .map { nowEditingEmail, newInputPassword in
+                if nowEditingEmail {
+                    return newInputPassword.count > 0
+                } else {
+                    return true
+                }
+            }
+            .assign(to: \.inputPasswordValid, on: self)
+            .store(in: &allCancellables)
+    }
+
     func resetInputValuesToDefault() {
         if let currentUserAccount = userAccount {
             inputDisplayName = currentUserAccount.displayName
@@ -84,14 +116,19 @@ final class AccountSettingsViewModel: ObservableObject {
         }
     }
     
-    func updateAccountInfo() {
-        guard let userAccount = self.userAccount else { return }
-        if userAccount.displayName != inputDisplayName {
-            print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
-        }
-        
-        if userAccount.email != inputEmail {
-            print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+    func updateAccountInfo() async {
+        do {
+            guard let userAccount = self.userAccount else { return }
+            
+            if userAccount.displayName != inputDisplayName {
+                try await accountManager.updateDisplayName(displayName: inputDisplayName)
+            }
+            
+            if userAccount.email != inputEmail {
+                print("NOT IMPLEMENTED: file: \(#file), line: \(#line)")
+            }
+        } catch {
+            print(error)
         }
     }
 }

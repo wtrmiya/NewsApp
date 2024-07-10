@@ -72,6 +72,9 @@ final class MockAccountManager: AccountProtocol {
     
     func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String) {
     }
+    
+    func updateDisplayName(displayName: String) async throws {
+    }
 }
 
 fileprivate extension String {
