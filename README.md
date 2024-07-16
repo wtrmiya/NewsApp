@@ -32,7 +32,12 @@
 #### 1.1. News APIサイト(https://newsapi.org/)でアカウントを作成する
 #### 1.2. News APIサイトでAPIキーを取得する
 #### 1.3. Xcodeプロジェクトを開き、NewsAppディイレクトリ配下にConfig.xcconfigファイルを追加する
+![create_Configfile](https://github.com/user-attachments/assets/1754af3d-1845-4392-bf28-952f4e8bd687)
+
 #### 1.4. Config.xcconfigファイルにNewsAPIのAPIキーを記述する
+![enter_API_key](https://github.com/user-attachments/assets/c049bc5a-b139-4409-afde-7fcb92f2067c)
+
+キー名は`API_KEY_NewsAPI`にする
 
 ### 2. Firebaseプロジェクトを設定する
 #### 2.1. Firebase consoleで開発用プロジェクトと本番用プロジェクトを作成する
