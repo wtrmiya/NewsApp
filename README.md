@@ -72,6 +72,22 @@ Firestoreトップレベルのコレクションに`terms`を作成する。
 
 ### 3. (オプション)fastlaneを設定する
 #### 3.1. fastlaneをインストールする
+ターミナルでGemfileが存在するディレクトリ(xcodeprojと同ディレクトリ)に移動する
+`bundle install`
+を実行し、fastlaneをGemとしてインストールする
+
 #### 3.2. push時に実行するスクリプトを配置する
+`.git/hooks/pre-push`ファイルに以下のスクリプトを記載する
 
+```
+#!/bin/bash
 
+# xcodeprojファイルの存在するディレクトリへ移動する
+cd /directory/to/NewsApp/
+
+# fastlaneでユニットテストを実行する
+bundle exec fastlane unittest
+```
+
+以下の記事を参照のこと
+https://qiita.com/wtrmiya/items/5adc97ca1c3dd1c7d311
