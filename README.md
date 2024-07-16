@@ -41,8 +41,34 @@
 
 ### 2. Firebaseプロジェクトを設定する
 #### 2.1. Firebase consoleで開発用プロジェクトと本番用プロジェクトを作成する
+![create_firebase_projects](https://github.com/user-attachments/assets/66d16650-a824-4c1f-813e-035070c8e37a)
+
+プロジェクト名は任意。
+開発用プロジェクトには開発用Bundle IDを、本番用プロジェクトには本番用Bundle IDをそれぞれ登録すること
+使用プロダクトは以下。
+- Authentication
+- Firestore Database
+
 #### 2.2. 開発用プロジェクト用Firebase設定ファイルおよび本番用プロジェクト用Firebase設定ファイルを配置する
+![download_project_setting_files](https://github.com/user-attachments/assets/332c077d-6a5d-4f3e-9ac2-2bf04c1f1686)
+作成したFirebaseプロジェクトの設定ファイルをxcodeprojファイルと同ディレクトリに配置する。
+ファイル名は以下の様にする
+- 開発用プロジェクト: GoogleService-Info-dev.plist
+- 本番用プロジェクト: GoogleService-Info-prod.plist
+
 #### 2.3. 利用規約テキストをFirestoreに配置する
+Firestoreトップレベルのコレクションに`terms`を作成する。
+`terms`に、以下のフィールドを持つドキュメントを追加する。
+- body: String
+  - 利用規約本体
+  - 改行文字(`\n`)込みのMarkdownで利用規約を記載する
+- createdAt: Date
+  - 利用規約登録日
+- effectiveDate: Date
+  - 利用規約発効日
+- title: String
+  - 利用規約タイトル
+  - 例として`NewsApp 利用規約`など
 
 ### 3. (オプション)fastlaneを設定する
 #### 3.1. fastlaneをインストールする
