@@ -10,7 +10,11 @@ import Foundation
 final class ToastHandler: ObservableObject {
     @Published private(set) var currentToastMessage: String?
     
-    private var toastQueue: [String] = []
+    private var toastQueue: [String] = [] {
+        didSet {
+            print(toastQueue)
+        }
+    }
     private var currentToastShowingTask: Task<Void, Never>?
     
     private var toastShowingDuration: Duration {
