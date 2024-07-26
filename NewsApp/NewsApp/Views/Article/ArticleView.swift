@@ -169,6 +169,7 @@ fileprivate extension Image {
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(width: proxy.size.width - 32, height: 200)
+            .foregroundStyle(.bodySecondary)
             .clipped()
     }
 }

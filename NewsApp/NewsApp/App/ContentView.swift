@@ -47,6 +47,7 @@ struct ContentView: View {
             #endif
         }
         .preferredColorScheme(settingsViewModel.userSettings.darkMode.colorScheme)
+        .tint(.accent)
         .environment(\.selectedViewItem, $selectedTab)
         .onReceive(appStateViewModel.$appState, perform: { appState in
             if let appState {

@@ -84,7 +84,7 @@ struct AccountSettingsView: View {
                     Button(action: {
                         isShowing = false
                     }, label: {
-                        Text("Dismiss")
+                        Text("閉じる")
                             .foregroundStyle(.titleNormal)
                     })
                 }
