@@ -16,6 +16,7 @@ final class AppDependencyContainer: ObservableObject {
     private let sharedAppStateManager: AppStateManager
     private let sharedAccountSettingsViewModel: AccountSettingsViewModel
     private let sharedAuthViewModel: AuthViewModel
+    private let sharedAppStateViewModel: AppStateViewModel
     private let sharedHomeViewModel: HomeViewModel
     private let sharedSettingsViewModel: SettingsViewModel
     
@@ -53,12 +54,15 @@ final class AppDependencyContainer: ObservableObject {
             appStateManager: sharedAppStateManager,
             pushNotificationManager: PushNotificationManager.shared
         )
+        
+        self.sharedAppStateViewModel = AppStateViewModel(appStateManager: sharedAppStateManager)
     }
     
     func makeContentView() -> ContentView {
         return ContentView(
             authViewModel: sharedAuthViewModel,
-            settingsViewModel: sharedSettingsViewModel
+            settingsViewModel: sharedSettingsViewModel,
+            appStateViewModel: sharedAppStateViewModel
         )
     }
     

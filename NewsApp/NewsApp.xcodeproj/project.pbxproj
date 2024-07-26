@@ -54,6 +54,7 @@
 		865C0CF62C196A3000A091E4 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF52C196A3000A091E4 /* UserAccount.swift */; };
 		865C0CF82C19718E00A091E4 /* MockBookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF72C19718E00A091E4 /* MockBookmarkManager.swift */; };
 		866BEBBF2C535D57004632A3 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 866BEBBE2C535D57004632A3 /* SDWebImageSwiftUI */; };
+		866BEBD32C5390D8004632A3 /* AppStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866BEBD22C5390D8004632A3 /* AppStateViewModel.swift */; };
 		86748B322C1060A0004312AB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B312C1060A0004312AB /* HomeView.swift */; };
 		86748B352C1060DB004312AB /* BookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B342C1060DB004312AB /* BookmarkView.swift */; };
 		86748B382C106107004312AB /* DrawerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B372C106107004312AB /* DrawerContentView.swift */; };
@@ -139,6 +140,7 @@
 		865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManagerProtocol.swift; sourceTree = "<group>"; };
 		865C0CF52C196A3000A091E4 /* UserAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
 		865C0CF72C19718E00A091E4 /* MockBookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBookmarkManager.swift; sourceTree = "<group>"; };
+		866BEBD22C5390D8004632A3 /* AppStateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateViewModel.swift; sourceTree = "<group>"; };
 		86748B312C1060A0004312AB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		86748B342C1060DB004312AB /* BookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkView.swift; sourceTree = "<group>"; };
 		86748B372C106107004312AB /* DrawerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerContentView.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 				8621FA5A2C1BCECD00E677D6 /* AppDependencyContainer.swift */,
 				869161B92C166DA700454D12 /* DebugView.swift */,
 				869831E12C251B840092CFD7 /* AuthViewModel.swift */,
+				866BEBD22C5390D8004632A3 /* AppStateViewModel.swift */,
 				86E0725D2C389DD7006F9392 /* SelectedViewItemEnv+Extensions.swift */,
 			);
 			path = App;
@@ -781,6 +784,7 @@
 				869161BA2C166DA700454D12 /* DebugView.swift in Sources */,
 				860FF68C2C3CC57500D57F20 /* LetterAppearance.swift in Sources */,
 				86748B382C106107004312AB /* DrawerContentView.swift in Sources */,
+				866BEBD32C5390D8004632A3 /* AppStateViewModel.swift in Sources */,
 				8621FA592C1BCCDC00E677D6 /* UserSettingsManagerProtocol.swift in Sources */,
 				864DA5122C20DBE400AB8D71 /* UserDataStoreManager.swift in Sources */,
 				86119AFF2C0FD8090067DC64 /* ContentView.swift in Sources */,

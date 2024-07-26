@@ -15,7 +15,7 @@ final class AuthViewModel: ObservableObject {
     @Published var passwordRepeated: String = ""
     
     @Published var signedInUserAccount: UserAccount?
-
+    
     @Published var errorMessage: String?
 
     private let accountManager: AccountProtocol
