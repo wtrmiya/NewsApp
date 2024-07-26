@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct ArticleView: View {
     private var article: Article
@@ -104,7 +105,7 @@ struct ArticleView: View {
     @ViewBuilder
     func articleImageView(article: Article, proxy: GeometryProxy) -> some View {
         if let imageUrl = article.urlToImage {
-            AsyncImage(url: URL(string: imageUrl)) { image in
+            WebImage(url: URL(string: imageUrl)) { image in
                 image
                     .articleImageModifier(proxy: proxy)
             } placeholder: {

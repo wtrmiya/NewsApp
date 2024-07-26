@@ -71,6 +71,9 @@ final class HomeViewModel: ObservableObject {
                 }
             }
 
+            print("DEBUG Articles START --------------------")
+            print(downloadedArticles)
+            print("DEBUG Articles END --------------------")
             self.articles = downloadedArticles
         } catch {
             if let error = error as? NetworkError {

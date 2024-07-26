@@ -53,6 +53,7 @@
 		865C0CF42C1946DB00A091E4 /* BookmarkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */; };
 		865C0CF62C196A3000A091E4 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF52C196A3000A091E4 /* UserAccount.swift */; };
 		865C0CF82C19718E00A091E4 /* MockBookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF72C19718E00A091E4 /* MockBookmarkManager.swift */; };
+		866BEBBF2C535D57004632A3 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 866BEBBE2C535D57004632A3 /* SDWebImageSwiftUI */; };
 		86748B322C1060A0004312AB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B312C1060A0004312AB /* HomeView.swift */; };
 		86748B352C1060DB004312AB /* BookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B342C1060DB004312AB /* BookmarkView.swift */; };
 		86748B382C106107004312AB /* DrawerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B372C106107004312AB /* DrawerContentView.swift */; };
@@ -227,6 +228,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				866BEBBF2C535D57004632A3 /* SDWebImageSwiftUI in Frameworks */,
 				865407F02C1152540034055A /* FirebaseAuth in Frameworks */,
 				865407F22C1152540034055A /* FirebaseFirestore in Frameworks */,
 				863F1D012C1A792B00EBF185 /* LicenseList in Frameworks */,
@@ -594,6 +596,7 @@
 				865407F32C1152540034055A /* FirebaseFirestoreSwift */,
 				863F1D002C1A792B00EBF185 /* LicenseList */,
 				8630D37B2C2160BB006E1854 /* MarkdownUI */,
+				866BEBBE2C535D57004632A3 /* SDWebImageSwiftUI */,
 			);
 			productName = NewsApp;
 			productReference = 86119AF92C0FD8090067DC64 /* NewsApp.app */;
@@ -649,6 +652,7 @@
 				865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */,
 				8630D37A2C2160BB006E1854 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+				866BEBBD2C535D57004632A3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = 86119AFA2C0FD8090067DC64 /* Products */;
 			projectDirPath = "";
@@ -1530,6 +1534,14 @@
 				minimumVersion = 10.27.0;
 			};
 		};
+		866BEBBD2C535D57004632A3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1557,6 +1569,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		866BEBBE2C535D57004632A3 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 866BEBBD2C535D57004632A3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
