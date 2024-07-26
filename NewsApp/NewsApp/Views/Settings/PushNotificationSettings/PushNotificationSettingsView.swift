@@ -29,7 +29,7 @@ struct PushNotificationSettingsView: View {
                 Button(action: {
                     isShowing = false
                 }, label: {
-                    Text("Dismiss")
+                    Text("閉じる")
                 })
             }
         }
