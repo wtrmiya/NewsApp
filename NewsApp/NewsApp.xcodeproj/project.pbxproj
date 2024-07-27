@@ -95,7 +95,6 @@
 /* Begin PBXFileReference section */
 		86027CEC2C17D186006CD41B /* ArticleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleManager.swift; sourceTree = "<group>"; };
 		86027CEE2C17D24C006CD41B /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		86027CF02C180E2F006CD41B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		86027CF22C1810E3006CD41B /* APIKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeyManager.swift; sourceTree = "<group>"; };
 		86027CF82C184320006CD41B /* MockArticleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockArticleManager.swift; sourceTree = "<group>"; };
 		86027CFA2C184344006CD41B /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
@@ -296,7 +295,6 @@
 				86119B002C0FD80A0067DC64 /* Assets.xcassets */,
 				86119B162C0FDBB60067DC64 /* Development.xcconfig */,
 				86119B172C0FDBBE0067DC64 /* Production.xcconfig */,
-				86027CF02C180E2F006CD41B /* Config.xcconfig */,
 				86119B182C0FDCB60067DC64 /* Info.plist */,
 				86119B022C0FD80A0067DC64 /* Preview Content */,
 			);
