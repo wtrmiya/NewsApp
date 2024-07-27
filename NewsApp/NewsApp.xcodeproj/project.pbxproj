@@ -49,6 +49,7 @@
 		865408322C11C9280034055A /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408312C11C9280034055A /* SignUpViewModel.swift */; };
 		865408352C129B800034055A /* AccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408342C129B800034055A /* AccountProtocol.swift */; };
 		865408372C12A16E0034055A /* MockAccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408362C12A16E0034055A /* MockAccountManager.swift */; };
+		865BA6E82C559F10005D8B16 /* spp in Frameworks */ = {isa = PBXBuildFile; productRef = 865BA6E72C559F10005D8B16 /* spp */; };
 		865C0CF22C1933B500A091E4 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF12C1933B500A091E4 /* BookmarkManager.swift */; };
 		865C0CF42C1946DB00A091E4 /* BookmarkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */; };
 		865C0CF62C196A3000A091E4 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF52C196A3000A091E4 /* UserAccount.swift */; };
@@ -233,6 +234,7 @@
 				865407F02C1152540034055A /* FirebaseAuth in Frameworks */,
 				865407F22C1152540034055A /* FirebaseFirestore in Frameworks */,
 				863F1D012C1A792B00EBF185 /* LicenseList in Frameworks */,
+				865BA6E82C559F10005D8B16 /* spp in Frameworks */,
 				865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */,
 				8630D37C2C2160BB006E1854 /* MarkdownUI in Frameworks */,
 			);
@@ -272,6 +274,7 @@
 				86119AFB2C0FD8090067DC64 /* NewsApp */,
 				86119B1E2C0FF36F0067DC64 /* NewsAppTests */,
 				86119AFA2C0FD8090067DC64 /* Products */,
+				865BA6E62C559EE2005D8B16 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -413,6 +416,13 @@
 				865408362C12A16E0034055A /* MockAccountManager.swift */,
 			);
 			path = Account;
+			sourceTree = "<group>";
+		};
+		865BA6E62C559EE2005D8B16 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		865C0CF02C1933A000A091E4 /* Bookmark */ = {
@@ -598,6 +608,7 @@
 				863F1D002C1A792B00EBF185 /* LicenseList */,
 				8630D37B2C2160BB006E1854 /* MarkdownUI */,
 				866BEBBE2C535D57004632A3 /* SDWebImageSwiftUI */,
+				865BA6E72C559F10005D8B16 /* spp */,
 			);
 			productName = NewsApp;
 			productReference = 86119AF92C0FD8090067DC64 /* NewsApp.app */;
@@ -1571,6 +1582,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		865BA6E72C559F10005D8B16 /* spp */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */;
+			productName = spp;
 		};
 		866BEBBE2C535D57004632A3 /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
