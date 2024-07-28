@@ -594,7 +594,6 @@
 				86119AF52C0FD8090067DC64 /* Sources */,
 				86119AF62C0FD8090067DC64 /* Frameworks */,
 				86119AF72C0FD8090067DC64 /* Resources */,
-				86119B0A2C0FD8920067DC64 /* Run SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -696,26 +695,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		86119B0A2C0FD8920067DC64 /* Run SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run SwiftLint";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 		865407ED2C1145CE0034055A /* Run Copy Firebase Info Files */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -904,7 +883,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NewsApp/Preview Content\"";
 				DEVELOPMENT_TEAM = HA4VLPKKLD;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NewsApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -999,7 +978,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NewsApp/Preview Content\"";
 				DEVELOPMENT_TEAM = HA4VLPKKLD;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NewsApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -1089,7 +1068,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NewsApp/Preview Content\"";
 				DEVELOPMENT_TEAM = HA4VLPKKLD;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NewsApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -1177,7 +1156,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NewsApp/Preview Content\"";
 				DEVELOPMENT_TEAM = HA4VLPKKLD;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NewsApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
