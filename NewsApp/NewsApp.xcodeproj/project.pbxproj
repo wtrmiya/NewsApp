@@ -1536,7 +1536,7 @@
 			repositoryURL = "https://github.com/cybozu/LicenseList";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.7.0;
+				minimumVersion = 1.0.0;
 			};
 		};
 		865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
