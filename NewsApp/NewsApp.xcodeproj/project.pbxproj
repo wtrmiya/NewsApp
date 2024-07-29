@@ -34,7 +34,6 @@
 		863F1CFA2C1A640B00EBF185 /* TermManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F1CF92C1A640B00EBF185 /* TermManagerProtocol.swift */; };
 		863F1CFC2C1A649C00EBF185 /* MockTermManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F1CFB2C1A649C00EBF185 /* MockTermManager.swift */; };
 		863F1CFE2C1A665F00EBF185 /* TermViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F1CFD2C1A665F00EBF185 /* TermViewModelTests.swift */; };
-		863F1D012C1A792B00EBF185 /* LicenseList in Frameworks */ = {isa = PBXBuildFile; productRef = 863F1D002C1A792B00EBF185 /* LicenseList */; };
 		863F20D72C15756800186A4C /* BookmarkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863F20D62C15756800186A4C /* BookmarkViewModel.swift */; };
 		864CCE302C1B9141006D2B5B /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864CCE2F2C1B9141006D2B5B /* UserSettings.swift */; };
 		864CCE332C1BA4F7006D2B5B /* UserSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864CCE322C1BA4F7006D2B5B /* UserSettingsManager.swift */; };
@@ -49,7 +48,6 @@
 		865408322C11C9280034055A /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408312C11C9280034055A /* SignUpViewModel.swift */; };
 		865408352C129B800034055A /* AccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408342C129B800034055A /* AccountProtocol.swift */; };
 		865408372C12A16E0034055A /* MockAccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408362C12A16E0034055A /* MockAccountManager.swift */; };
-		865BA6E82C559F10005D8B16 /* spp in Frameworks */ = {isa = PBXBuildFile; productRef = 865BA6E72C559F10005D8B16 /* spp */; };
 		865C0CF22C1933B500A091E4 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF12C1933B500A091E4 /* BookmarkManager.swift */; };
 		865C0CF42C1946DB00A091E4 /* BookmarkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */; };
 		865C0CF62C196A3000A091E4 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF52C196A3000A091E4 /* UserAccount.swift */; };
@@ -70,6 +68,8 @@
 		86748B552C1062B8004312AB /* DarkModeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B542C1062B8004312AB /* DarkModeSettingsView.swift */; };
 		86748B582C1062EE004312AB /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B572C1062EE004312AB /* AccountSettingsView.swift */; };
 		86748B5B2C106331004312AB /* WithdrawalConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B5A2C106331004312AB /* WithdrawalConfirmationView.swift */; };
+		869132A42C57262B00014384 /* LicenseList in Frameworks */ = {isa = PBXBuildFile; productRef = 869132A32C57262B00014384 /* LicenseList */; };
+		869132A62C57262B00014384 /* spp in Frameworks */ = {isa = PBXBuildFile; productRef = 869132A52C57262B00014384 /* spp */; };
 		869161B62C16454000454D12 /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161B52C16454000454D12 /* DrawerView.swift */; };
 		869161BA2C166DA700454D12 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161B92C166DA700454D12 /* DebugView.swift */; };
 		869161BE2C16CBC600454D12 /* AccountInfoEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161BD2C16CBC600454D12 /* AccountInfoEditingView.swift */; };
@@ -232,9 +232,9 @@
 			files = (
 				866BEBBF2C535D57004632A3 /* SDWebImageSwiftUI in Frameworks */,
 				865407F02C1152540034055A /* FirebaseAuth in Frameworks */,
+				869132A42C57262B00014384 /* LicenseList in Frameworks */,
 				865407F22C1152540034055A /* FirebaseFirestore in Frameworks */,
-				863F1D012C1A792B00EBF185 /* LicenseList in Frameworks */,
-				865BA6E82C559F10005D8B16 /* spp in Frameworks */,
+				869132A62C57262B00014384 /* spp in Frameworks */,
 				865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */,
 				8630D37C2C2160BB006E1854 /* MarkdownUI in Frameworks */,
 			);
@@ -604,10 +604,10 @@
 				865407EF2C1152540034055A /* FirebaseAuth */,
 				865407F12C1152540034055A /* FirebaseFirestore */,
 				865407F32C1152540034055A /* FirebaseFirestoreSwift */,
-				863F1D002C1A792B00EBF185 /* LicenseList */,
 				8630D37B2C2160BB006E1854 /* MarkdownUI */,
 				866BEBBE2C535D57004632A3 /* SDWebImageSwiftUI */,
-				865BA6E72C559F10005D8B16 /* spp */,
+				869132A32C57262B00014384 /* LicenseList */,
+				869132A52C57262B00014384 /* spp */,
 			);
 			productName = NewsApp;
 			productReference = 86119AF92C0FD8090067DC64 /* NewsApp.app */;
@@ -661,9 +661,9 @@
 			mainGroup = 86119AF02C0FD8090067DC64;
 			packageReferences = (
 				865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */,
 				8630D37A2C2160BB006E1854 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				866BEBBD2C535D57004632A3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				869132A22C57262B00014384 /* XCRemoteSwiftPackageReference "LicenseList" */,
 			);
 			productRefGroup = 86119AFA2C0FD8090067DC64 /* Products */;
 			projectDirPath = "";
@@ -1510,14 +1510,6 @@
 				minimumVersion = 2.3.1;
 			};
 		};
-		863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/cybozu/LicenseList";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -1534,6 +1526,14 @@
 				minimumVersion = 3.1.1;
 			};
 		};
+		869132A22C57262B00014384 /* XCRemoteSwiftPackageReference "LicenseList" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/wtrmiya/LicenseList";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1541,11 +1541,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8630D37A2C2160BB006E1854 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
 			productName = MarkdownUI;
-		};
-		863F1D002C1A792B00EBF185 /* LicenseList */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */;
-			productName = LicenseList;
 		};
 		865407EF2C1152540034055A /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1562,15 +1557,20 @@
 			package = 865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
 		};
-		865BA6E72C559F10005D8B16 /* spp */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 863F1CFF2C1A792B00EBF185 /* XCRemoteSwiftPackageReference "LicenseList" */;
-			productName = spp;
-		};
 		866BEBBE2C535D57004632A3 /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 866BEBBD2C535D57004632A3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		869132A32C57262B00014384 /* LicenseList */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 869132A22C57262B00014384 /* XCRemoteSwiftPackageReference "LicenseList" */;
+			productName = LicenseList;
+		};
+		869132A52C57262B00014384 /* spp */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 869132A22C57262B00014384 /* XCRemoteSwiftPackageReference "LicenseList" */;
+			productName = spp;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
