@@ -1,5 +1,5 @@
 {
-  "originHash" : "12ff2aad2b89d76931bcedb8ac28cf3b8b0ceb2aa0db22cd11d7c905d3669ff4",
+  "originHash" : "ee5ea75d9f8a1193026b072d04d54767dd5e078a5e2cdea9c7628432a4f5e42e",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wtrmiya/LicenseList",
       "state" : {
-        "branch" : "main",
-        "revision" : "d420f78ae2c54d9e0c9824d63273b1af22bc2835"
+        "branch" : "feature_1_change_spp_path",
+        "revision" : "6c58ffe34b68ce4d3fdd9b33be67c61d47c2e857"
       }
     },
     {
