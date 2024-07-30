@@ -7,15 +7,24 @@
 
 import Foundation
 
+enum APIKeyManagerError: Error {
+    case specifiedKeyDoesNotExist
+    case specifiedServiceDoesNotExist
+}
+
 final class APIKeyManager {
     static let shared = APIKeyManager()
     private init() {}
     
-    func apiKey(for service: String) -> String? {
-        guard let keys = Bundle.main.infoDictionary?["ApiKeys"] as? [String: Any],
-              let key = keys[service] as? String
+    func apiKey(for service: String) throws -> String {
+        guard let keys = Bundle.main.infoDictionary?["ApiKeys"] as? [String: Any]
         else {
-            return nil
+            throw APIKeyManagerError.specifiedKeyDoesNotExist
+        }
+        
+        guard let key = keys[service] as? String
+        else {
+            throw APIKeyManagerError.specifiedServiceDoesNotExist
         }
         
         return key

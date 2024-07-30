@@ -37,15 +37,12 @@ extension ArticleManager: ArticleManagerProtocol {
         if let articlesByCategory = articles[category] {
             return articlesByCategory
         } else {
-            guard let apiKey = APIKeyManager.shared.apiKey(for: "API_KEY_NewsAPI")
-            else {
-                throw NetworkError.invalidAPIKey
-            }
-            
-            let url = URL(string: "https://newsapi.org/v2/top-headlines?country=jp&category=\(category.rawValue)")!
-            var request = URLRequest(url: url)
-            request.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
             do {
+                let apiKey = try APIKeyManager.shared.apiKey(for: "API_KEY_NewsAPI")
+                
+                let url = URL(string: "https://newsapi.org/v2/top-headlines?country=jp&category=\(category.rawValue)")!
+                var request = URLRequest(url: url)
+                request.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
                 let (data, response) = try await URLSession.shared.data(for: request)
                 
                 guard let httpResponse = response as? HTTPURLResponse,
@@ -64,17 +61,14 @@ extension ArticleManager: ArticleManagerProtocol {
     }
     
     func getArticlesBySearchText(text: String) async throws -> [Article] {
-        guard let apiKey = APIKeyManager.shared.apiKey(for: "API_KEY_NewsAPI")
-        else {
-            throw NetworkError.invalidAPIKey
-        }
-        
-        let encodedURLString = "https://newsapi.org/v2/everything?q=\(text)"
-            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        let url = URL(string: encodedURLString)!
-        var request = URLRequest(url: url)
-        request.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
         do {
+            let apiKey = try APIKeyManager.shared.apiKey(for: "API_KEY_NewsAPI")
+            
+            let encodedURLString = "https://newsapi.org/v2/everything?q=\(text)"
+                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            let url = URL(string: encodedURLString)!
+            var request = URLRequest(url: url)
+            request.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
             let (data, response) = try await URLSession.shared.data(for: request)
             
             guard let httpResponse = response as? HTTPURLResponse,
