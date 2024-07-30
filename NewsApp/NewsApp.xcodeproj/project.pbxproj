@@ -68,8 +68,6 @@
 		86748B552C1062B8004312AB /* DarkModeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B542C1062B8004312AB /* DarkModeSettingsView.swift */; };
 		86748B582C1062EE004312AB /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B572C1062EE004312AB /* AccountSettingsView.swift */; };
 		86748B5B2C106331004312AB /* WithdrawalConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86748B5A2C106331004312AB /* WithdrawalConfirmationView.swift */; };
-		869132A42C57262B00014384 /* LicenseList in Frameworks */ = {isa = PBXBuildFile; productRef = 869132A32C57262B00014384 /* LicenseList */; };
-		869132A62C57262B00014384 /* spp in Frameworks */ = {isa = PBXBuildFile; productRef = 869132A52C57262B00014384 /* spp */; };
 		869161B62C16454000454D12 /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161B52C16454000454D12 /* DrawerView.swift */; };
 		869161BA2C166DA700454D12 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161B92C166DA700454D12 /* DebugView.swift */; };
 		869161BE2C16CBC600454D12 /* AccountInfoEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161BD2C16CBC600454D12 /* AccountInfoEditingView.swift */; };
@@ -77,6 +75,8 @@
 		869161C22C16D07900454D12 /* AccountInfoUpdateCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869161C12C16D07900454D12 /* AccountInfoUpdateCompletionView.swift */; };
 		8694061C2C1D6D5E00436C96 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8694061B2C1D6D5E00436C96 /* AccountSettingsViewModel.swift */; };
 		869831E22C251B840092CFD7 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869831E12C251B840092CFD7 /* AuthViewModel.swift */; };
+		86C1A64A2C59813800ED1362 /* LicenseList in Frameworks */ = {isa = PBXBuildFile; productRef = 86C1A6492C59813800ED1362 /* LicenseList */; };
+		86C1A64C2C59813800ED1362 /* spp in Frameworks */ = {isa = PBXBuildFile; productRef = 86C1A64B2C59813800ED1362 /* spp */; };
 		86CEB5242C225240007EAD36 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CEB5232C225240007EAD36 /* SearchViewModel.swift */; };
 		86E0725E2C389DD7006F9392 /* SelectedViewItemEnv+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E0725D2C389DD7006F9392 /* SelectedViewItemEnv+Extensions.swift */; };
 		86E7D4C02C12EEF900F56485 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D4BF2C12EEF900F56485 /* AuthError.swift */; };
@@ -232,9 +232,9 @@
 			files = (
 				866BEBBF2C535D57004632A3 /* SDWebImageSwiftUI in Frameworks */,
 				865407F02C1152540034055A /* FirebaseAuth in Frameworks */,
-				869132A42C57262B00014384 /* LicenseList in Frameworks */,
+				86C1A64A2C59813800ED1362 /* LicenseList in Frameworks */,
 				865407F22C1152540034055A /* FirebaseFirestore in Frameworks */,
-				869132A62C57262B00014384 /* spp in Frameworks */,
+				86C1A64C2C59813800ED1362 /* spp in Frameworks */,
 				865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */,
 				8630D37C2C2160BB006E1854 /* MarkdownUI in Frameworks */,
 			);
@@ -606,8 +606,8 @@
 				865407F32C1152540034055A /* FirebaseFirestoreSwift */,
 				8630D37B2C2160BB006E1854 /* MarkdownUI */,
 				866BEBBE2C535D57004632A3 /* SDWebImageSwiftUI */,
-				869132A32C57262B00014384 /* LicenseList */,
-				869132A52C57262B00014384 /* spp */,
+				86C1A6492C59813800ED1362 /* LicenseList */,
+				86C1A64B2C59813800ED1362 /* spp */,
 			);
 			productName = NewsApp;
 			productReference = 86119AF92C0FD8090067DC64 /* NewsApp.app */;
@@ -663,7 +663,7 @@
 				865407EE2C1152540034055A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				8630D37A2C2160BB006E1854 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				866BEBBD2C535D57004632A3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
-				869132A22C57262B00014384 /* XCRemoteSwiftPackageReference "LicenseList" */,
+				86C1A6482C59813800ED1362 /* XCRemoteSwiftPackageReference "LicenseList" */,
 			);
 			productRefGroup = 86119AFA2C0FD8090067DC64 /* Products */;
 			projectDirPath = "";
@@ -1526,12 +1526,12 @@
 				minimumVersion = 3.1.1;
 			};
 		};
-		869132A22C57262B00014384 /* XCRemoteSwiftPackageReference "LicenseList" */ = {
+		86C1A6482C59813800ED1362 /* XCRemoteSwiftPackageReference "LicenseList" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/wtrmiya/LicenseList";
+			repositoryURL = "https://github.com/cybozu/LicenseList";
 			requirement = {
-				branch = feature_1_change_spp_path;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1562,14 +1562,14 @@
 			package = 866BEBBD2C535D57004632A3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
 		};
-		869132A32C57262B00014384 /* LicenseList */ = {
+		86C1A6492C59813800ED1362 /* LicenseList */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 869132A22C57262B00014384 /* XCRemoteSwiftPackageReference "LicenseList" */;
+			package = 86C1A6482C59813800ED1362 /* XCRemoteSwiftPackageReference "LicenseList" */;
 			productName = LicenseList;
 		};
-		869132A52C57262B00014384 /* spp */ = {
+		86C1A64B2C59813800ED1362 /* spp */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 869132A22C57262B00014384 /* XCRemoteSwiftPackageReference "LicenseList" */;
+			package = 86C1A6482C59813800ED1362 /* XCRemoteSwiftPackageReference "LicenseList" */;
 			productName = spp;
 		};
 /* End XCSwiftPackageProductDependency section */
