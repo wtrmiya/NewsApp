@@ -37,7 +37,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
                         userDataStoreDocumentId: userDataStoreDocumentId
                     )
                     try await UserSettingsManager.shared.fetchCurrentUserSettings(userAccount: userAccount)
-                    AccountManager.shared
+                    try AccountManager.shared
                         .setUserDataStoreDocumentIdToCurrentUser(
                             userDataStoreDocumentId: userDataStoreDocumentId
                         )

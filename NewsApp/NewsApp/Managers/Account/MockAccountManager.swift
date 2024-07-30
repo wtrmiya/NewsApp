@@ -70,7 +70,7 @@ final class MockAccountManager: AccountProtocol {
         userAccount = nil
     }
     
-    func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String) {
+    func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String) throws {
     }
     
     func updateDisplayName(displayName: String) async throws {

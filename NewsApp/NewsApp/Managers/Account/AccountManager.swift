@@ -11,6 +11,26 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import UserNotifications
 
+enum AccountManagerError: Error {
+    case invalidEmail
+    case emailAlreadyInUse
+    case operationNotAllowed
+    case weakPassword
+    case unknownAuthError
+    case unknownError
+    case noDisplayName
+    case userDisabled
+    case wrongPassword
+    case keyChainError
+    case userIsNil
+    case errorInCommittingChanges
+    case invalidCredential
+    case userMismatch
+    case errorInSendingEmailVerification
+    case requiresRecentLogin
+    case userAccountIsNil
+}
+
 final class AccountManager {
     static let shared = AccountManager()
     private init() {
@@ -78,21 +98,18 @@ extension AccountManager: AccountProtocol {
             self.userAccount = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
         } catch {
             if let error = error as? AuthErrorCode {
-                let errorMessage: String
                 switch error.code {
                 case .invalidEmail:
-                    errorMessage = "invalidEmail"
+                    throw AccountManagerError.invalidEmail
                 case .emailAlreadyInUse:
-                    errorMessage = "emailAlreadyInUse"
+                    throw AccountManagerError.emailAlreadyInUse
                 case .operationNotAllowed:
-                    errorMessage = "operationNotAllowed"
+                    throw AccountManagerError.operationNotAllowed
                 case .weakPassword:
-                    errorMessage = "weakPassword"
+                    throw AccountManagerError.weakPassword
                 default:
-                    errorMessage = "unknownError"
+                    throw AccountManagerError.unknownAuthError
                 }
-                
-                throw AuthError.authError(errorMessage: errorMessage)
             } else {
                 throw AuthError.unknownError(errorMessage: error.localizedDescription)
             }
@@ -100,32 +117,34 @@ extension AccountManager: AccountProtocol {
     }
     
     func signIn(email: String, password: String) async throws {
+        let result: AuthDataResult
         do {
-            let result = try await Auth.auth().signIn(withEmail: email, password: password)
-            self.user = result.user
-            guard let displayName = result.user.displayName else { return }
-            self.userAccount = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
+            result = try await Auth.auth().signIn(withEmail: email, password: password)
         } catch {
             if let error = error as? AuthErrorCode {
-                let errorMessage: String
                 switch error.code {
                 case .operationNotAllowed:
-                    errorMessage = "operationNotAllowed"
+                    throw AccountManagerError.operationNotAllowed
                 case .userDisabled:
-                    errorMessage = "userDisabled"
+                    throw AccountManagerError.userDisabled
                 case .wrongPassword:
-                    errorMessage = "wrongPassword"
+                    throw AccountManagerError.wrongPassword
                 case .invalidEmail:
-                    errorMessage = "invalidEmail"
+                    throw AccountManagerError.invalidEmail
                 default:
-                    errorMessage = "unknownError"
+                    throw AccountManagerError.unknownAuthError
                 }
-                
-                throw AuthError.authError(errorMessage: errorMessage)
             } else {
-                throw AuthError.unknownError(errorMessage: error.localizedDescription)
+                throw AccountManagerError.unknownError
             }
         }
+        
+        self.user = result.user
+        guard let displayName = result.user.displayName
+        else {
+            throw AccountManagerError.noDisplayName
+        }
+        self.userAccount = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
     }
     
     func signOut() throws {
@@ -135,47 +154,136 @@ extension AccountManager: AccountProtocol {
             self.userAccount = nil
         } catch {
             if let error = error as? AuthErrorCode {
-                let errorMessage: String
                 switch error.code {
                 case .keychainError:
-                    errorMessage = "keychainError"
+                    throw AccountManagerError.keyChainError
                 default:
-                    errorMessage = "unknownError"
+                    throw AccountManagerError.unknownAuthError
                 }
-                
-                throw AuthError.authError(errorMessage: errorMessage)
             } else {
-                throw AuthError.unknownError(errorMessage: error.localizedDescription)
+                throw AccountManagerError.unknownError
             }
         }
     }
     
     func updateDisplayName(displayName: String) async throws {
-        guard let user else { return }
+        guard let user
+        else {
+            throw AccountManagerError.userIsNil
+        }
         let request = user.createProfileChangeRequest()
         request.displayName = displayName
-        try await request.commitChanges()
+        do {
+            try await request.commitChanges()
+        } catch {
+            print(error)
+            throw AccountManagerError.errorInCommittingChanges
+        }
     }
     
     func updateEmail(currentEmail: String, password: String, newEmail: String) async throws {
-        guard let user else { return }
+        guard let user
+        else {
+            throw AccountManagerError.userIsNil
+        }
         let credential = EmailAuthProvider.credential(withEmail: currentEmail, password: password)
         // reauthenticate
-        try await user.reauthenticate(with: credential)
+        do {
+            try await user.reauthenticate(with: credential)
+        } catch {
+            print(error)
+            if let error = error as? AuthErrorCode {
+                switch error.code {
+                case .invalidCredential:
+                    throw AccountManagerError.invalidCredential
+                case .operationNotAllowed:
+                    throw AccountManagerError.operationNotAllowed
+                case .emailAlreadyInUse:
+                    throw AccountManagerError.emailAlreadyInUse
+                case .userDisabled:
+                    throw AccountManagerError.userDisabled
+                case .wrongPassword:
+                    throw AccountManagerError.wrongPassword
+                case .userMismatch:
+                    throw AccountManagerError.userMismatch
+                case .invalidEmail:
+                    throw AccountManagerError.invalidEmail
+                default:
+                    throw AccountManagerError.unknownAuthError
+                }
+            } else {
+                throw AccountManagerError.unknownError
+            }
+        }
         
-        // update email
-        try await user.sendEmailVerification(beforeUpdatingEmail: newEmail)
+        do {
+            // update email
+            try await user.sendEmailVerification(beforeUpdatingEmail: newEmail)
+        } catch {
+            print(error)
+            throw AccountManagerError.errorInSendingEmailVerification
+        }
     }
     
     func deleteAccount(email: String, password: String) async throws {
-        guard let user else { return }
+        guard let user
+        else {
+            throw AccountManagerError.userIsNil
+        }
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
-        // reauthenticate
-        try await user.reauthenticate(with: credential)
-        try await user.delete()
+        
+        do {
+            // reauthenticate
+            try await user.reauthenticate(with: credential)
+        } catch {
+            print(error)
+            if let error = error as? AuthErrorCode {
+                switch error.code {
+                case .invalidCredential:
+                    throw AccountManagerError.invalidCredential
+                case .operationNotAllowed:
+                    throw AccountManagerError.operationNotAllowed
+                case .emailAlreadyInUse:
+                    throw AccountManagerError.emailAlreadyInUse
+                case .userDisabled:
+                    throw AccountManagerError.userDisabled
+                case .wrongPassword:
+                    throw AccountManagerError.wrongPassword
+                case .userMismatch:
+                    throw AccountManagerError.userMismatch
+                case .invalidEmail:
+                    throw AccountManagerError.invalidEmail
+                default:
+                    throw AccountManagerError.unknownAuthError
+                }
+            } else {
+                throw AccountManagerError.unknownError
+            }
+        }
+        
+        // AuthErrorCodeRequiresRecentLogin
+        do {
+            try await user.delete()
+        } catch {
+            print(error)
+            if let error = error as? AuthErrorCode {
+                switch error.code {
+                case .requiresRecentLogin:
+                    throw AccountManagerError.requiresRecentLogin
+                default:
+                    throw AccountManagerError.unknownAuthError
+                }
+            } else {
+                throw AccountManagerError.unknownError
+            }
+        }
     }
 
-    func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String) {
-        self.userAccount?.setUserDataStoreDocumentId(userDataStoreDocumentId: userDataStoreDocumentId)
+    func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String) throws {
+        if self.userAccount == nil {
+            throw AccountManagerError.userAccountIsNil
+        } else {
+            self.userAccount?.setUserDataStoreDocumentId(userDataStoreDocumentId: userDataStoreDocumentId)
+        }
     }
 }
