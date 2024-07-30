@@ -8,6 +8,11 @@
 import Foundation
 import UserNotifications
 
+enum PushNotificationManagerError: Error {
+    case errorInRequestingAuthorization
+    case errorInSchedulingNotification
+}
+
 final class PushNotificationManager {
     static let shared = PushNotificationManager()
     private init() {}
@@ -16,7 +21,12 @@ final class PushNotificationManager {
 extension PushNotificationManager {
     func requestAuthorization() async throws {
         let options: UNAuthorizationOptions = [.alert, .badge, .sound]
-        try await UNUserNotificationCenter.current().requestAuthorization(options: options)
+        do {
+            try await UNUserNotificationCenter.current().requestAuthorization(options: options)
+        } catch {
+            print(error)
+            throw PushNotificationManagerError.errorInRequestingAuthorization
+        }
     }
     
     func setupPushNotifications() async throws {
@@ -77,7 +87,12 @@ extension PushNotificationManager {
             trigger: trigger
         )
         
-        try await UNUserNotificationCenter.current().add(request)
+        do {
+            try await UNUserNotificationCenter.current().add(request)
+        } catch {
+            print(error)
+            throw PushNotificationManagerError.errorInSchedulingNotification
+        }
     }
 }
 
