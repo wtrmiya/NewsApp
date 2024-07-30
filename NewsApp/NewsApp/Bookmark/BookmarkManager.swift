@@ -9,6 +9,17 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+enum BookmarkManagerError: Error {
+    case noUserDataStoreDocumentId
+    case notBookmarked
+    case bookmarked
+    case rejectedWritingDocument
+    case noArticleDocumentId
+    case failedDeleteDocument
+    case failedInCommittingDeletion
+    case failedFetchingBookmarkDocuments
+}
+
 final class BookmarkManager {
     static let shared = BookmarkManager()
     private init() {}
@@ -26,36 +37,59 @@ private extension BookmarkManager {
 
 extension BookmarkManager: BookmarkManagerProtocol {
     func addBookmark(article: Article, userAccount: UserAccount) async throws -> Article? {
-        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId else {
-            return nil
+        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId
+        else {
+            throw BookmarkManagerError.noUserDataStoreDocumentId
         }
-        guard article.bookmarked else {
-            return nil
+        guard article.bookmarked
+        else {
+            throw BookmarkManagerError.notBookmarked
         }
         
         let bookmarksCollectionRef = getBookmarksCollectionReference(userDataStoreDocumentId: userDataStoreDocumentId)
-        let docRef = try await bookmarksCollectionRef.addDocument(data: article.toDictionary())
-        let updatedArticle = article.updateBookmarkedData(documentId: docRef.documentID)
-        return updatedArticle
+        do {
+            let docRef = try await bookmarksCollectionRef.addDocument(data: article.toDictionary())
+            let updatedArticle = article.updateBookmarkedData(documentId: docRef.documentID)
+            return updatedArticle
+        } catch {
+            print(error)
+            throw BookmarkManagerError.rejectedWritingDocument
+        }
     }
     
     func deleteBookmark(article: Article, userAccount: UserAccount) async throws -> Article? {
-        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId else { return nil }
-        guard !article.bookmarked else { return nil }
+        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId
+        else {
+            throw BookmarkManagerError.noUserDataStoreDocumentId
+        }
+        guard !article.bookmarked
+        else {
+            throw BookmarkManagerError.bookmarked
+        }
         
         guard let bookmarkDocumentId = article.documentId
-        else { return nil }
+        else {
+            throw BookmarkManagerError.noArticleDocumentId
+        }
         
         let bookmarksCollectionRef = getBookmarksCollectionReference(userDataStoreDocumentId: userDataStoreDocumentId)
 
-        let docRef = bookmarksCollectionRef.document(bookmarkDocumentId)
-        try await docRef.delete()
-        let updatedArticle = article.updateBookmarkedData(documentId: nil)
-        return updatedArticle
+        do {
+            let docRef = bookmarksCollectionRef.document(bookmarkDocumentId)
+            try await docRef.delete()
+            let updatedArticle = article.updateBookmarkedData(documentId: nil)
+            return updatedArticle
+        } catch {
+            print(error)
+            throw BookmarkManagerError.failedDeleteDocument
+        }
     }
     
     func deleteBookmarks(articles: [Article], userAccount: UserAccount) async throws {
-        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId else { return }
+        guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId
+        else {
+            throw BookmarkManagerError.noUserDataStoreDocumentId
+        }
         
         let bookmarksCollectionRef = getBookmarksCollectionReference(userDataStoreDocumentId: userDataStoreDocumentId)
 
@@ -66,20 +100,34 @@ extension BookmarkManager: BookmarkManagerProtocol {
             let ref = bookmarksCollectionRef.document(docID)
             batch.deleteDocument(ref)
         }
-        try await batch.commit()
+        
+        do {
+            try await batch.commit()
+        } catch {
+            print(error)
+            throw BookmarkManagerError.failedInCommittingDeletion
+        }
     }
     
     func getBookmarks(userAccount: UserAccount) async throws -> [Article] {
-        guard let userDocumentId = userAccount.userDataStoreDocumentId else { return [] }
+        guard let userDocumentId = userAccount.userDataStoreDocumentId
+        else {
+            throw BookmarkManagerError.noUserDataStoreDocumentId
+        }
         
         let bookmarksCollectionRef = getBookmarksCollectionReference(userDataStoreDocumentId: userDocumentId)
 
-        let snapshot = try await bookmarksCollectionRef.getDocuments()
-        
-        let bookmarks = snapshot.documents.compactMap { snapshot in
-            Article.fromSnapshot(snapshot: snapshot)
+        do {
+            let snapshot = try await bookmarksCollectionRef.getDocuments()
+            
+            let bookmarks = snapshot.documents.compactMap { snapshot in
+                Article.fromSnapshot(snapshot: snapshot)
+            }
+            
+            return bookmarks
+        } catch {
+            print(error)
+            throw BookmarkManagerError.failedFetchingBookmarkDocuments
         }
-        
-        return bookmarks
     }
 }
