@@ -8,7 +8,7 @@
 import Foundation
 
 final class MockTermManager: TermManagerProtocol {
-    func getLatestTerm() async throws -> Term? {
+    func getLatestTerm() async throws -> Term {
         return Term(
             title: "NewsApp 利用規約",
             // swiftlint:disable:next line_length
