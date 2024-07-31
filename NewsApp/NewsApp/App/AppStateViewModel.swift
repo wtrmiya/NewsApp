@@ -8,6 +8,11 @@
 import Foundation
 import UserNotifications
 
+enum AppStateViewModelError: Error {
+    case noUserAccount
+    case notificationWithNoUserAccount
+}
+
 final class AppStateViewModel: ObservableObject {
     @Published var appState: AppState?
     
@@ -28,17 +33,28 @@ final class AppStateViewModel: ObservableObject {
     }
     
     @objc func userStateChanged(notification: Notification) {
-        let userAccount = notification.userInfo?["user"] as? UserAccount
-        Task {
-            await MainActor.run {
-                if appStateManager.appState != .launching {
-                    if userAccount == nil {
-                        appState = .launchedSignedOut
+        do {
+            guard let userInfo = notification.userInfo?["user"]
+            else {
+                throw AppStateViewModelError.notificationWithNoUserAccount
+            }
+            
+            let userAccount = userInfo as? UserAccount
+            Task {
+                await MainActor.run {
+                    if appStateManager.appState != .launching {
+                        if userAccount == nil {
+                            appState = .launchedSignedOut
+                        } else {
+                            appState = .launchedSignedIn
+                        }
                     } else {
-                        appState = .launchedSignedIn
+                        print("App state is .launching. Do nothing.")
                     }
                 }
             }
+        } catch {
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
 }

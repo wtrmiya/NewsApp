@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum BookmarkViewModelError: Error {
+    case noUserAccount
+}
+
 final class BookmarkViewModel: ObservableObject {
     @Published var articles: [Article] = []
 
@@ -29,7 +33,7 @@ final class BookmarkViewModel: ObservableObject {
     func populateBookmarkedArticles() async {
         do {
             guard let tempUserAccount = accountManager.userAccount else {
-                return
+                throw BookmarkViewModelError.noUserAccount
             }
             
             let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(userAccount: tempUserAccount)
@@ -43,11 +47,7 @@ final class BookmarkViewModel: ObservableObject {
             let bookmarkedArticles = try await bookmarkManager.getBookmarks(userAccount: currentUserAccount)
             self.articles = bookmarkedArticles
         } catch {
-            if let error = error as? NetworkError {
-                self.errorMessage = error.rawValue
-            } else {
-                self.errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
-            }
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
     
@@ -55,7 +55,7 @@ final class BookmarkViewModel: ObservableObject {
     func deleteBookmarks(indexSet: IndexSet) async {
         do {
             guard let tempUserAccount = accountManager.userAccount else {
-                return
+                throw BookmarkViewModelError.noUserAccount
             }
             
             let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(userAccount: tempUserAccount)
@@ -71,11 +71,7 @@ final class BookmarkViewModel: ObservableObject {
             let updatedBookmarkedArticles = try await bookmarkManager.getBookmarks(userAccount: currentUserAccount)
             self.articles = updatedBookmarkedArticles
         } catch {
-            if let error = error as? NetworkError {
-                self.errorMessage = error.rawValue
-            } else {
-                self.errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
-            }
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
 }

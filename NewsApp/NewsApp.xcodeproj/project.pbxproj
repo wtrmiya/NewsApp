@@ -45,7 +45,6 @@
 		865407F22C1152540034055A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F12C1152540034055A /* FirebaseFirestore */; };
 		865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F32C1152540034055A /* FirebaseFirestoreSwift */; };
 		865408302C1195FF0034055A /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8654082F2C1195FF0034055A /* AccountManager.swift */; };
-		865408322C11C9280034055A /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408312C11C9280034055A /* SignUpViewModel.swift */; };
 		865408352C129B800034055A /* AccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408342C129B800034055A /* AccountProtocol.swift */; };
 		865408372C12A16E0034055A /* MockAccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408362C12A16E0034055A /* MockAccountManager.swift */; };
 		865C0CF22C1933B500A091E4 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF12C1933B500A091E4 /* BookmarkManager.swift */; };
@@ -133,7 +132,6 @@
 		864DA5152C21303500AB8D71 /* UserDataStoreManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataStoreManagerProtocol.swift; sourceTree = "<group>"; };
 		864DA5172C21307B00AB8D71 /* MockUserDataStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserDataStoreManager.swift; sourceTree = "<group>"; };
 		8654082F2C1195FF0034055A /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
-		865408312C11C9280034055A /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		865408342C129B800034055A /* AccountProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProtocol.swift; sourceTree = "<group>"; };
 		865408362C12A16E0034055A /* MockAccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAccountManager.swift; sourceTree = "<group>"; };
 		865C0CF12C1933B500A091E4 /* BookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManager.swift; sourceTree = "<group>"; };
@@ -512,7 +510,6 @@
 			isa = PBXGroup;
 			children = (
 				86748B452C1061BF004312AB /* SignUpView.swift */,
-				865408312C11C9280034055A /* SignUpViewModel.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -735,7 +732,6 @@
 				863F20D72C15756800186A4C /* BookmarkViewModel.swift in Sources */,
 				86748B352C1060DB004312AB /* BookmarkView.swift in Sources */,
 				8621FA5D2C1C2C9C00E677D6 /* SettingsViewModel.swift in Sources */,
-				865408322C11C9280034055A /* SignUpViewModel.swift in Sources */,
 				86748B522C106266004312AB /* LetterSizeSettingsView.swift in Sources */,
 				869161B62C16454000454D12 /* DrawerView.swift in Sources */,
 				86748B322C1060A0004312AB /* HomeView.swift in Sources */,

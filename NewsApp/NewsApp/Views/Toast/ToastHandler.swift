@@ -7,8 +7,14 @@
 
 import Foundation
 
+enum ToastHandlerError: Error {
+    
+}
+
 final class ToastHandler: ObservableObject {
     @Published private(set) var currentToastMessage: String?
+    
+    @Published var errorMessage: String?
     
     private var toastQueue: [String] = [] {
         didSet {
@@ -44,7 +50,10 @@ final class ToastHandler: ObservableObject {
     private func displayNextToastIfAvailable() {
         guard currentToastMessage == nil,
               let message = toastQueue.first
-        else { return }
+        else {
+            // ユーザへの影響は無いので、特に例外は投げない
+            return
+        }
         
         toastQueue.removeFirst()
         currentToastMessage = message
@@ -53,17 +62,23 @@ final class ToastHandler: ObservableObject {
         currentToastShowingTask = Task {
             do {
                 try await Task.sleep(for: toastShowingDuration)
-                if Task.isCancelled { return }
+                if Task.isCancelled {
+                    // 単にタスクがキャンセルされているだけなので、例外は投げない
+                    return
+                }
                 skipCurrent(in: defaultToastHidingDuration)
             } catch {
-                print("Tastk.sleep failed. Try again: \(error.localizedDescription)")
+                self.errorMessage = "Tastk.sleep failed. Try again: \(error.localizedDescription)"
             }
         }
     }
     
     @MainActor
     private func removeCurrentToast() {
-        if currentToastMessage == nil { return }
+        if currentToastMessage == nil {
+            // 削除対象のメッセージが存在しないので、例外は投げない
+            return
+        }
         
         currentToastShowingTask?.cancel()
         currentToastMessage = nil
