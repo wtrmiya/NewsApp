@@ -9,27 +9,40 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+enum TermManagerError: Error {
+    case failedFetchingTermDocuments
+    case documentDoesNotExist
+    case failedInstantiateTerm
+}
+
 final class TermManager {
     static let shared = TermManager()
     private init() {}
 }
 
 extension TermManager: TermManagerProtocol {
-    func getLatestTerm() async throws -> Term? {
+    func getLatestTerm() async throws -> Term {
         let firestoreDB = Firestore.firestore()
-        guard let snapshot = try await firestoreDB.collection("terms")
-            .order(by: "effectiveDate", descending: true)
-            .getDocuments()
-            .documents.first
+        let documents: [QueryDocumentSnapshot]
+        do {
+            documents = try await firestoreDB.collection("terms")
+                .order(by: "effectiveDate", descending: true)
+                .getDocuments()
+                .documents
+        } catch {
+            throw TermManagerError.failedFetchingTermDocuments
+        }
+        
+        guard let snapshot = documents.first
         else {
-            return nil
+            throw TermManagerError.documentDoesNotExist
         }
         
         guard let latestTerm = Term.fromSnapshot(snapshot: snapshot)
         else {
-            return nil
+            throw TermManagerError.failedInstantiateTerm
         }
-
+        
         return latestTerm
     }
 }

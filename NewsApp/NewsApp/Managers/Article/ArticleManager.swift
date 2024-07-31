@@ -7,6 +7,12 @@
 
 import Foundation
 
+enum ArticleManagerError: Error {
+    case errorInFetchingData
+    case invalidResponse
+    case failedInDecoding
+}
+
 final class ArticleManager {
     static let shared = ArticleManager()
     private init() {
@@ -37,26 +43,34 @@ extension ArticleManager: ArticleManagerProtocol {
         if let articlesByCategory = articles[category] {
             return articlesByCategory
         } else {
-            guard let apiKey = APIKeyManager.shared.apiKey(for: "API_KEY_NewsAPI")
-            else {
-                throw NetworkError.invalidAPIKey
-            }
-            
-            let url = URL(string: "https://newsapi.org/v2/top-headlines?country=jp&category=\(category.rawValue)")!
-            var request = URLRequest(url: url)
-            request.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
             do {
-                let (data, response) = try await URLSession.shared.data(for: request)
+                let apiKey = try APIKeyManager.shared.apiKey(for: "API_KEY_NewsAPI")
+                
+                let url = URL(string: "https://newsapi.org/v2/top-headlines?country=jp&category=\(category.rawValue)")!
+                var request = URLRequest(url: url)
+                request.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
+                let (data, response): (Data, URLResponse)
+                do {
+                    (data, response) = try await URLSession.shared.data(for: request)
+                } catch {
+                    print(error)
+                    throw ArticleManagerError.errorInFetchingData
+                }
                 
                 guard let httpResponse = response as? HTTPURLResponse,
                       httpResponse.statusCode == 200
                 else {
-                    throw NetworkError.invalidResponse
+                    throw ArticleManagerError.invalidResponse
                 }
                 
-                let articleResponse = try JSONDecoder().decode(ArticleResponse.self, from: data)
-                articles[category] = articleResponse.articles
-                return articleResponse.articles
+                do {
+                    let articleResponse = try JSONDecoder().decode(ArticleResponse.self, from: data)
+                    articles[category] = articleResponse.articles
+                    return articleResponse.articles
+                } catch {
+                    print(error)
+                    throw ArticleManagerError.failedInDecoding
+                }
             } catch {
                 throw error
             }
@@ -64,28 +78,37 @@ extension ArticleManager: ArticleManagerProtocol {
     }
     
     func getArticlesBySearchText(text: String) async throws -> [Article] {
-        guard let apiKey = APIKeyManager.shared.apiKey(for: "API_KEY_NewsAPI")
-        else {
-            throw NetworkError.invalidAPIKey
-        }
-        
-        let encodedURLString = "https://newsapi.org/v2/everything?q=\(text)"
-            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        let url = URL(string: encodedURLString)!
-        var request = URLRequest(url: url)
-        request.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let apiKey = try APIKeyManager.shared.apiKey(for: "API_KEY_NewsAPI")
             
+            let encodedURLString = "https://newsapi.org/v2/everything?q=\(text)"
+                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            let url = URL(string: encodedURLString)!
+            var request = URLRequest(url: url)
+            request.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
+            
+            let (data, response): (Data, URLResponse)
+            do {
+                (data, response) = try await URLSession.shared.data(for: request)
+            } catch {
+                print(error)
+                throw ArticleManagerError.errorInFetchingData
+            }
+
             guard let httpResponse = response as? HTTPURLResponse,
                   httpResponse.statusCode == 200
             else {
-                throw NetworkError.invalidResponse
+                throw ArticleManagerError.invalidResponse
             }
             
-            let articleResponse = try JSONDecoder().decode(ArticleResponse.self, from: data)
-            
-            return articleResponse.articles
+            do {
+                let articleResponse = try JSONDecoder().decode(ArticleResponse.self, from: data)
+                
+                return articleResponse.articles
+            } catch {
+                print(error)
+                throw ArticleManagerError.failedInDecoding
+            }
         } catch {
             throw error
         }

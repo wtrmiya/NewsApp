@@ -19,14 +19,11 @@ final class TermViewModel: ObservableObject {
     @MainActor
     func populateLatestTerm() async {
         do {
-            guard let latestTerm = try await termManager.getLatestTerm()
-            else {
-                self.term = Term.emptyTerm
-                return
-            }
+            let latestTerm = try await termManager.getLatestTerm()
             
             self.term = latestTerm
         } catch {
+            print("NOT_IMPLEMENTED: file: \(#file), line: \(#line), TODO: error handling")
             print(error)
         }
     }

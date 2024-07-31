@@ -8,5 +8,5 @@
 import Foundation
 
 protocol TermManagerProtocol {
-    func getLatestTerm() async throws -> Term?
+    func getLatestTerm() async throws -> Term
 }

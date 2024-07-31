@@ -35,7 +35,7 @@ final class SignUpViewModel: ObservableObject {
             guard let tempUserAccount = accountManager.userAccount else { return }
             try await userDataStoreManager.createUserDataStore(userAccount: tempUserAccount)
             let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(userAccount: tempUserAccount)
-            accountManager.setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: userDocumentId)
+            try accountManager.setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: userDocumentId)
             guard let userAccount = accountManager.userAccount else { return }
             try await userSettingsManager.createDefaultUserSettings(userAccount: userAccount)
         } catch {
