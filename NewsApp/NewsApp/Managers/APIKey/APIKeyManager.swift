@@ -16,6 +16,16 @@ final class APIKeyManager {
     static let shared = APIKeyManager()
     private init() {}
     
+    
+    /// 指定したサービスのAPIキーを取得する
+    ///
+    /// - throws: APIKeyManagerError
+    ///
+    /// ```
+    /// # APIKeyManagerError
+    /// - specifiedKeyDoesNotExist
+    /// - specifiedServiceDoesNotExist
+    /// ```
     func apiKey(for service: String) throws -> String {
         guard let keys = Bundle.main.infoDictionary?["ApiKeys"] as? [String: Any]
         else {

@@ -36,6 +36,16 @@ private extension BookmarkManager {
 }
 
 extension BookmarkManager: BookmarkManagerProtocol {
+    /// ブックマークに記事を追加する
+    ///
+    /// - throws: BookmarkManagerError
+    ///
+    /// ```
+    /// # BookmarkManagerError
+    /// - noUserDataStoreDocumentId
+    /// - notBookmarked
+    /// - rejectedWritingDocument
+    /// ```
     func addBookmark(article: Article, userAccount: UserAccount) async throws -> Article? {
         guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId
         else {
@@ -57,6 +67,17 @@ extension BookmarkManager: BookmarkManagerProtocol {
         }
     }
     
+    /// 指定した記事へのブックマークを削除する
+    ///
+    /// - throws: BookmarkManagerError
+    ///
+    /// ```
+    /// # BookmarkManagerError
+    /// - noUserDataStoreDocumentId
+    /// - bookmarked
+    /// - noArticleDocumentId
+    /// - failedDeleteDocument
+    /// ```
     func deleteBookmark(article: Article, userAccount: UserAccount) async throws -> Article? {
         guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId
         else {
@@ -85,6 +106,15 @@ extension BookmarkManager: BookmarkManagerProtocol {
         }
     }
     
+    /// ブックマークを全て削除する
+    ///
+    /// - throws: BookmarkManagerError
+    ///
+    /// ```
+    /// # BookmarkManagerError
+    /// - noUserDataStoreDocumentId
+    /// - failedInCommittingDeletion
+    /// ```
     func deleteBookmarks(articles: [Article], userAccount: UserAccount) async throws {
         guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId
         else {
@@ -109,6 +139,15 @@ extension BookmarkManager: BookmarkManagerProtocol {
         }
     }
     
+    /// ブックマークを取得する
+    ///
+    /// - throws: BookmarkManagerError
+    ///
+    /// ```
+    /// # BookmarkManagerError
+    /// - noUserDataStoreDocumentId
+    /// - failedFetchingBookmarkDocuments
+    /// ```
     func getBookmarks(userAccount: UserAccount) async throws -> [Article] {
         guard let userDocumentId = userAccount.userDataStoreDocumentId
         else {

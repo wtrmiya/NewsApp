@@ -39,6 +39,16 @@ private extension ArticleManager {
 }
 
 extension ArticleManager: ArticleManagerProtocol {
+    /// 指定したカテゴリの記事を取得する
+    ///
+    /// - throws: ArticleManagerError
+    ///
+    /// ```
+    /// # ArticleManagerError
+    /// - errorInFetchingData
+    /// - invalidResponse
+    /// - failedInDecoding
+    /// ```
     func getArticlesByCategory(category: ArticleCategory) async throws -> [Article] {
         if let articlesByCategory = articles[category] {
             return articlesByCategory
@@ -77,6 +87,16 @@ extension ArticleManager: ArticleManagerProtocol {
         }
     }
     
+    /// 指定した文字列を持つ記事を取得する
+    ///
+    /// - throws: ArticleManagerError
+    ///
+    /// ```
+    /// # ArticleManagerError
+    /// - errorInFetchingData
+    /// - invalidResponse
+    /// - failedInDecoding
+    /// ```
     func getArticlesBySearchText(text: String) async throws -> [Article] {
         do {
             let apiKey = try APIKeyManager.shared.apiKey(for: "API_KEY_NewsAPI")
