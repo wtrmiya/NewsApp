@@ -7,6 +7,12 @@
 
 import Foundation
 
+enum HomeViewModelError: Error {
+    case noArticleWithSpecifiedId
+    case noUserAccount
+    case noUpdatedArticle
+}
+
 final class HomeViewModel: ObservableObject {
     @Published var articles: [Article] = []
     @Published var selectedCategory: ArticleCategory = .general
@@ -72,25 +78,26 @@ final class HomeViewModel: ObservableObject {
             }
             self.articles = downloadedArticles
         } catch {
-            if let error = error as? NetworkError {
-                self.errorMessage = error.rawValue
-            } else {
-                self.errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
-            }
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
     
     @MainActor
     func toggleBookmark(on articleToToggle: Article) async {
-        let (article, index) = toggledArticleAndIndexOnArticles(articleToToggle: articleToToggle)
-        
-        guard let toggledArticle = article,
-              let toggledArticleIndex = index
-        else { return }
-        
-        guard let tempUserAccount = accountManager.userAccount else { return }
-        
         do {
+            let (article, index) = toggledArticleAndIndexOnArticles(articleToToggle: articleToToggle)
+            
+            guard let toggledArticle = article,
+                  let toggledArticleIndex = index
+            else {
+                throw HomeViewModelError.noArticleWithSpecifiedId
+            }
+            
+            guard let tempUserAccount = accountManager.userAccount
+            else {
+                throw HomeViewModelError.noUserAccount
+            }
+        
             let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(userAccount: tempUserAccount)
             let currentUserAccount = UserAccount(
                 uid: tempUserAccount.uid,
@@ -106,7 +113,7 @@ final class HomeViewModel: ObservableObject {
                     userAccount: currentUserAccount
                 )
                 else {
-                    return
+                    throw HomeViewModelError.noUpdatedArticle
                 }
                 
                 articles[toggledArticleIndex] = updatedArticle
@@ -116,12 +123,12 @@ final class HomeViewModel: ObservableObject {
                     userAccount: currentUserAccount
                 )
                 else {
-                    return
+                    throw HomeViewModelError.noUpdatedArticle
                 }
                 articles[toggledArticleIndex] = updatedArticle
             }
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = "error: \(error.localizedDescription)"
         }
     }
     

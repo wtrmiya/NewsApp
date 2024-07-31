@@ -8,6 +8,10 @@
 import Foundation
 import UserNotifications
 
+enum AuthViewModelError: Error {
+    case noUserAccount
+}
+
 final class AuthViewModel: ObservableObject {
     @Published var displayName: String = ""
     @Published var email: String = ""
@@ -46,24 +50,19 @@ final class AuthViewModel: ObservableObject {
     func signIn() async {
         do {
             try await accountManager.signIn(email: email, password: password)
-            guard let tempUserAccount = accountManager.userAccount else { return }
+            guard let tempUserAccount = accountManager.userAccount else {
+                throw AuthViewModelError.noUserAccount
+            }
             let userDataStoreDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(
                 userAccount: tempUserAccount
             )
             try accountManager.setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: userDataStoreDocumentId)
-            guard let userAccount = accountManager.userAccount else { return }
+            guard let userAccount = accountManager.userAccount else {
+                throw AuthViewModelError.noUserAccount
+            }
             try await userSettingsManager.fetchCurrentUserSettings(userAccount: userAccount)
         } catch {
-            if let error = error as? AuthError {
-                switch error {
-                case .authError(let errorMessage):
-                    self.errorMessage = errorMessage
-                case .unknownError(let errorMessage):
-                    self.errorMessage = errorMessage
-                }
-            } else {
-                errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
-            }
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
     
@@ -71,23 +70,18 @@ final class AuthViewModel: ObservableObject {
     func signUp() async {
         do {
             try await accountManager.signUp(email: email, password: password, displayName: displayName)
-            guard let tempUserAccount = accountManager.userAccount else { return }
+            guard let tempUserAccount = accountManager.userAccount else {
+                throw AuthViewModelError.noUserAccount
+            }
             try await userDataStoreManager.createUserDataStore(userAccount: tempUserAccount)
             let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(userAccount: tempUserAccount)
             try accountManager.setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: userDocumentId)
-            guard let userAccount = accountManager.userAccount else { return }
+            guard let userAccount = accountManager.userAccount else {
+                throw AuthViewModelError.noUserAccount
+            }
             try await userSettingsManager.createDefaultUserSettings(userAccount: userAccount)
         } catch {
-            if let error = error as? AuthError {
-                switch error {
-                case .authError(let errorMessage):
-                    self.errorMessage = errorMessage
-                case .unknownError(let errorMessage):
-                    self.errorMessage = errorMessage
-                }
-            } else {
-                errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
-            }
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
     
@@ -96,16 +90,23 @@ final class AuthViewModel: ObservableObject {
             pushNotificationManager.cancelAllScheduledPushNotifications()
             try accountManager.signOut()
         } catch {
-            print(error)
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
     
     @objc func userStateChanged(notification: Notification) {
-        let userAccount = notification.userInfo?["user"] as? UserAccount
-        Task {
-            await MainActor.run {
-                self.signedInUserAccount = userAccount
+        do {
+            if let userAccount = notification.userInfo?["user"] as? UserAccount {
+                Task {
+                    await MainActor.run {
+                        self.signedInUserAccount = userAccount
+                    }
+                }
+            } else {
+                throw AuthViewModelError.noUserAccount
             }
+        } catch {
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
 }

@@ -7,6 +7,12 @@
 
 import Foundation
 
+enum SearchViewModelError: Error {
+    case noArticleWithSpecifiedId
+    case noUserAccount
+    case noUpdatedArticle
+}
+
 final class SearchViewModel: ObservableObject {
     @Published var searchResultArticles: [Article] = []
     @Published var searchResultWord: String = ""
@@ -64,25 +70,26 @@ final class SearchViewModel: ObservableObject {
             self.searchResultArticles = downloadedArticles
             self.searchResultWord = searchText
         } catch {
-            if let error = error as? NetworkError {
-                self.errorMessage = error.rawValue
-            } else {
-                self.errorMessage = "Sorry, something wrong. error: \(error.localizedDescription)"
-            }
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
     
     @MainActor
     func toggleBookmark(on articleToToggle: Article) async {
-        let (article, index) = toggledArticleAndIndexOnArticles(articleToToggle: articleToToggle)
-        
-        guard let toggledArticle = article,
-              let toggledArticleIndex = index
-        else { return }
-        
-        guard let tempUserAccount = accountManager.userAccount else { return }
-        
         do {
+            let (article, index) = toggledArticleAndIndexOnArticles(articleToToggle: articleToToggle)
+            
+            guard let toggledArticle = article,
+                  let toggledArticleIndex = index
+            else {
+                throw SearchViewModelError.noArticleWithSpecifiedId
+            }
+            
+            guard let tempUserAccount = accountManager.userAccount
+            else {
+                throw SearchViewModelError.noUserAccount
+            }
+            
             let userDocumentId = try await userDataStoreManager.getUserDataStoreDocumentId(userAccount: tempUserAccount)
             let currentUserAccount = UserAccount(
                 uid: tempUserAccount.uid,
@@ -98,7 +105,7 @@ final class SearchViewModel: ObservableObject {
                     userAccount: currentUserAccount
                 )
                 else {
-                    return
+                    throw SearchViewModelError.noUpdatedArticle
                 }
                 
                 searchResultArticles[toggledArticleIndex] = updatedArticle
@@ -108,12 +115,12 @@ final class SearchViewModel: ObservableObject {
                     userAccount: currentUserAccount
                 )
                 else {
-                    return
+                    throw SearchViewModelError.noUpdatedArticle
                 }
                 searchResultArticles[toggledArticleIndex] = updatedArticle
             }
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = "error: \(error.localizedDescription)"
         }
     }
     

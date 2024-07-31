@@ -8,6 +8,10 @@
 import Foundation
 import Combine
 
+enum AccountSettingsViewModelError: Error {
+    case noUserAccount
+}
+
 final class AccountSettingsViewModel: ObservableObject {
     @Published var userAccount: UserAccount? {
         didSet {
@@ -29,6 +33,8 @@ final class AccountSettingsViewModel: ObservableObject {
     
     @Published var withdrawalPassword: String = ""
     @Published var withdrawalPasswordValid: Bool = true
+    
+    @Published var errorMessage: String?
 
     private let accountManager: AccountProtocol
     
@@ -130,7 +136,9 @@ final class AccountSettingsViewModel: ObservableObject {
     
     func updateAccountInfo() async {
         do {
-            guard let userAccount = self.userAccount else { return }
+            guard let userAccount = self.userAccount else {
+                throw AccountSettingsViewModelError.noUserAccount
+            }
             
             if userAccount.displayName != inputDisplayName {
                 try await accountManager.updateDisplayName(displayName: inputDisplayName)
@@ -145,16 +153,18 @@ final class AccountSettingsViewModel: ObservableObject {
                     )
             }
         } catch {
-            print(error)
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
     
     func deleteAccount() async {
         do {
-            guard let userAccount = self.userAccount else { return }
+            guard let userAccount = self.userAccount else {
+                throw AccountSettingsViewModelError.noUserAccount
+            }
             try await accountManager.deleteAccount(email: userAccount.email, password: withdrawalPassword)
         } catch {
-            print(error)
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
 }

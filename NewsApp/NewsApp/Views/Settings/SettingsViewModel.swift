@@ -9,6 +9,12 @@ import Foundation
 import Combine
 import UserNotifications
 
+enum SettingsViewModelError: Error {
+    case noUserAccount
+    case noUserSettingsDocumentId
+    case noUserSettings
+}
+
 final class SettingsViewModel: ObservableObject {
     @Published var userSettings: UserSettings = UserSettings.defaultSettingsWithDummyUID() {
         didSet {
@@ -21,6 +27,8 @@ final class SettingsViewModel: ObservableObject {
             }
         }
     }
+    
+    @Published var errorMessage: String?
     
     private let accountManager: AccountProtocol
     private let userSettingsManager: UserSettingsManagerProtocol
@@ -58,12 +66,14 @@ final class SettingsViewModel: ObservableObject {
         print("populateUserSettings")
         do {
             guard let userAccount = accountManager.userAccount
-            else { return }
+            else {
+                throw SettingsViewModelError.noUserAccount
+            }
             try await userSettingsManager.fetchCurrentUserSettings(userAccount: userAccount)
             self.userSettings = userSettingsManager.currentUserSettings
             print("fetched userSettings: \(userSettingsManager.currentUserSettings)")
         } catch {
-            print(error)
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
     
@@ -86,17 +96,16 @@ final class SettingsViewModel: ObservableObject {
     }
     
     private func updateSettings(inputSettings: UserSettings) async {
-        print("userSettings: \(userSettings)")
-        guard self.userSettings.userSettingsDocumentId != nil
-        else {
-            print("\(#file): \(#function): userSettings.userSettingsDocumentId is nil")
-            return
-        }
         do {
+            print("userSettings: \(userSettings)")
+            guard self.userSettings.userSettingsDocumentId != nil
+            else {
+                throw SettingsViewModelError.noUserSettingsDocumentId
+            }
+            
             guard let userAccount = accountManager.userAccount
             else {
-                print("\(#file): \(#function): accountManager.user is nil")
-                return
+                throw SettingsViewModelError.noUserAccount
             }
             let currentSettings = self.userSettings
             let newSettings = UserSettings(
@@ -117,18 +126,23 @@ final class SettingsViewModel: ObservableObject {
                 try await userSettingsManager.updateUserSettings(by: newSettings, userAccount: userAccount)
             }
         } catch {
-            print(error)
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
     
     @objc func userSettingsChanged(notification: Notification) {
-        guard let userSettings = notification.userInfo?["user_settings"] as? UserSettings else {
-            return
-        }
-        Task {
-            await MainActor.run {
-                self.userSettings = userSettings
+        do {
+            guard let userSettings = notification.userInfo?["user_settings"] as? UserSettings
+            else {
+                throw SettingsViewModelError.noUserSettings
             }
+            Task {
+                await MainActor.run {
+                    self.userSettings = userSettings
+                }
+            }
+        } catch {
+            self.errorMessage = "error: \(error.localizedDescription)"
         }
     }
 }
