@@ -60,6 +60,16 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
         }
     }
     
+    
+    /// ユーザ設定のデフォルト値を作成する
+    ///
+    /// - throws: UserSettingsManagerError
+    ///
+    /// ```
+    /// # UserSettingsManagerError
+    /// - userDataStoreDocumentIdDoesNotExist
+    /// - rejectedWritingDocument
+    /// ```
     func createDefaultUserSettings(userAccount: UserAccount) async throws {
         guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId
         else {
@@ -81,6 +91,17 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
         }
     }
 
+    /// ユーザ設定を取得する
+    ///
+    /// - throws: UserSettingsManagerError
+    ///
+    /// ```
+    /// # UserSettingsManagerError
+    /// - userDataStoreDocumentIdDoesNotExist
+    /// - failedFetchingUserSettingsDocuments
+    /// - documentDoesNotExist
+    /// - failedInstantiateUserSettings
+    /// ```
     func fetchCurrentUserSettings(userAccount: UserAccount) async throws {
         guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId
         else {
@@ -113,6 +134,16 @@ extension UserSettingsManager: UserSettingsManagerProtocol {
         self.userSettings = currentUserSettings
     }
     
+    /// ユーザ設定を更新する
+    ///
+    /// - throws: UserSettingsManagerError
+    ///
+    /// ```
+    /// # UserSettingsManagerError
+    /// - userDataStoreDocumentIdDoesNotExist
+    /// - userSettingsDocumentIdDoesNotExist
+    /// - failedUpdateDocument
+    /// ```
     func updateUserSettings(by updatedUserSettings: UserSettings, userAccount: UserAccount) async throws {
         guard let userDataStoreDocumentId = userAccount.userDataStoreDocumentId
         else {

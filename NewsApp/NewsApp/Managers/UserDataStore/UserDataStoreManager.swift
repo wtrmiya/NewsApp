@@ -29,6 +29,14 @@ private extension UserDataStoreManager {
 }
 
 extension UserDataStoreManager: UserDataStoreManagerProtocol {
+    /// ユーザデータストアを作成する
+    ///
+    /// - throws: UserDataStoreManagerError
+    ///
+    /// ```
+    /// # UserDataStoreManagerError
+    /// - rejectedWritingDocument
+    /// ```
     func createUserDataStore(userAccount: UserAccount) async throws {
         do {
             try await usersCollectionRef.addDocument(data: [
@@ -41,6 +49,15 @@ extension UserDataStoreManager: UserDataStoreManagerProtocol {
         }
     }
     
+    /// ユーザデータストアの指定ユーザのドキュメントを取得する
+    ///
+    /// - throws: UserDataStoreManagerError
+    ///
+    /// ```
+    /// # UserDataStoreManagerError
+    /// - failedFetchingUserDataStoreDocuments
+    /// - documentDoesNotExist
+    /// ```
     func getUserDataStoreDocumentId(userAccount: UserAccount) async throws -> String {
         let documents: [QueryDocumentSnapshot]
         do {

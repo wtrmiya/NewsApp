@@ -19,6 +19,14 @@ final class PushNotificationManager {
 }
 
 extension PushNotificationManager {
+    /// ユーザにプッシュ通知の許可をとる
+    ///
+    /// - throws: PushNotificationManagerError
+    ///
+    /// ```
+    /// # PushNotificationManagerError
+    /// - errorInRequestingAuthorization
+    /// ```
     func requestAuthorization() async throws {
         let options: UNAuthorizationOptions = [.alert, .badge, .sound]
         do {
@@ -40,6 +48,14 @@ extension PushNotificationManager {
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
     
+    /// プッシュ設定をデバイスに適用する
+    ///
+    /// - throws: PushNotificationManagerError
+    ///
+    /// ```
+    /// # PushNotificationManagerError
+    /// - errorInSchedulingNotification
+    /// ```
     func applyPushNotificaionSettings(userSettings: UserSettings) async throws {
         var pushIds: [String] = []
         

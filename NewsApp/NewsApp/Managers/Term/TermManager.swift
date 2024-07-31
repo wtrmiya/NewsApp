@@ -21,6 +21,16 @@ final class TermManager {
 }
 
 extension TermManager: TermManagerProtocol {
+    /// 最新の利用規約を取得する
+    ///
+    /// - throws: TermManagerError
+    ///
+    /// ```
+    /// # TermManagerError
+    /// - failedFetchingTermDocuments
+    /// - documentDoesNotExist
+    /// - failedInstantiateTerm
+    /// ```
     func getLatestTerm() async throws -> Term {
         let firestoreDB = Firestore.firestore()
         let documents: [QueryDocumentSnapshot]

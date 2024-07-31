@@ -90,6 +90,19 @@ extension AccountManager: AccountProtocol {
         }
     }
     
+    /// サインアップする
+    ///
+    /// - throws: AccountManagerError
+    ///
+    /// ```
+    /// # AccountManagerError
+    /// - invalidEmail
+    /// - emailAlreadyInUse
+    /// - operationNotAllowed
+    /// - weakPassword
+    /// - unknownAuthError
+    /// - unknownError
+    /// ```
     func signUp(email: String, password: String, displayName: String) async throws {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
@@ -116,6 +129,19 @@ extension AccountManager: AccountProtocol {
         }
     }
     
+    /// サインインする
+    ///
+    /// - throws: AccountManagerError
+    ///
+    /// ```
+    /// # AccountManagerError
+    /// - operationNotAllowed
+    /// - userDisabled
+    /// - wrongPassword
+    /// - invalidEmail
+    /// - unknownAuthError
+    /// - unknownError
+    /// ```
     func signIn(email: String, password: String) async throws {
         let result: AuthDataResult
         do {
@@ -147,6 +173,16 @@ extension AccountManager: AccountProtocol {
         self.userAccount = UserAccount(uid: result.user.uid, email: email, displayName: displayName)
     }
     
+    /// サインアウトする
+    ///
+    /// - throws: AccountManagerError
+    ///
+    /// ```
+    /// # AccountManagerError
+    /// - keyChainError
+    /// - unknownAuthError
+    /// - unknownError
+    /// ```
     func signOut() throws {
         do {
             try Auth.auth().signOut()
@@ -166,6 +202,15 @@ extension AccountManager: AccountProtocol {
         }
     }
     
+    /// display nameを更新する
+    ///
+    /// - throws: AccountManagerError
+    ///
+    /// ```
+    /// # AccountManagerError
+    /// - userIsNil
+    /// - errorInCommittingChanges
+    /// ```
     func updateDisplayName(displayName: String) async throws {
         guard let user
         else {
@@ -181,6 +226,24 @@ extension AccountManager: AccountProtocol {
         }
     }
     
+    /// Emailアドレスを更新する
+    ///
+    /// - throws: AccountManagerError
+    ///
+    /// ```
+    /// # AccountManagerError
+    /// - userIsNil
+    /// - invalidCredential
+    /// - operationNotAllowed
+    /// - emailAlreadyInUse
+    /// - userDisabled
+    /// - wrongPassword
+    /// - userMismatch
+    /// - invalidEmail
+    /// - unknownAuthError
+    /// - unknownError
+    /// - errorInSendingEmailVerification
+    /// ```
     func updateEmail(currentEmail: String, password: String, newEmail: String) async throws {
         guard let user
         else {
@@ -225,6 +288,26 @@ extension AccountManager: AccountProtocol {
         }
     }
     
+    /// アカウントを削除する
+    ///
+    /// - throws: AccountManagerError
+    ///
+    /// ```
+    /// # AccountManagerError
+    /// - userIsNil
+    /// - invalidCredential
+    /// - operationNotAllowed
+    /// - emailAlreadyInUse
+    /// - userDisabled
+    /// - wrongPassword
+    /// - userMismatch
+    /// - invalidEmail
+    /// - unknownAuthError
+    /// - unknownError
+    /// - requiresRecentLogin
+    /// - unknownAuthError
+    /// - unknownError
+    /// ```
     func deleteAccount(email: String, password: String) async throws {
         guard let user
         else {
@@ -279,6 +362,14 @@ extension AccountManager: AccountProtocol {
         }
     }
 
+    /// UserDataStoreDocumentIdを現在のUserAccountに設定する
+    ///
+    /// - throws: AccountManagerError
+    ///
+    /// ```
+    /// # AccountManagerError
+    /// - userIsNil
+    /// ```
     func setUserDataStoreDocumentIdToCurrentUser(userDataStoreDocumentId: String) throws {
         if self.userAccount == nil {
             throw AccountManagerError.userAccountIsNil
