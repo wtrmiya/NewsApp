@@ -36,11 +36,11 @@ final class AccountSettingsViewModel: ObservableObject {
     
     @Published var errorMessage: String?
 
-    private let accountManager: AccountProtocol
+    private let accountManager: AccountManagerProtocol
     
     private var allCancellables = Set<AnyCancellable>()
 
-    init(accountManager: AccountProtocol) {
+    init(accountManager: AccountManagerProtocol) {
         self.accountManager = accountManager
         
         bindDisplayNameValidation()

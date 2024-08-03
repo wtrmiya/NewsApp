@@ -30,7 +30,7 @@ final class SettingsViewModel: ObservableObject {
     
     @Published var errorMessage: String?
     
-    private let accountManager: AccountProtocol
+    private let accountManager: AccountManagerProtocol
     private let userSettingsManager: UserSettingsManagerProtocol
     private let appStateManager: AppStateManager
     private let pushNotificationManager: PushNotificationManager
@@ -38,7 +38,7 @@ final class SettingsViewModel: ObservableObject {
     private var allCancellables = Set<AnyCancellable>()
     
     init(
-        accountManager: AccountProtocol,
+        accountManager: AccountManagerProtocol,
         userSettingsManager: UserSettingsManagerProtocol,
         appStateManager: AppStateManager,
         pushNotificationManager: PushNotificationManager

@@ -21,12 +21,12 @@ final class HomeViewModel: ObservableObject {
     
     let articleManager: ArticleManagerProtocol
     let bookmarkManager: BookmarkManagerProtocol
-    let accountManager: AccountProtocol
+    let accountManager: AccountManagerProtocol
     let userDataStoreManager: UserDataStoreManagerProtocol
     
     init(articleManager: ArticleManagerProtocol,
          bookmarkManager: BookmarkManagerProtocol,
-         accountManager: AccountProtocol,
+         accountManager: AccountManagerProtocol,
          userDataSoreManager: UserDataStoreManagerProtocol
     ) {
         self.articleManager = articleManager

@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class MockAccountManager: AccountProtocol {
+final class MockAccountManager: AccountManagerProtocol {
     var users: [String: [String]] = [:]
     var userAccount: UserAccount?
     

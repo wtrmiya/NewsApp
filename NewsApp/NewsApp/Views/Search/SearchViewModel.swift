@@ -20,13 +20,13 @@ final class SearchViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let articleManager: ArticleManagerProtocol
-    private let accountManager: AccountProtocol
+    private let accountManager: AccountManagerProtocol
     private let userDataStoreManager: UserDataStoreManagerProtocol
     private let bookmarkManager: BookmarkManagerProtocol
 
     init(
         articleManager: ArticleManagerProtocol,
-        accountManager: AccountProtocol,
+        accountManager: AccountManagerProtocol,
         userDataStoreManager: UserDataStoreManagerProtocol,
         bookmarkManager: BookmarkManagerProtocol
     ) {

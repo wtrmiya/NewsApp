@@ -28,88 +28,65 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertNil(sut.errorMessage)
     }
     
-    /*
-    // 発生させる例外を変更したため、一旦テストを削除する
-    @MainActor
-    func test_APIキー誤りの例外が発生した場合その旨のエラーメッセージが生成されること() {
+    func test_アカウントマネージャから現在サインイン中のユーザ情報を取得できること() {
+        // ダミーユーザ作成
+        let email = "hello@example.com"
+        let password = "password"
+        let displayName = "testuser"
+        
         let expectation = XCTestExpectation()
+        let mockAccountManager = MockAccountManager()
         let sut = HomeViewModel(
-            articleManager: MockArticleManagerInvalidAPIKey(),
+            articleManager: MockArticleManagerVarid(),
             bookmarkManager: MockBookmarkManager(),
-            accountManager: MockAccountManager(),
+            accountManager: mockAccountManager,
             userDataSoreManager: MockUserDataStoreManager()
         )
+        
         Task {
-            await sut.populateDefaultArticles()
+            try await mockAccountManager.signUp(email: email, password: password, displayName: displayName)
+            try await mockAccountManager.signIn(email: email, password: password)
             expectation.fulfill()
         }
         
         wait(for: [expectation], timeout: 5.0)
-        XCTAssertEqual(sut.articles.count, 0)
-        guard let errorMessage = sut.errorMessage
-        else {
-            XCTFail("errorMessage should be not nil")
-            return
-        }
-        XCTAssertEqual(errorMessage, "invalidAPIKey")
+        let result = sut.isSignedIn
+        XCTAssertEqual(result, true)
     }
-     */
     
-    /*
-    // 発生させる例外を変更したため、一旦テストを削除する
-    @MainActor
-    func test_レスポンス200以外が返却されてきた場合その旨のエラーメッセージが生成されること() {
-        let expectation = XCTestExpectation()
+    func test_現在選択されているカテゴリに対応した記事を取得できること() {
+        // ダミーユーザ作成
+        let email = "hello@example.com"
+        let password = "password"
+        let displayName = "testuser"
+        
+        let expectation1 = XCTestExpectation()
+        let mockAccountManager = MockAccountManager()
         let sut = HomeViewModel(
-            articleManager: MockArticleManagerInvalidResponse(),
+            articleManager: MockArticleManagerVarid(),
             bookmarkManager: MockBookmarkManager(),
-            accountManager: MockAccountManager(),
+            accountManager: mockAccountManager,
             userDataSoreManager: MockUserDataStoreManager()
         )
+        
         Task {
-            await sut.populateDefaultArticles()
-            expectation.fulfill()
+            try await mockAccountManager.signUp(email: email, password: password, displayName: displayName)
+            try await mockAccountManager.signIn(email: email, password: password)
+            expectation1.fulfill()
         }
         
-        wait(for: [expectation], timeout: 5.0)
-        XCTAssertEqual(sut.articles.count, 0)
-        guard let errorMessage = sut.errorMessage
-        else {
-            XCTFail("errorMessage should be not nil")
-            return
-        }
-        XCTAssertEqual(errorMessage, "invalidResponse")
-    }
-     */
-    
-    /*
-    // 発生させる例外を変更したため、一旦テストを削除する
-    @MainActor
-    func test_想定していない例外が発生した場合その旨のエラーメッセージが生成されること() {
-        let expectation = XCTestExpectation()
-        let sut = HomeViewModel(
-            articleManager: MockArticleManagerOtherError(),
-            bookmarkManager: MockBookmarkManager(),
-            accountManager: MockAccountManager(),
-            userDataSoreManager: MockUserDataStoreManager()
-        )
+        wait(for: [expectation1], timeout: 5.0)
+        
+        let expectation2 = XCTestExpectation()
         Task {
-            await sut.populateDefaultArticles()
-            expectation.fulfill()
+            await sut.populateArticles(of: .business)
+            expectation2.fulfill()
         }
         
-        wait(for: [expectation], timeout: 5.0)
-        XCTAssertEqual(sut.articles.count, 0)
-        guard let errorMessage = sut.errorMessage
-        else {
-            XCTFail("errorMessage should be not nil")
-            return
-        }
-        // swiftlint:disable:next line_length
-        XCTAssertEqual(errorMessage, "Sorry, something wrong. error: The operation couldn’t be completed. (NewsApp.AuthError error 1.)")
-        // swiftlint:disable:previous line_length
+        wait(for: [expectation2], timeout: 5.0)
+        
+        XCTAssertEqual(sut.articles.count, 2)
     }
-     */
 
     // MARK: - toggleBookmark(articleIndex: Int) async
     func test_指定したインデックスの記事が非ブックマーク状態であればブックマークされた状態になること() {

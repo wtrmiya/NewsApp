@@ -45,7 +45,7 @@
 		865407F22C1152540034055A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F12C1152540034055A /* FirebaseFirestore */; };
 		865407F42C1152540034055A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 865407F32C1152540034055A /* FirebaseFirestoreSwift */; };
 		865408302C1195FF0034055A /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8654082F2C1195FF0034055A /* AccountManager.swift */; };
-		865408352C129B800034055A /* AccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408342C129B800034055A /* AccountProtocol.swift */; };
+		865408352C129B800034055A /* AccountManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408342C129B800034055A /* AccountManagerProtocol.swift */; };
 		865408372C12A16E0034055A /* MockAccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865408362C12A16E0034055A /* MockAccountManager.swift */; };
 		865C0CF22C1933B500A091E4 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF12C1933B500A091E4 /* BookmarkManager.swift */; };
 		865C0CF42C1946DB00A091E4 /* BookmarkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */; };
@@ -132,7 +132,7 @@
 		864DA5152C21303500AB8D71 /* UserDataStoreManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataStoreManagerProtocol.swift; sourceTree = "<group>"; };
 		864DA5172C21307B00AB8D71 /* MockUserDataStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserDataStoreManager.swift; sourceTree = "<group>"; };
 		8654082F2C1195FF0034055A /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
-		865408342C129B800034055A /* AccountProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProtocol.swift; sourceTree = "<group>"; };
+		865408342C129B800034055A /* AccountManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagerProtocol.swift; sourceTree = "<group>"; };
 		865408362C12A16E0034055A /* MockAccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAccountManager.swift; sourceTree = "<group>"; };
 		865C0CF12C1933B500A091E4 /* BookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManager.swift; sourceTree = "<group>"; };
 		865C0CF32C1946DB00A091E4 /* BookmarkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManagerProtocol.swift; sourceTree = "<group>"; };
@@ -410,7 +410,7 @@
 			isa = PBXGroup;
 			children = (
 				8654082F2C1195FF0034055A /* AccountManager.swift */,
-				865408342C129B800034055A /* AccountProtocol.swift */,
+				865408342C129B800034055A /* AccountManagerProtocol.swift */,
 				865408362C12A16E0034055A /* MockAccountManager.swift */,
 			);
 			path = Account;
@@ -762,7 +762,7 @@
 				8621FA5B2C1BCECD00E677D6 /* AppDependencyContainer.swift in Sources */,
 				86748B492C1061F0004312AB /* SignInView.swift in Sources */,
 				86027CF32C1810E3006CD41B /* APIKeyManager.swift in Sources */,
-				865408352C129B800034055A /* AccountProtocol.swift in Sources */,
+				865408352C129B800034055A /* AccountManagerProtocol.swift in Sources */,
 				86748B3E2C106155004312AB /* TermView.swift in Sources */,
 				865408302C1195FF0034055A /* AccountManager.swift in Sources */,
 				869161BA2C166DA700454D12 /* DebugView.swift in Sources */,
