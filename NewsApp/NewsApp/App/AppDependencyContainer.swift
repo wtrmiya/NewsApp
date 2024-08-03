@@ -10,7 +10,7 @@ import SwiftUI
 
 @MainActor
 final class AppDependencyContainer: ObservableObject {
-    private let sharedAccountManager: AccountProtocol
+    private let sharedAccountManager: AccountManagerProtocol
     private let sharedUserSettingsManager: UserSettingsManagerProtocol
     private let sharedArticleManger: ArticleManagerProtocol
     private let sharedAppStateManager: AppStateManager

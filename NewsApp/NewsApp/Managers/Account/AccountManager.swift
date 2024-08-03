@@ -81,7 +81,7 @@ final class AccountManager {
     private var user: User?
 }
 
-extension AccountManager: AccountProtocol {
+extension AccountManager: AccountManagerProtocol {
     var isSignedIn: Bool {
         if Auth.auth().currentUser != nil {
             return true

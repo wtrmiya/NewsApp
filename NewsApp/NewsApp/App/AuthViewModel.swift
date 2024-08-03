@@ -22,12 +22,12 @@ final class AuthViewModel: ObservableObject {
     
     @Published var errorMessage: String?
 
-    private let accountManager: AccountProtocol
+    private let accountManager: AccountManagerProtocol
     private let userSettingsManager: UserSettingsManagerProtocol
     private let userDataStoreManager: UserDataStoreManagerProtocol
     private let pushNotificationManager: PushNotificationManager
 
-    init(accountManager: AccountProtocol,
+    init(accountManager: AccountManagerProtocol,
          userSettingsManager: UserSettingsManagerProtocol,
          userDataStoreManager: UserDataStoreManagerProtocol,
          pushNotificationManager: PushNotificationManager

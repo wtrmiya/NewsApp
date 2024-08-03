@@ -16,11 +16,11 @@ final class BookmarkViewModel: ObservableObject {
 
     @Published var errorMessage: String?
     
-    let accountManager: AccountProtocol
+    let accountManager: AccountManagerProtocol
     let bookmarkManager: BookmarkManagerProtocol
     let userDataStoreManager: UserDataStoreManagerProtocol
 
-    init(accountManager: AccountProtocol,
+    init(accountManager: AccountManagerProtocol,
          bookmarkManager: BookmarkManagerProtocol,
          userDataStoreManager: UserDataStoreManagerProtocol
     ) {
