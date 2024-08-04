@@ -1,0 +1,11 @@
+//
+//  Test.xcconfig
+//  NewsApp
+//
+//  Created by Wataru Miyakoshi on 2024/08/04.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+#include? "Config.xcconfig"
+APP_NAME = NewsApp Test

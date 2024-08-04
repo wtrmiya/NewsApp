@@ -27,8 +27,13 @@
       buildConfiguration = "Development_Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      shouldAutocreateTestPlan = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <TestPlans>
+         <TestPlanReference
+            reference = "container:Development.xctestplan"
+            default = "YES">
+         </TestPlanReference>
+      </TestPlans>
       <Testables>
          <TestableReference
             skipped = "NO"
@@ -38,6 +43,17 @@
                BlueprintIdentifier = "86119B1C2C0FF36F0067DC64"
                BuildableName = "NewsAppTests.xctest"
                BlueprintName = "NewsAppTests"
+               ReferencedContainer = "container:NewsApp.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "YES"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "864CCDFB2C5EFFB500CD903A"
+               BuildableName = "NewsAppIntegrationTests.xctest"
+               BlueprintName = "NewsAppIntegrationTests"
                ReferencedContainer = "container:NewsApp.xcodeproj">
             </BuildableReference>
          </TestableReference>

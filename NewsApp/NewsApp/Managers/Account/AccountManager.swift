@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import UserNotifications
 
-enum AccountManagerError: Error {
+enum AccountManagerError: String, LocalizedError {
     case invalidEmail
     case emailAlreadyInUse
     case operationNotAllowed
@@ -29,6 +29,10 @@ enum AccountManagerError: Error {
     case errorInSendingEmailVerification
     case requiresRecentLogin
     case userAccountIsNil
+    
+    var errorDescription: String? {
+        return NSLocalizedString(self.rawValue, comment: self.rawValue)
+    }
 }
 
 final class AccountManager {

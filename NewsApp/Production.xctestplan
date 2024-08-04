@@ -1,0 +1,44 @@
+{
+  "configurations" : [
+    {
+      "id" : "CEAA6C39-4EB0-4283-BCB6-DDB3351F22E6",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "IDEPreferLogStreaming",
+        "value" : "YES"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:NewsApp.xcodeproj",
+      "identifier" : "86119AF82C0FD8090067DC64",
+      "name" : "NewsApp"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:NewsApp.xcodeproj",
+        "identifier" : "86119B1C2C0FF36F0067DC64",
+        "name" : "NewsAppTests"
+      }
+    },
+    {
+      "enabled" : false,
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:NewsApp.xcodeproj",
+        "identifier" : "864CCDFB2C5EFFB500CD903A",
+        "name" : "NewsAppIntegrationTests"
+      }
+    }
+  ],
+  "version" : 1
+}
