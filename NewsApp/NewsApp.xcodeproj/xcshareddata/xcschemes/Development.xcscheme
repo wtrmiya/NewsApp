@@ -41,6 +41,17 @@
                ReferencedContainer = "container:NewsApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "864CCDFB2C5EFFB500CD903A"
+               BuildableName = "NewsAppIntegrationTests.xctest"
+               BlueprintName = "NewsAppIntegrationTests"
+               ReferencedContainer = "container:NewsApp.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
