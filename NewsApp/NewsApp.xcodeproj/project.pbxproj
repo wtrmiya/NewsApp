@@ -138,6 +138,8 @@
 		864CCDFE2C5EFFB500CD903A /* NewsAppAccountManagerIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsAppAccountManagerIntegrationTests.swift; sourceTree = "<group>"; };
 		864CCE2F2C1B9141006D2B5B /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		864CCE322C1BA4F7006D2B5B /* UserSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsManager.swift; sourceTree = "<group>"; };
+		864CCE3F2C5F1F5900CD903A /* Development.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Development.xctestplan; sourceTree = "<group>"; };
+		864CCE402C5F1F7800CD903A /* Production.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Production.xctestplan; sourceTree = "<group>"; };
 		864DA5112C20DBE400AB8D71 /* UserDataStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataStoreManager.swift; sourceTree = "<group>"; };
 		864DA5132C212F6F00AB8D71 /* MockUserSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserSettingsManager.swift; sourceTree = "<group>"; };
 		864DA5152C21303500AB8D71 /* UserDataStoreManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataStoreManagerProtocol.swift; sourceTree = "<group>"; };
@@ -287,6 +289,8 @@
 		86119AF02C0FD8090067DC64 = {
 			isa = PBXGroup;
 			children = (
+				864CCE402C5F1F7800CD903A /* Production.xctestplan */,
+				864CCE3F2C5F1F5900CD903A /* Development.xctestplan */,
 				86119AFB2C0FD8090067DC64 /* NewsApp */,
 				86119B1E2C0FF36F0067DC64 /* NewsAppTests */,
 				864CCDFD2C5EFFB500CD903A /* NewsAppIntegrationTests */,
