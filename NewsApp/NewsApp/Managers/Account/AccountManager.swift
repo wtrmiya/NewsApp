@@ -87,7 +87,7 @@ final class AccountManager {
 
 extension AccountManager: AccountManagerProtocol {
     var isSignedIn: Bool {
-        if Auth.auth().currentUser != nil {
+        if self.user != nil {
             return true
         } else {
             return false
