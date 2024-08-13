@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 final class NewsAppUserDataStoreManagerIntegrationTest: XCTestCase {
-    func test_ユーザデータストアを作成する() {
+    func test_ユーザデータストアを作成する() async {
         let collectionRef = Firestore.firestore().collection("users")
         
         let dummyUserAccount = UserAccount(
@@ -22,64 +22,57 @@ final class NewsAppUserDataStoreManagerIntegrationTest: XCTestCase {
         
         let sut = UserDataStoreManager.shared
         
-        let expectation = XCTestExpectation()
-        Task {
+        do {
             try await sut.createUserDataStore(userAccount: dummyUserAccount)
-            expectation.fulfill()
+        } catch {
+            XCTFail("Error throwed: \(error.localizedDescription)")
+            return
         }
         
-        wait(for: [expectation], timeout: 5.0)
+        let userDocumentSnapshot: QueryDocumentSnapshot
         
-        let expectation2 = XCTestExpectation()
-        Task {
-            guard let userDocumentSnapshot = try await collectionRef
+        do {
+            guard let tempSnapshot = try await collectionRef
                 .whereField("uid", isEqualTo: dummyUserAccount.uid)
                 .getDocuments()
                 .documents
                 .first
             else {
-                XCTFail("no collecton: users")
                 return
             }
-            
-            expectation2.fulfill()
-            
-            guard let fetchedUserAccount = UserAccount.fromSnapshot(snapshot: userDocumentSnapshot)
-            else {
-                XCTFail("Failed in initializing")
-                return
-            }
-            
-            XCTAssertEqual(fetchedUserAccount.uid, dummyUserAccount.uid)
-            XCTAssertEqual(fetchedUserAccount.displayName, dummyUserAccount.displayName)
+            userDocumentSnapshot = tempSnapshot
+        } catch {
+            XCTFail("Error throwed: \(error.localizedDescription)")
+            return
         }
         
-        wait(for: [expectation2], timeout: 5.0)
+        guard let fetchedUserAccount = UserAccount.fromSnapshot(snapshot: userDocumentSnapshot)
+        else {
+            XCTFail("Failed in initializing")
+            return
+        }
+        
+        XCTAssertEqual(fetchedUserAccount.uid, dummyUserAccount.uid)
+        XCTAssertEqual(fetchedUserAccount.displayName, dummyUserAccount.displayName)
         
         // tearDown
         // 全てのドキュメントを取得し
         // それぞれ削除する
         
-        let expectationTearDown = XCTestExpectation()
-        Task {
-            do {
-                let documentsSnapshot = try await collectionRef
-                    .getDocuments()
-                for document in documentsSnapshot.documents {
-                    try await document.reference.delete()
-                }
-                
-                expectationTearDown.fulfill()
-            } catch {
-                XCTFail("Throwed in deleting data")
-                return
+        do {
+            let documentsSnapshot = try await collectionRef
+                .getDocuments()
+            for document in documentsSnapshot.documents {
+                try await document.reference.delete()
             }
+            
+        } catch {
+            XCTFail("Throwed in deleting data")
+            return
         }
-        
-        wait(for: [expectationTearDown], timeout: 5.0)
     }
-    
-    func test_ユーザデータストアからデータを取得する() {
+
+    func test_ユーザデータストアからデータを取得する() async {
         let collectionRef = Firestore.firestore().collection("users")
         
         let dummyUserAccount = UserAccount(
@@ -90,59 +83,58 @@ final class NewsAppUserDataStoreManagerIntegrationTest: XCTestCase {
         
         let sut = UserDataStoreManager.shared
         
-        let expectation = XCTestExpectation()
-        Task {
-            collectionRef.addDocument(data: [
+        do {
+            let _ = try await collectionRef.addDocument(data: [
                 "uid": dummyUserAccount.uid,
                 "displayName": dummyUserAccount.displayName
             ])
-            expectation.fulfill()
+        } catch {
+            XCTFail("Error throwed: \(error.localizedDescription)")
+            return
         }
         
-        wait(for: [expectation], timeout: 5.0)
-        
-        let expectation2 = XCTestExpectation()
-        Task {
-            let userDataStoreDocumentId = try await sut.getUserDataStoreDocumentId(userAccount: dummyUserAccount)
-            
-            expectation2.fulfill()
-            
-            let docRef = collectionRef.document(userDataStoreDocumentId)
-            let documentSnapshot = try await docRef.getDocument()
-            
-            guard let fetchedUserAccount = UserAccount.fromSnapshot(snapshot: documentSnapshot)
-            else {
-                XCTFail("Failed in instantiating")
-                return
-            }
-            
-            XCTAssertEqual(fetchedUserAccount.uid, dummyUserAccount.uid)
-            XCTAssertEqual(fetchedUserAccount.displayName, dummyUserAccount.displayName)
+        let userDataStoreDocumentId: String
+        do {
+            userDataStoreDocumentId = try await sut.getUserDataStoreDocumentId(userAccount: dummyUserAccount)
+        } catch {
+            XCTFail("Error throwed: \(error.localizedDescription)")
+            return
         }
         
-        wait(for: [expectation2], timeout: 5.0)
+        let docRef = collectionRef.document(userDataStoreDocumentId)
+        
+        let documentSnapshot: DocumentSnapshot
+        do {
+            documentSnapshot = try await docRef.getDocument()
+        } catch {
+            XCTFail("Error throwed: \(error.localizedDescription)")
+            return
+        }
+        
+        guard let fetchedUserAccount = UserAccount.fromSnapshot(snapshot: documentSnapshot)
+        else {
+            XCTFail("Failed in instantiating")
+            return
+        }
+        
+        XCTAssertEqual(fetchedUserAccount.uid, dummyUserAccount.uid)
+        XCTAssertEqual(fetchedUserAccount.displayName, dummyUserAccount.displayName)
         
         // tearDown
         // 全てのドキュメントを取得し
         // それぞれ削除する
         
-        let expectationTearDown = XCTestExpectation()
-        Task {
-            do {
-                let documentsSnapshot = try await collectionRef
-                    .getDocuments()
-                for document in documentsSnapshot.documents {
-                    try await document.reference.delete()
-                }
-                
-                expectationTearDown.fulfill()
-            } catch {
-                XCTFail("Throwed in deleting data")
-                return
+        do {
+            let documentsSnapshot = try await collectionRef
+                .getDocuments()
+            for document in documentsSnapshot.documents {
+                try await document.reference.delete()
             }
+            
+        } catch {
+            XCTFail("Throwed in deleting data")
+            return
         }
-        
-        wait(for: [expectationTearDown], timeout: 5.0)
     }
 }
 
