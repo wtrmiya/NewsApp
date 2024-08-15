@@ -20,7 +20,7 @@ final class NewsAppBookmarkManagerIntegrationTests: XCTestCase {
             displayName: "testuser"
         )
         
-        var dummyArticle = Article(
+        let dummyArticle = Article(
             source: ArticleSource(name: "Example.com"),
             author: nil,
             title: "サンプル記事 タイトル 先発出場で二塁打もチーム敗れる | Example | サンプル記事 - example.com",
@@ -109,7 +109,7 @@ final class NewsAppBookmarkManagerIntegrationTests: XCTestCase {
             displayName: "testuser"
         )
         
-        var dummyArticle = Article(
+        let dummyArticle = Article(
             source: ArticleSource(name: "Example.com"),
             author: nil,
             title: "サンプル記事 タイトル 先発出場で二塁打もチーム敗れる | Example | サンプル記事 - example.com",
@@ -323,7 +323,6 @@ final class NewsAppBookmarkManagerIntegrationTests: XCTestCase {
         }
 
         // Check
-        let fetchedUserDataStoreDocRef = usersCollectionRef.document(userDataStoreDocRef.documentID)
         do {
             let queryDocumentSnapshotArray = try await bookmarksCollectionRef.getDocuments().documents
             
