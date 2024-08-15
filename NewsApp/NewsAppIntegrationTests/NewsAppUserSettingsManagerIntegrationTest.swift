@@ -65,7 +65,6 @@ final class NewsAppUserSettingsManagerIntegrationTest: XCTestCase {
         // tearDown
         // 全てのドキュメントを取得し
         // それぞれ削除する
-        
         do {
             // userSettings
             let userSettingsDocumentSnapshot = try await userSettingsCollectionRef.getDocuments()
