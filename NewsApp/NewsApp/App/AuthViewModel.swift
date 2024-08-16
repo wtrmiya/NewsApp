@@ -10,6 +10,7 @@ import UserNotifications
 
 enum AuthViewModelError: Error {
     case noUserAccount
+    case noUserInfo
 }
 
 final class AuthViewModel: ObservableObject {
@@ -96,14 +97,19 @@ final class AuthViewModel: ObservableObject {
     
     @objc func userStateChanged(notification: Notification) {
         do {
-            if let userAccount = notification.userInfo?["user"] as? UserAccount {
-                Task {
-                    await MainActor.run {
-                        self.signedInUserAccount = userAccount
-                    }
+            guard let userInfo = notification.userInfo?["user"]
+            else {
+                throw AuthViewModelError.noUserInfo
+            }
+            
+            if let userAccount = userInfo as? UserAccount {
+                Task { @MainActor in
+                    self.signedInUserAccount = userAccount
                 }
             } else {
-                throw AuthViewModelError.noUserAccount
+                Task { @MainActor in
+                    self.signedInUserAccount = nil
+                }
             }
         } catch {
             self.errorMessage = "error: \(error.localizedDescription)"

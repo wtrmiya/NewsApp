@@ -9,8 +9,24 @@ import Foundation
 
 final class MockAccountManager: AccountManagerProtocol {
     var users: [String: [String]] = [:]
-    var userAccount: UserAccount?
+    var userAccount: UserAccount? {
+        didSet {
+            if oldValue == nil && userAccount != nil {
+                postNotification()
+            } else if oldValue != nil && userAccount == nil {
+                postNotification()
+            }
+        }
+    }
     
+    private func postNotification() {
+        NotificationCenter.default.post(
+            name: Notification.Name.signInStateChanged,
+            object: nil,
+            userInfo: ["user": userAccount as Any]
+        )
+    }
+
     var isSignedIn: Bool {
         if userAccount != nil {
             return true
